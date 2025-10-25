@@ -1,0 +1,72 @@
+{% comment %} {% load static %}
+
+<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-8 mt-10" id="blog_post_form">
+    <!-- Heading -->
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center ">Post New Blog</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-5">
+        {% csrf_token %}
+
+        <!-- Title -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input type="text" name="title" placeholder="Enter post title"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea name="description" rows="4" placeholder="Short summary of your post..."
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"></textarea>
+        </div>
+
+        <!-- Category -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <select name="category"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
+                <option value="">Select category</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Featured Image (File Upload) -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+            <input type="file" name="featured_image"
+                class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg file:mr-3 file:py-2 file:px-3 file:border-0 file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer" />
+        </div>
+
+        <!-- Featured Image URL -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Featured Image URL</label>
+            <input type="url" name="featured_image_url" placeholder="https://example.com/image.jpg"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+        </div>
+
+        <!-- Additional Images (Multiple Upload) -->
+        <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Additional Images</label>
+            <input type="file" name="additional_image" multiple
+                class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg file:mr-3 file:py-2 file:px-3 file:border-0 file:bg-green-100 file:text-green-700 hover:file:bg-green-200 cursor-pointer" />
+        </div>
+
+        <!-- Additional Image URLs -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Additional Image URLs</label>
+            <textarea name="additional_image_url" rows="3" placeholder="Add image URLs separated by commas (optional)"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"></textarea>
+        </div>
+
+
+        <!-- Submit Button -->
+        <button type="submit"
+            class="w-full bg-blue-400 text-white font-semibold py-2 rounded-lg hover:bg-blue-500 transition duration-200">
+            Publish Post
+        </button>
+    </form>
+
+</div> {% endcomment %}

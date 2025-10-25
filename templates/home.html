@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Home || TechLife {% endblock title %}
+
+{% block meta_description %}
+Welcome to My E-commerce Store! Explore our latest collections and exclusive deals on quality products. Shop now and
+enjoy great savings!
+{% endblock meta_description %}
+
+{% block og_title %}Home | My E-commerce Store{% endblock og_title %}
+{% block og_description %}Welcome to My E-commerce Store! Explore our latest collections and exclusive deals on quality
+products. Shop now and enjoy great savings!{% endblock og_description %}
+{% block og_image %}{% static 'images/home_og_image.png' %}{% endblock og_image %}
+
+{% block twitter_title %}Home | My E-commerce Store{% endblock twitter_title %}
+{% block twitter_description %}Welcome to My E-commerce Store! Explore our latest collections and exclusive deals on
+quality products. Shop now and enjoy great savings!{% endblock twitter_description %}
+{% block twitter_image %}{% static 'images/home_twitter_image.png' %}{% endblock twitter_image %}
+
+
+
+{% block content %}
+
+{% include 'components/home/partial_homepage.html' %}
+
+{% endblock content %}

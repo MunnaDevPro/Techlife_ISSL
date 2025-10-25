@@ -1,0 +1,210 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 
+      ================================================================================
+      SEO & DYNAMIC METADATA
+      - These blocks can be overridden in child templates to provide page-specific SEO.
+      - Sensible defaults are provided for general pages.
+      ================================================================================
+    -->
+
+  <!-- Primary Meta Tags -->
+  <title>
+    {% block title %}
+    TechLife || Know The Current Situation
+    {% endblock title %}
+  </title>
+  {% comment %} {% tailwind_css %} {% endcomment %}
+  <meta name="description"
+    content="{% block meta_description %}Discover a wide range of high-quality products at unbeatable prices. Your one-stop shop for electronics, fashion, and more.{% endblock meta_description %}" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:title"
+    content="{% block og_title %}{% block title_for_socials %}{{ self.title }}{% endblock %}{% endblock %}" />
+  <meta property="og:description"
+    content="{% block og_description %}{% block description_for_socials %}{{ self.meta_description }}{% endblock %}{% endblock %}" />
+  <meta property="og:image"
+    content="{% block og_image %}{% static 'images/default_og_image.png' %}{% endblock og_image %}" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="twitter:title"
+    content="{% block twitter_title %}{% block title_for_socials_twitter %}{{ self.og_title }}{% endblock %}{% endblock %}" />
+  <meta property="twitter:description"
+    content="{% block twitter_description %}{% block description_for_socials_twitter %}{{ self.og_description }}{% endblock %}{% endblock %}" />
+  <meta property="twitter:image"
+    content="{% block twitter_image %}{% block og_image_twitter %}{{ self.og_image }}{% endblock %}{% endblock %}" />
+
+  <!-- HTMX CSRF -->
+  {% csrf_token %}
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+
+  <!-- 
+      ================================================================================
+      STYLESHEETS & LIBRARIES
+      ================================================================================
+    -->
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+
+      <!-- Latest Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-e..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- HTMX & Alpine.js -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"
+    xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd"
+    crossorigin="anonymous"></script>
+
+
+
+  <!-- DaisyUI Play CDN -->
+
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+
+  <!-- Poppins Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  {% block extra_head %} {% endblock extra_head %}
+</head>
+
+<body class="font-inter leading-normal tracking-normal bg-white">
+  {% include 'include/navbar.html' %}
+
+
+
+  <div class="flex bg-white" x-data="{ sidebarOpen: false }" 
+    class="flex bg-white">
+    <!-- Sidebar -->
+    <aside class="h-screen absolute md:sticky z-10 top-16">
+      {% include 'include/sidebar.html' %}
+    </aside>
+
+    <!-- Main Content -->
+    <main id="container" class="container mx-auto flex-grow min-h-[calc(100vh-128px)] px-3 py-6 bg-white"> 
+  
+      {% block content %}
+      <!-- Page content here -->
+      {% if action == 'post_create' %}
+        {% include 'components/blogs/partial_create_blog_content.html' %}
+      {% elif action == 'home_page' %}
+        {% include 'components/home/home_page.html' %}
+      {% elif action == 'all_blogs' %}
+        {% include 'components/blogs/partial_all_blog_page.html' %}
+      {% elif action == 'contact_page' %}
+        {% include 'partial_contact_us_page.html' %}
+      {% elif action == 'category_post' %}
+        {% include 'components/category/category_post_partial.html' %}
+      {% elif action == 'popular_blogs' %}
+        {% include 'components/popular/popular_post_partial.html' %}
+      {% elif action == 'all_article' %}
+        {% include 'components/category/all_article_partial.html' %}
+      {% elif action == 'popular_category_post' %}
+        {% include 'components/popular/popular_category_post_partial.html' %}
+      {% elif action == 'blog_details' %}
+        {% include 'components/blog_details/partial_blog_details_page.html' %}
+      {% elif action == 'right_side_update_in_blog_details' %}
+        {% include 'components/blog_details/blog_right_side_partial.html' %}
+
+      {% endif %}
+      
+
+      {% endblock content %}
+    </main>
+  </div>
+  <footer class="p-4 text-center shadow-md bg-gray-100">
+    {% include 'include/footer.html' %}
+    <p>&copy; {% now "Y" %} TechLife | All Rights Reserved</p>
+  </footer>
+
+  <!-- =========== LUCIDE ICONS SCRIPT (এই দুটি লাইন যোগ করুন) =========== -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+
+  <!-- DaisyUI Play CDN -->
+ <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+
+  <!-- tailwind -->
+ <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>  -->
+
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+
+
+  <!-- HTMX Configuration & Loading States -->
+  <script>
+    // HTMX Loading indicator
+    document.body.addEventListener('htmx:beforeRequest', function(evt) {
+      // Add loading class to content area
+      const content = document.getElementById('content');
+      if (content) {
+        content.style.opacity = '0.6';
+        content.style.transition = 'opacity 0.2s ease';
+      }
+    });
+
+    document.body.addEventListener('htmx:afterRequest', function(evt) {
+      // Remove loading state
+      const content = document.getElementById('content');
+      if (content) {
+        content.style.opacity = '1';
+      }
+    });
+
+    // Handle errors gracefully
+    document.body.addEventListener('htmx:responseError', function(evt) {
+      console.error('HTMX Error:', evt.detail);
+      const content = document.getElementById('content');
+      if (content) {
+        content.innerHTML = `
+          <div class="flex flex-col items-center justify-center min-h-[400px] text-center">
+            <h2 class="text-xl font-bold text-red-600 mb-4">Something went wrong</h2>
+            <p class="text-gray-600 mb-6">Unable to load the content. Please try again.</p>
+            <button onclick="window.location.reload()" 
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              Refresh Page
+            </button>
+          </div>
+        `;
+        content.style.opacity = '1';
+      }
+    });
+
+    // SEO: Update page title for HTMX requests
+    document.body.addEventListener('htmx:afterSettle', function(evt) {
+      // Extract title from response if available
+      const titleElement = evt.detail.target.querySelector('title, [data-title]');
+      if (titleElement) {
+        document.title = titleElement.textContent || titleElement.getAttribute('data-title');
+      }
+    });
+  </script>
+
+  <!-- Script js -->
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

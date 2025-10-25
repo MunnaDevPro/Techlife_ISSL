@@ -1,0 +1,225 @@
+{% load static %}
+
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+</style>
+
+<!-- LEFT CONTENT (Post) -->
+<div class="w-full lg:w-2/3 max-w-2xl flex-shrink-0 mx-auto">
+    {% comment %} Questions section {% endcomment %}
+    <div class="bg-white p-6 mx-auto">
+        <div class="py-5 px-4 mx-auto">
+            <!-- Header -->
+            <div class="flex items-start justify-between text-gray-500 pb-0">
+                <!-- Left Side -->
+                <div class="flex items-start gap-3">
+                    <img src="{% static 'image/munna.jpeg' %}" class="w-10 h-10 rounded-full" />
+
+                    <div class="flex flex-col leading-tight">
+                        <div
+                            x-data="{ 
+              hoverCardHovered: false,
+              hoverCardDelay: 200,
+              hoverCardLeaveDelay: 200,
+              hoverCardTimout: null,
+              hoverCardLeaveTimeout: null,
+              hoverCardEnter () {
+                  clearTimeout(this.hoverCardLeaveTimeout);
+                  if(this.hoverCardHovered) return;
+                  clearTimeout(this.hoverCardTimout);
+                  this.hoverCardTimout = setTimeout(() => {
+                      this.hoverCardHovered = true;
+                  }, this.hoverCardDelay);
+              },
+              hoverCardLeave () {
+                  clearTimeout(this.hoverCardTimout);
+                  if(!this.hoverCardHovered) return;
+                  clearTimeout(this.hoverCardLeaveTimeout);
+                  this.hoverCardLeaveTimeout = setTimeout(() => {
+                      this.hoverCardHovered = false;
+                  }, this.hoverCardLeaveDelay);
+              }
+          }"
+                            class="relative"
+                            @mouseover="hoverCardEnter()"
+                            @mouseleave="hoverCardLeave()"
+                            x-cloak>
+                            <!-- Name + Time (Top Line) -->
+                            <div class="flex flex-wrap sm:flex-nowrap items-center gap-1 w-auto group cursor-pointer">
+                                <span class="font-inter text-2xl font-semibold text-gray-800 group-hover:text-blue-500 cursor-pointer">Md Munna</span>
+
+                                <div class="flex items-center gap-1 sm:ml-3 ml-0">
+                                    <span class="text-green-400">•</span>
+                                    <span class="font-inter text-sm text-gray-500 cursor-pointer">22 hr ago</span>
+                                </div>
+                            </div>
+
+                            <div x-show="hoverCardHovered" class="absolute top-0 mt-5 ml-40 z-30 -translate-x-1/2 translate-y-3 left-1/2 cursor-default" x-cloak>
+                                <div x-show="hoverCardHovered" class="w-[300px] h-auto flex items-start p-0" x-transition x-cloak>
+                                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 w-auto h-auto">
+                                        <!-- Header: Gradient Background with SVG -->
+                                        <div class="relative h-20 rounded-t-2xl overflow-hidden">
+                                            <img src="{% static 'image/python.jpg' %}" alt="Card Header" class="w-full h-full object-cover" />
+                                        </div>
+
+                                        <!-- Top Section: Image + Name + Follow Button -->
+                                        <div class="flex items-center justify-between p-1 mb-3">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-12 h-12 rounded-full ring-2 ring-white overflow-hidden shadow-sm ml-3">
+                                                    <img src="{% static 'image/munna.jpeg' %}" alt="avatar" class="w-full h-full object-cover" />
+                                                </div>
+                                                <div>
+                                                    <div class="font-inter text-[22px] font-semibold text-blue-400">MD Munna</div>
+                                                    <div class="font-inter text-sm text-gray-600">Software Engineer</div>
+                                                </div>
+                                            </div>
+                                            <button class="px-2 py-1 mr-2 -mt-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-sm">Follow</button>
+                                        </div>
+
+                                        <!-- Middle Section: Description -->
+                                        <div class="p-4 border-t border-gray-100">
+                                            <p class="text-sm text-gray-600 -mt-3">This community is dedicated to Nepali culture, news, and discussion. Join to connect with others and stay updated!</p>
+                                        </div>
+
+                                        <!-- Bottom Section: Stats -->
+                                        <div class="p-4 flex justify-between text-gray-600 text-sm border-t border-gray-100 -ml-2">
+                                            <div class="flex flex-col items-center ml-2">
+                                                <div class="text-md font-bold text-gray-800">77K</div>
+                                                <div>Followers</div>
+                                            </div>
+                                            <div class="flex flex-col items-center">
+                                                <div class="text-md font-bold text-gray-800">138</div>
+                                                <div>Posts</div>
+                                            </div>
+                                            <div class="flex flex-col items-center">
+                                                <div class="text-md font-bold text-green-500 mr-2">Active</div>
+                                                <div>Status</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gmail (Bottom Line) -->
+                            <span class="text-sm text-gray-500 cursor-pointer">munnacodeexpert@gmail.com</span>
+                        </div>
+                    </div>
+
+                    <!-- Dots exactly aligned with Name -->
+                    <div class="text-sm mt-1">
+                        <div x-data="{ open: false }" class="flex items-start gap-3 mb-4 relative">
+                            <div class="flex flex-col ml-5" @click.away="open = false">
+                                <div class="flex items-center gap-1 ml-60 -mt-6">
+                                    <!-- Dropdown trigger -->
+                                    <button @click="open = !open" class="font-inter text-sm text-gray-600 py-2 px-2 flex items-center gap-1 rounded-2xl transition-colors">
+                                        <span class="text-2xl">...</span>
+                                    </button>
+                                </div>
+
+                                <!-- Dropdown menu -->
+                                <div x-show="open" x-transition class="absolute mt-6 ml-40 w-36 bg-white border rounded-2xl shadow-lg z-10" x-cloak>
+                                    <div class="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2 bg-gray-100 text-gray-800">
+                                        <svg rpl="" fill="currentColor" height="20" icon-name="notification-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                            <!--?lit$366584635$-->
+                                            <!--?lit$366584635$-->
+                                            <path d="M18.176 14.218l-.925-1.929a2.577 2.577 0 01-.25-1.105V8c0-3.86-3.142-7-7-7-3.86 0-7 3.14-7 7v3.184c0 .38-.088.762-.252 1.105l-.927 1.932A1.103 1.103 0 002.82 15.8h3.26A4.007 4.007 0 0010 19a4.008 4.008 0 003.918-3.2h3.26a1.1 1.1 0 00.934-.514 1.1 1.1 0 00.062-1.068h.002zM10 17.2c-.93 0-1.722-.583-2.043-1.4h4.087a2.197 2.197 0 01-2.043 1.4zM3.925 14l.447-.933c.28-.584.43-1.235.43-1.883V8c0-2.867 2.331-5.2 5.198-5.2A5.205 5.205 0 0115.2 8v3.184c0 .648.147 1.299.428 1.883l.447.933H3.925z"></path>
+                                            <!--?-->
+                                        </svg>
+                                        <span class="font-inter text-sm text-gray-800">Follow Post</span>
+                                    </div>
+
+                                    <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+                                        <svg rpl="" fill="currentColor" height="20" icon-name="save-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                            <!--?lit$366584635$-->
+                                            <!--?lit$366584635$-->
+                                            <path d="M13.6 3.8c.882 0 1.6.718 1.6 1.6v11.166l-5.201-2.911L4.8 16.566V5.4a1.6 1.6 0 011.6-1.6h7.2zm0-1.8H6.4A3.4 3.4 0 003 5.4v12.24c0 .682.56 1.172 1.172 1.172.19 0 .385-.047.57-.151L10 15.717l5.259 2.944a1.167 1.167 0 001.742-1.021V5.4A3.4 3.4 0 0013.6 2z"></path>
+                                            <!--?-->
+                                        </svg>
+                                        <span class="font-inter text-sm text-gray-800">Save</span>
+                                    </div>
+                                    <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+                                        <svg rpl="" fill="currentColor" height="20" icon-name="hide-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                            <!--?lit$366584635$-->
+                                            <!--?lit$366584635$-->
+                                            <path d="M3.497 3.503a.9.9 0 10-1.273 1.273l.909.909A10.141 10.141 0 00.92 8.472a3.225 3.225 0 000 3.058A10.296 10.296 0 0010 16.973a10.13 10.13 0 003.709-.712l1.457 1.457a.897.897 0 001.274 0 .9.9 0 000-1.273L3.497 3.503zM10 15.172a8.497 8.497 0 01-7.495-4.494 1.448 1.448 0 010-1.354 8.436 8.436 0 011.9-2.365l2.069 2.068c-.062.271-.105.55-.105.84a3.77 3.77 0 003.767 3.767c.29 0 .569-.043.84-.106l1.31 1.31a8.284 8.284 0 01-2.284.335L10 15.172zm.476-7.237L8.874 6.333a3.722 3.722 0 011.26-.233 3.77 3.77 0 013.767 3.767c0 .444-.091.864-.233 1.26l-1.603-1.603a1.963 1.963 0 00-1.59-1.589zm8.605 3.595a10.297 10.297 0 01-2.22 2.792L15.59 13.05a8.512 8.512 0 001.905-2.372 1.448 1.448 0 000-1.354A8.496 8.496 0 007.69 5.15L6.282 3.742A10.249 10.249 0 0110 3.028c3.8 0 7.28 2.087 9.08 5.444a3.225 3.225 0 010 3.058z"></path>
+                                            <!--?-->
+                                        </svg>
+                                        <span class="font-inter text-sm text-gray-800">Hide</span>
+                                    </div>
+                                    <div class="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-2">
+                                        <svg rpl="" fill="currentColor" height="20" icon-name="report-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                            <!--?lit$366584635$-->
+                                            <!--?lit$366584635$-->
+                                            <path d="M15.21 7.5l2.56-3.86c.47-.7-.04-1.64-.88-1.64H5C3.03 2 1.59 3.87 2.1 5.78L4.04 13l1.37 5.08a.906.906 0 001.1.64.9.9 0 00.64-1.1l-1.24-4.61h10.98c.84 0 1.35-.94.88-1.64l-2.56-3.86V7.5zm-9.79 3.7L3.84 5.31c-.13-.5.07-.87.21-1.04.13-.18.44-.47.95-.47h10.5l-2.45 3.7 2.45 3.7H5.42z"></path>
+                                            <!--?-->
+                                        </svg>
+                                        <span class="font-inter text-sm text-gray-800">Report</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Post Title -->
+            <h1 class="text-xl font-bold mb-1 mt-3 break-words leading-tight">Software dev who wants to settle abroad directly via work visa (without masters studies)</h1>
+
+            <!-- Post Content -->
+            <p class="mt-2 border-gray-100 break-words leading-0 text-gray-600 text-sm">I am a backend software dev (27M) with 3 years of work experience. I started working in 2021. For the last 1 year, I had been solely pursuing MSCS in US hoping to settle there ultimately. However, my visa was rejected. I have heard about software devs applying to Japan. I am more interested in European countries like Germany, UK, Netherland. I see lots of Indian software devs (3 to 5+ work experience ) following the similar route. I just wanted to know if there are Nepalese software devs who also did the same.</p>
+
+            <!-- Interaction Bar -->
+            <div class="flex items-center justify-between mt-5 text-gray-600">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 cursor-pointer">
+                        <i class="fa-regular fa-thumbs-up"></i>
+                        Like
+                    </a>
+                    <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 cursor-pointer">
+                        <i class="fa-regular fa-comment"></i>
+                        Comment
+                    </a>
+                    <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1">
+                        <i class="fa-regular fa-eye"></i>
+                        View
+                    </a>
+                    <a class="flex items-center gap-1 bg-gray-100 rounded-2xl px-3 py-1 cursor-pointer">
+                        <svg rpl="" aria-hidden="true" class="icon-share rpl-rtl-icon" fill="currentColor" height="16" icon-name="share-new-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                            <!--?lit$20054865694$-->
+                            <!--?lit$20054865694$-->
+                            <path d="M12.8 17.524l6.89-6.887a.9.9 0 000-1.273L12.8 2.477a1.64 1.64 0 00-1.782-.349 1.64 1.64 0 00-1.014 1.518v2.593C4.054 6.728 1.192 12.075 1 17.376a1.353 1.353 0 00.862 1.32 1.35 1.35 0 001.531-.364l.334-.381c1.705-1.944 3.323-3.791 6.277-4.103v2.509c0 .667.398 1.262 1.014 1.518a1.638 1.638 0 001.783-.349v-.002zm-.994-1.548V12h-.9c-3.969 0-6.162 2.1-8.001 4.161.514-4.011 2.823-8.16 8-8.16h.9V4.024L17.784 10l-5.977 5.976z"></path>
+                            <!--?-->
+                        </svg>
+                        Share
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div x-data="{ showSearch: true }" class="mt-2 mx-auto" x-cloak>
+            <!-- Search Bar -->
+            <div x-show="showSearch" class="text-center w-full" x-cloak>
+                <div class="relative w-full ml-0.5">
+                    <input type="search" placeholder="Add your answer" class="w-[95%] pl-5 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent shadow-sm" @focus="showSearch = false" />
+                </div>
+            </div>
+
+            <!-- Answer Box -->
+            <div x-show="!showSearch" class="bg-white p-4 rounded-lg -mb-6" x-cloak>
+                <textarea id="editor" class="w-full rounded-lg p-2 resize-none text-sm text-gray-500" placeholder="Write your answer..."></textarea>
+                <div class="flex justify-end mt-2 gap-2">
+                    <!-- Cancel Button -->
+                    <button @click="showSearch = true" class="px-5 py-1 border border-gray-300 text-gray-600 rounded-full hover:bg-gray-100 transition">Cancel</button>
+
+                    <!-- Post Button -->
+                    <button class="px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-sm transition">Add Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% comment %} Answer section {% endcomment %} {% include "forum/forum_answer.html" %}
+</div>
+

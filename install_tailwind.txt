@@ -1,0 +1,24 @@
+Set up Tailwind CSS
+===============================
+npm install -D tailwindcss tw-animate-css
+
+
+
+
+Tailwind CSS output file
+==============================================
+<link rel="stylesheet" href="{% static 'css/output.css' %}" />
+
+
+
+
+Alpine.js tag - directly from CDN (not recommended)
+======================================================
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+
+
+Run Tailwind to generate your CSS:
+============================================
+npx @tailwindcss/cli -i input.css -o static/css/output.css --watch

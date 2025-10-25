@@ -1,0 +1,79 @@
+{% load static %}
+
+<div class="navbar sticky top-0 z-50 h-16 flex items-center justify-between bg-white px-4 sm:px-6 lg:px-12 mx-auto">
+    <!-- Sidebar Toggle (Mobile) -->
+    <button id="toggleSidebar" class="md:hidden p-2 m-2 bg-gray-200 rounded-lg cursor-pointer">
+        <svg id="openIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+
+        <svg id="closeIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x hidden">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+    </button>
+
+    <!-- Logo -->
+    <div class="flex items-center -ml-7">
+        <a href="{% url 'homepage' %}" hx-get="{% url 'homepage' %}" hx-target="#content" hx-push-url="true" hx-swap="innerHTML"><img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd" class="h-8" /></a>
+    </div>
+
+    <!-- Search (hidden on small screens) -->
+    <form method="GET" action="{% url 'blogs' %}">
+        {# general blog search page #}
+        <div class="flex-1 max-w-lg mx-4 hidden md:flex">
+            <label class="flex w-full gap-3 items-center rounded-3xl px-4 py-1 bg-gray-50 shadow">
+                <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
+                <input class="w-80 bg-transparent outline-none border-0 text-sm py-2" type="search" name="q" placeholder="Search" value="{{ query|default:'' }}" />
+            </label>
+        </div>
+    </form>
+
+    <!-- Right Side -->
+    <div class="flex items-center gap-4 sm:gap-5">
+        <!-- chat -->
+        <div class="relative flex items-center gap-1 cursor-pointer hover:text-blue-600 transition">
+            <svg rpl="" fill="currentColor" height="20" icon-name="chat" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg" class="font-black">
+                <path d="M10 1a9 9 0 00-9 9c0 1.947.79 3.58 1.935 4.957L.231 17.661A.784.784 0 00.785 19H10a9 9 0 009-9 9 9 0 00-9-9zm0 16.2H6.162c-.994.004-1.907.053-3.045.144l-.076-.188a36.981 36.981 0 002.328-2.087l-1.05-1.263C3.297 12.576 2.8 11.331 2.8 10c0-3.97 3.23-7.2 7.2-7.2s7.2 3.23 7.2 7.2-3.23 7.2-7.2 7.2zm5.2-7.2a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zm-4 0a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0zm-4 0a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"></path>
+            </svg>
+            <span class="text-xs sm:text-sm font-medium">0</span>
+        </div>
+
+        <!-- Notifications -->
+        <div class="relative flex items-center gap-1 cursor-pointer hover:text-blue-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="lucide lucide-bell text-gray-300">
+                <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+            </svg>
+            <span class="text-xs sm:text-sm font-medium">0</span>
+        </div>
+
+        <!-- Stars -->
+        <div class="relative flex items-center gap-1 cursor-pointer hover:text-yellow-500 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="lucide lucide-star">
+                <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+            </svg>
+            <span class="text-xs sm:text-sm font-medium">0</span>
+        </div>
+
+        <!-- User / Login -->
+        {% if user.is_authenticated %}
+        <div class="relative group">
+            <a href="{% url 'user_dashboard' %}">
+                <button class="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-100 border border-gray-300 overflow-hidden">
+                    <img class="w-full h-full object-cover" src="{{ user.profile_picture.url }}" alt="{{ user.first_name }}" />
+                </button>
+            </a>
+        </div>
+        {% else %}
+        <a href="{% url 'login' %}" class="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition text-sm sm:text-base">Login</a>
+        {% endif %}
+    </div>
+</div>

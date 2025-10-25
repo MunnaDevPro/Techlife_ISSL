@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="min-h-[100vh] flex flex-col items-center justify-center text-center px-6 bg-gray-50 mx-auto">
+
+  <!-- Illustration + Heading Row -->
+    <div class="flex items-center justify-center gap-4 mb-6">
+    
+    <!-- Image -->
+    <img src="{% static 'image/circle_error.png' %}" 
+        alt="Post Not Available" 
+        class="w-20">
+
+    <!-- Heading -->
+    <h1 class="text-7xl sm:text-6xl font-bold text-gray-800">
+        Oops!
+    </h1>
+
+    </div>
+
+  <!-- Subheading -->
+  <h2 class="text-2xl sm:text-3xl text-gray-700 font-medium mb-4">
+    Post Not Available
+  </h2>
+
+  <!-- Description -->
+  <p class="text-gray-600 mb-2">
+    The post you are looking for might have been removed or never existed.
+  </p>
+  <p class="text-gray-600 mb-6">
+    You can check out other posts or return to the homepage.
+  </p>
+
+  <!-- Button -->
+  <a href="/" class="px-6 py-3 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+    Explore Other Posts
+  </a>
+
+</div>
+{% endblock content %}

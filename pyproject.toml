@@ -1,0 +1,24 @@
+[project]
+name = "final-updated"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "asgiref==3.9.2",
+    "click==8.3.0",
+    "colorama==0.4.6",
+    "django==5.2.6",
+    "django-browser-reload==1.21.0",
+    "django-extensions==4.1",
+    "django-htmx==1.17.0",
+    "django-tailwind-cli==4.4.2",
+    "django-typer==3.3.1",
+    "pillow==11.3.0",
+    "semver==3.0.4",
+    "shellingham==1.5.4",
+    "sqlparse==0.5.3",
+    "typer-slim==0.19.2",
+    "typing-extensions==4.15.0",
+    "tzdata==2025.2",
+]

@@ -1,0 +1,313 @@
+{% load static %}
+<style>
+    /* Base styles */
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        background-color: #f3f4f6; /* bg-gray-100 */
+    }
+
+    /* --- Scrollbar Hiding CSS --- */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+    /* --- Custom Form Styles --- */
+
+    .login-container {
+        display: flex;
+        justify-content: center; /* horizontal center */
+        align-items: center; /* vertical center */
+        height: 100vh;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .login-card {
+        background: #ffffff;
+        margin-top: -100px;
+        padding-top: 30px;
+        padding-bottom: 25px;
+        padding-left: 25px;
+        padding-right: 25px;
+        width: 100%;
+        max-width: 700px;
+        height: 500px; /* Fixed height for scrolling */
+        box-sizing: border-box;
+        position: relative;
+        transition: all 0.3s ease;
+
+        display: flex;
+        flex-direction: column;
+        border-radius: 1rem; /* rounded-xl */
+    }
+
+    .login-card form {
+        flex: 1 1 auto; /* take remaining height */
+        overflow-y: auto; /* allow scrolling inside form */
+        padding-right: 10px; /* optional, for scrollbar spacing */
+    }
+
+    /* Form Group & Input Styles */
+    .form-group {
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Description (Textarea) Styling */
+    .description {
+        height: 150px;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 16px;
+        color: #1e293b;
+        font-size: 16px;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        width: 100%;
+        outline: none;
+        box-sizing: border-box;
+        resize: vertical; /* Allow user to resize textarea */
+    }
+
+    /* Input and Select General Styles */
+    .input-wrapper input:not([type='file']),
+    .input-wrapper select {
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px 16px;
+        color: #1e293b;
+        font-size: 16px;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        width: 100%;
+        outline: none;
+    }
+
+    /* File Input Overrides for Custom Look */
+    .input-wrapper input[type='file'] {
+        padding: 8px 0 !important;
+        background: transparent !important;
+        border: none !important;
+        color: #475569 !important;
+    }
+
+    .input-wrapper input:focus,
+    .description:focus,
+    .input-wrapper select:focus {
+        background: #ffffff;
+        border-color: #60a5fa;
+    }
+
+    /* --- Floating Label Logic for Title/Description (No Placeholder) --- */
+
+    /* Target inputs/textareas WITHOUT a placeholder for standard floating behavior */
+    .input-wrapper input:not([placeholder]):focus + label,
+    .input-wrapper input:not([placeholder]):valid + label,
+    .input-wrapper textarea:focus + label,
+    .input-wrapper textarea:valid + label,
+    /* Select element label fix */
+    .input-wrapper select:focus ~ label,
+    .input-wrapper select:not([value=""]) ~ label {
+        transform: translateY(-36px) translateX(4px) scale(0.85);
+        color: #60a5fa;
+        font-weight: 600;
+        background: #ffffff; /* This covers the border line */
+        padding: 0 8px;
+    }
+
+    .input-wrapper label {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        color: #8b9bb3;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        transform-origin: left top;
+        z-index: 10;
+    }
+
+    /* --- Button and Other Styles (Included for completeness) --- */
+    .login-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 16px 24px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        margin-bottom: 24px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .login-btn:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+        .login-card {
+            padding: 28px;
+            margin-top: 0; /* Ensures true center on mobile */
+            height: 90vh;
+        }
+    }
+</style>
+
+<div class="login-container mx-auto">
+    <div class="login-card border border-gray-300 font-inter shadow-sm">
+        <form class="login-form scrollbar-hide" id="loginForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- header -->
+            <div class="mb-8 pb-4 border-b border-gray-200 flex items-center justify-center space-x-4">
+                <div class="w-11 h-11 flex items-center justify-center flex-shrink-0">
+                    <img src="{% static 'image/company_logo.png' %}" alt="Company Logo" class="rounded-full" />
+                </div>
+                <h1 class="text-3xl ml-2 font-semibold font-inter">Create New Blogs</h1>
+            </div>
+
+            <!-- category -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <select id="category_select" name="category" required value="" class="w-full">
+                        <option value="" disabled selected></option>
+                        <!-- Mock data -->
+                        {% for category in categories %}
+                        <option value="{{ category.pk }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="category_select">Select Category</label>
+                </div>
+            </div>
+
+            <!-- title -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <input type="text" name="title" id="post_title" required autocomplete="off" />
+                    <label for="post_title">Post Title</label>
+                </div>
+            </div>
+
+            <!-- description -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <textarea name="description" id="post_description" class="description" required></textarea>
+                    <label for="post_description">Description</label>
+                </div>
+            </div>
+
+            <!-- featured image -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="text-gray-500 font-medium text-sm block mb-1">Featured Image (Max 1)</span>
+                    <input type="file" name="featured_image" id="featured_image" />
+                </div>
+            </div>
+
+            <!-- featured image url -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="text-gray-400 font-medium text-sm block mb-1">Featured Image Link (Optional)</span>
+                    <input type="text" name="featured_image_url" id="featured_image_url" placeholder="E.g., https://example.com/image.jpg" />
+                </div>
+            </div>
+
+            <!-- additional image  -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="text-gray-400 font-medium text-sm block mb-1">Additional Images (Multiple Files)</span>
+                    <input type="file" name="additional_image" multiple id="additional_image_files" />
+                </div>
+            </div>
+
+            <!-- addtional image url -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="text-gray-400 font-medium text-sm block mb-1">Additional Images URL (Comma separated, optional)</span>
+                    <input name="additional_image_url_list" id="additional_image_url_list" placeholder="Add multiple image links separated by commas (optional)" type="text" />
+                </div>
+            </div>
+            <!-- TAgs -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <span class="text-gray-400 font-medium text-sm block mb-1">Tags (Comma separated, optional)</span>
+                    <input name="tags_list" id="tags_list" placeholder="Add tags like 'fashion', 'DIY', 'travel' separated by commas (optional)" type="text" />
+                </div>
+            </div>
+
+            <!-- submit and cancle button-->
+            <div class="sticky bottom-0 bg-white pt-4 pb-2 border-t border-gray-100 -mr-3 flex-shrink-0">
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button hx-get="{% url 'create_blog' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" type="button" class="px-6 py-2 border cursor-pointer border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Cancel</button>
+
+                    <button hx-post="{% url 'create_blog' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" type="submit" class="px-6 py-2 cursor-pointer bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-150 ease-in-out">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const select = document.getElementById('category_select');
+        const label = select.nextElementSibling; // Get the label element
+
+        // 1. Initial check on load for select field
+        if (select.value) {
+            // Apply floating effect immediately if a default value exists
+            label.style.transform = 'translateY(-36px) translateX(4px) scale(0.85)';
+            label.style.color = '#60a5fa'; // Blue-400
+            label.style.background = '#ffffff';
+            label.style.padding = '0 8px';
+        }
+
+        // 2. Add event listener for user interaction (for select field)
+        select.addEventListener('change', function () {
+            // This is primarily handled by CSS selectors.
+        });
+
+        // Loop through all required inputs/textareas to ensure floating label works on focus/validity
+        document.querySelectorAll('.input-wrapper input:not([type="file"]):not([placeholder]), .input-wrapper textarea').forEach((input) => {
+            // For required fields without placeholders (Title/Description)
+            if (input.value) {
+                input.classList.add('valid');
+            }
+            input.addEventListener('blur', () => {
+                if (input.value) {
+                    input.classList.add('valid');
+                } else {
+                    input.classList.remove('valid');
+                }
+            });
+        });
+
+        // Simple form submission handler
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            console.log('Form Submitted!');
+            // You would typically send the data to a server here using fetch.
+        });
+    });
+</script>

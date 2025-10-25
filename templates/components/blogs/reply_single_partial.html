@@ -1,0 +1,17 @@
+<div class="ml-10 flex items-start gap-3 mx-auto">
+    <div class="size-8 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0">
+        <!-- Shothik Profile Picture/Placeholder Logic -->
+        {% if reply.user.profile_picture %}
+        <img src="{{ reply.user.profile_picture.url }}" class="w-8 h-8 rounded-full object-cover" alt="{{ reply.user.first_name|slice:'1' }}" />
+        {% else %}
+        <div class="w-8 h-8 rounded-full bg-blue-400 text-white flex items-center justify-center text-xs font-bold">{{ reply.user.first_name|slice:'1' }}</div>
+        {% endif %}
+    </div>
+    <div class="w-full">
+        <div class="flex justify-between items-center">
+            <p class="font-semibold text-sm">{{ reply.user.first_name }}</p>
+            <span class="text-xs text-gray-400">{{ reply.created_at|timesince }} ago</span>
+        </div>
+        <p class="text-gray-800 mt-1 text-sm leading-relaxed">{{ reply.content }}</p>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+for first time: python manage.py tailwind setup
+
+
+Terminal 1: python manage.py runserver
+Terminal 2: python manage.py tailwind watch
+
+or : python manage.py tailwind runserver
+  

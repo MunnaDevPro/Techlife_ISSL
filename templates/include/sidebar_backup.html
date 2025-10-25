@@ -1,0 +1,164 @@
+{% load static %}
+<style>
+    [x-cloak] {
+        display: none !important;
+    }
+
+</style>
+
+
+
+<!-- Overlay (for mobile) -->
+<div id="overlay" class=" inset-0 bg-black bg-opacity-40 hidden z-30 mx-auto"></div>
+
+<!-- Sidebar -->
+<div id="sidebar" class="hidden border border-gray-300 rounded-2xl top-0 left-0 w-64 h-full bg-white transform translate-x-full md:translate-x-0 transition-transform duration-300  mx-auto">
+    <div class="p-1 pl-6 overflow-y-auto h-full mx-auto">
+        <div class="mb-5">
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-lg md:hidden sm:flex">
+                <label class="flex w-full gap-3 items-center rounded-3xl px-2 py-2 bg-gray-50 shadow">
+                    <svg class="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </g>
+                    </svg>
+                    <input class="w-full bg-transparent outline-none border-0 text-sm" type="search" placeholder="Search" />
+                </label>
+            </div>
+
+            <ul>
+                <li class="relative rounded-lg px-4 hover:bg-gray-100 py-2 flex items-center cursor-pointer">
+                    <a hx-get="{% url 'homepage' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-3">
+                        <svg rpl="" fill="currentColor" height="20" icon-name="home-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <!--?lit$9022823636$-->
+                            <!--?lit$9022823636$-->
+                            <path d="M17.877 8.525a1.584 1.584 0 00-.35-.52l-6.395-6.352a1.602 1.602 0 00-1.13-.467h-.003a1.6 1.6 0 00-1.13.467L2.473 8.005A1.604 1.604 0 002 9.14v6.374a3.3 3.3 0 003.3 3.3h9.4a3.3 3.3 0 003.3-3.3V9.14c0-.211-.042-.42-.123-.615zM16.2 15.514c0 .827-.673 1.5-1.5 1.5H11v-5.575H9v5.575H5.3c-.827 0-1.5-.673-1.5-1.5v-6.29L10 3.066l6.2 6.158v6.29z"></path>
+                            <!--?-->
+                        </svg>
+                        <span class="text-md">Home</span>
+                        <div class="absolute right-2 top-2" onclick="close_button()"><i class="fa-solid fa-xmark"></i></div>
+                    </a>
+                </li>
+
+                <li class="rounded-lg px-4 hover:bg-gray-100 py-2 cursor-pointer">
+                    <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-3">
+                        <svg rpl="" class="rpl-rtl-icon" fill="currentColor" height="20" icon-name="popular-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <!--?lit$9022823636$-->
+                            <!--?lit$9022823636$-->
+                            <path d="M10 1a9 9 0 00-9 9 9 9 0 009 9 9 9 0 009-9 9 9 0 00-9-9zm0 16.2c-1.66 0-3.186-.57-4.405-1.517l6.476-6.477V13h1.801V7.028a.9.9 0 00-.9-.9h-5.94v1.801h3.771l-6.481 6.482a7.154 7.154 0 01-1.521-4.41c0-3.97 3.23-7.2 7.2-7.2s7.2 3.23 7.2 7.2-3.23 7.2-7.2 7.2L10 17.2z"></path>
+                            <!--?-->
+                        </svg>
+                        <span class="text-md">Popular</span>
+                    </a>
+                </li>
+
+                <li class="rounded-lg px-4 hover:bg-gray-100 py-2 cursor-pointer">
+                    <a hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-3 cursor-pointer">
+                        <svg rpl="" class="rpl-rtl-icon" fill="currentColor" height="20" icon-name="all" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                            <!--?lit$761914446$-->
+                            <!--?lit$761914446$-->
+                            <path d="M10 1a9 9 0 10.001 18.001A9 9 0 0010 1zm4.9 14.26V7.04h-1.8v9.45c-.68.33-1.42.55-2.2.65V10H9.1v7.14c-.78-.1-1.52-.32-2.2-.65v-3.46H5.1v2.23C3.69 13.94 2.8 12.08 2.8 10c0-3.97 3.23-7.2 7.2-7.2s7.2 3.23 7.2 7.2c0 2.08-.89 3.95-2.3 5.26z"></path>
+                            <!--?-->
+                        </svg>
+                        <span class="text-md">All Blogs</span>
+                    </a>
+                </li>
+
+                <li class="rounded-lg p-4 hover:bg-gray-100 py-2 cursor-pointer">
+                    <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex items-center gap-3">
+                        <i class="fa-solid fa-phone-volume text-gray-500" ></i>
+                        <span class="text-md">Contact </span>
+                    </a>
+                </li>
+
+                <li class="rounded-lg px-4 hover:bg-gray-100 py-2">
+                    <a href="{% url 'questions_list' %}" class="flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail-plus-icon lucide-mail-plus size-5">
+                            <path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            <path d="M19 16v6" />
+                            <path d="M16 19h6" />
+                        </svg>
+                        <span class="text-md">Forum</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <hr class="my-4 text-gray-200" />
+
+        {% comment %} custom feeed {% endcomment %}
+        <div class="collapse collapse-arrow rounded-box mb-2 mr-40">
+            <input type="checkbox" checked />
+            <div class="collapse-title text-md font-semibold flex items-center gap-2">
+                <span class="text-lg font-medium text-gray-400 -ml-20">Custom </span>
+            </div>
+
+            <div class="collapse-content" x-data="{ showAll: true }">
+                <ul class="flex flex-col gap-2">
+                    <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-center gap-2 pt-2 rounded hover:bg-gray-200 ml-1 cursor-pointer">
+                        <!-- Icon -->
+                        <svg fill="currentColor" height="20" width="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.1 9.1h-6.2V2.9c0-.5-.4-.9-.9-.9s-.9.4-.9.9v6.2H2.9c-.5 0-.9.4-.9.9s.4.9.9.9h6.2v6.2c0 .5.4.9.9.9s.9-.4.9-.9v-6.2h6.2c.5 0 .9-.4.9-.9s-.4-.9-.9-.9z"></path>
+                        </svg>
+                        <!-- Text -->
+                        <span class="text-md">Create Post</span>
+                    </a>
+                </ul>
+            </div>
+        </div>
+
+        <hr class="my-4 text-gray-200" />
+
+        {% comment %} category section {% endcomment %}
+        <div class="collapse collapse-arrow rounded-box mb-8">
+            <input type="checkbox" checked />
+            <div class="collapse-title text-md font-semibold flex items-center gap-2">
+                <span class="text-lg font-medium text-gray-400">Category</span>
+            </div>
+
+            <div class="collapse-content " x-data="{ showAll: false }">
+                <ul class="flex flex-col gap-2">
+                    {% for cat in categories %}
+                    <li x-show="{{ forloop.counter }} <= 4 || showAll" class="rounded-lg px-1 hover:bg-gray-100 flex items-center gap-2 cursor-pointer transition py-1 mr-60" x-cloak>
+                        <a hx-get="{% url 'category_post' cat.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML">
+                            <i class="{{ cat.font_awesome_icon }}"></i>
+                            <span class="text-sm">{{ cat.name }}</span>
+                        </a>
+                    </li>
+
+                    {% endfor %}
+                </ul>
+
+                <div class="mt-3">
+                    <button @click="showAll = !showAll" class="px-3 py-1 text-sm font-medium text-blue-500 hover:text-blue-600 cursor-pointer">
+                        <span x-show="!showAll">See All</span>
+                        <span x-show="showAll">Show Less</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4 text-gray-200" />
+
+        {% comment %} resource {% endcomment %}
+        <div class="collapse collapse-arrow rounded-box mb-3">
+            <input type="checkbox" checked />
+            <div class="collapse-title text-md font-semibold flex items-center gap-2">
+                <span class="text-lg font-medium text-gray-400">Resource</span>
+            </div>
+
+            <div class="collapse-content" x-data="{ showAll: false }">
+                <ul class="flex flex-col gap-2">
+                    <li class="flex items-center gap-2 text-gray-800 italic">
+                        <i class="fa-regular fa-face-sad-cry"></i>
+                        <span>No resource</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <hr class="my-4 text-gray-200" />
+    </div>
+</div>
+
