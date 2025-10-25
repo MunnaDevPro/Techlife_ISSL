@@ -127,6 +127,8 @@ def home(request):
 
 
 
+    # Most viewed
+    most_viewed_blogs = BlogPost.objects.filter(status="published").order_by("-views")
 
 
 
@@ -148,6 +150,7 @@ def home(request):
         "news__related_posts":news__related_posts,
         "Teacnology_related_posts":Teacnology_related_posts,
         "programming_related_posts":programming_related_posts,
+        "most_viewed_blogs":most_viewed_blogs,
         
         
         "action" : "home_page",
