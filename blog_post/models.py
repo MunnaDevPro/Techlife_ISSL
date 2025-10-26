@@ -7,14 +7,13 @@ from django.utils.text import slugify
 from accounts.models import CustomUserModel
 from tags.models import Tag
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True, blank=True)
     font_awesome_icon = models.CharField(default="fa-solid fa-layer-group", max_length=100, null=True, blank=True, verbose_name="Fontawesome icon", help_text="e.g: fa-solid fa-layer-group", error_messages="Enter valid class of fontawesome icon")
     # description = models.TextField(blank=True, null=True)
-    description = RichTextField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

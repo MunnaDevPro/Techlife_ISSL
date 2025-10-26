@@ -1,4 +1,103 @@
 {% load static %}
+<!-- for socail icon -->
+ <style>
+
+/*
+  1. Use a container for positioning (optional but often helpful)
+  to prevent absolute positioning from affecting the whole document body.
+*/
+.social-media-container {
+
+  width: 400px;
+  height: 50px;
+  position: relative;
+
+
+}
+
+
+/* 2. Target the specific class for the list */
+.social-icons {
+  display: flex;
+  position: absolute; /* Set position relative to the nearest positioned ancestor */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0; /* Important: Clear default ul padding */
+  margin: 0;  /* Important: Clear default ul margin */
+}
+
+/* 3. Target list items within the specific class */
+.social-icons li {
+  list-style: none;
+}
+
+/* 4. Target anchors within the specific class */
+/* 4. Target anchors within the specific class */
+.social-icons li a {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  text-align: center;
+  /* Change line-height from 80px to 40px (same as height) */
+  line-height: 40px; 
+  font-size: 35px;
+  margin: 0 10px;
+  display: block;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #141414;
+  z-index: 1;
+}
+
+.social-icons li a .icon {
+  position: relative;
+  color: #262626;
+  transition: .5s;
+  z-index: 3;
+  /* Remove or comment out this line: margin-bottom: 20px; */
+}
+
+.social-icons li a:hover .icon {
+  color: #fff;
+  transform: rotateY(360deg);
+}
+
+.social-icons li a:before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f00;
+  transition: .5s;
+  z-index: 2;
+}
+
+.social-icons li a:hover:before {
+  top: 0;
+}
+
+/* Color overrides for each item within the specific class */
+.social-icons li:nth-child(1) a:before{
+  background: #3b5999; /* Facebook */
+}
+
+.social-icons li:nth-child(2) a:before{
+  background: #55acee; /* Twitter */
+}
+
+.social-icons li:nth-child(3) a:before {
+  background: #0077b5; /* LinkedIn */
+}
+
+.social-icons li:nth-child(4) a:before {
+  background: #dd4b39; /* Google Plus */
+}
+</style>
+
 
 
 <!-- Main Content -->
@@ -606,12 +705,31 @@
 {% include 'components/home/marque.html' %}
 
 
+<!--audio control -->
+<!-- <div class="blog-content-area">
+    <h1 id="blog-title">Trump says he’s increasing tariffs on Canada by 10% after Ontario’s Reagan ad </h1>
+    
+    <p id="blog-description">
+        {{ blog.description|safe }}
+    </p>
+
+    <div class="audio-controls">
+        <button id="main-audio-btn" class="control-btn" title="Listen">
+            <span id="icon-display">▶️</span>
+        </button>
+        <button id="stop-btn" class="control-btn" title="Stop" disabled>
+            <span id="stop-icon">⏹️</span>
+        </button>
+    </div>
+</div> -->
 
 
 
 {% comment %} blog details page {% endcomment %}
+
 <header class="max-w-7xl mx-auto p-4 border-b border-gray-200">
-        <span class="text-sm text-gray-600">Bangladesh</span>
+    <hr class="container">
+        <span class="text-sm text-gray-600"></span>
     </header>
 
     <div class="max-w-7xl mx-auto p-4">
@@ -619,27 +737,39 @@
         <div class="flex flex-col md:flex-row md:space-x-8">
 
             <main class="w-full md:w-2/3">
-                <h1 class="text-4xl sm:text-5xl font-serif-custom font-extrabold text-gray-900 leading-tight">
+                <div>
+                    <span>Bangladesh</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-serif-custom font-extrabold text-gray-900 leading-tight">
                     Trump not 'wasting time' with Putin as Kremlin envoy visits US
                 </h1>
 
-                <p class="text-xl text-gray-700 mt-4">
-                    The US president's comments came as Kremlin negotiator Dmitrii Medvedev met with Trump administration officials Friday and Saturday
-                </p>
-
-                <div class="flex items-center space-x-3 mt-6 pb-6 border-b border-gray-200">
-                    <div class="flex space-x-2 text-gray-500 text-lg">
-                        <span class="bg-blue-600 w-5 h-5 rounded-full"></span>
-                        <span class="bg-blue-400 w-5 h-5 rounded-full"></span>
-                        <span class="bg-red-600 w-5 h-5 rounded-full"></span>
-                        <span class="bg-blue-700 w-5 h-5 rounded-full"></span>
-                        <span class="bg-green-600 w-5 h-5 rounded-full"></span>
-                        <span class="bg-gray-700 w-5 h-5 rounded-full"></span>
+    
+                <div class="flex items-center space-x-3 mt-3 pb-3 border-b border-gray-200">
+                    
+                    <!-- social icon -->
+                     <div class="social-media-container">
+                        <ul class="social-icons">
+                        <li>
+                        <a href="#">
+                            <i class="fab fa-facebook-f icon"></i> 
+                        </a>
+                        </li>
+                        <li>
+                        <a href="#"><i class="fab fa-twitter icon"></i></a>
+                        </li>
+                        <li>
+                        <a href="#"><i class="fab fa-linkedin-in icon"></i></a>
+                        </li>
+                        <li>
+                        <a href="#"><i class="fab fa-google-plus-g icon"></i></a>
+                        </li>
+                        </ul>
                     </div>
                 </div>
 
                 <div class="relative mt-6">
-                    <img class="w-full h-auto object-cover" src="https://via.placeholder.com/800x450?text=Image+of+Trump+and+Putin+Shaking+Hands" alt="US President Donald Trump and Russian President Vladimir Putin shake hands">
+                    <img class="w-full h-auto object-cover" src="https://tds-images.thedailystar.net/sites/default/files/styles/very_big_1/public/images/2025/10/25/safety.jpg" alt="US President Donald Trump and Russian President Vladimir Putin shake hands">
                     <button class="absolute top-4 right-4 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5m-5 11l5-5m0 0v4m0-4h4m-4 0l-5-5m0 0h-4m4 0l-5-5"></path></svg>
                     </button>
@@ -728,7 +858,96 @@
 
 
 
+<!-- audio control
+<script>
+    let speech = null;
+// নতুন: টাইটেল এলিমেন্টটি সিলেক্ট করা
+const titleElement = document.getElementById('blog-title'); 
+const descriptionElement = document.getElementById('blog-description');
+const mainAudioBtn = document.getElementById('main-audio-btn');
+const stopBtn = document.getElementById('stop-btn');
+const iconDisplay = document.getElementById('icon-display');
+const synth = window.speechSynthesis; 
 
+// Button State এবং Icon Update Function (আগের মতোই থাকবে)
+function updateUI(isSpeaking, isPaused) {
+    if (isSpeaking) {
+        if (isPaused) {
+            iconDisplay.textContent = '▶️';
+            mainAudioBtn.title = 'Resume';
+        } else {
+            iconDisplay.textContent = '⏸️';
+            mainAudioBtn.title = 'Pause';
+        }
+        stopBtn.disabled = false;
+    } else {
+        iconDisplay.textContent = '▶️';
+        mainAudioBtn.title = 'Listen';
+        stopBtn.disabled = true;
+    }
+}
+
+// Main Button Click Event
+mainAudioBtn.addEventListener('click', () => {
+    // A. যদি Pause করা থাকে, তাহলে Resume করো
+    if (synth.paused) {
+        synth.resume();
+        updateUI(true, false);
+        return;
+    }
+
+    // B. যদি কথা বলছে, তাহলে Pause করো
+    if (synth.speaking) {
+        synth.pause();
+        updateUI(true, true);
+        return;
+    }
+
+    // C. নতুন: টাইটেল এবং ডেসক্রিপশন একসাথে আনা
+    const titleText = titleElement ? titleElement.textContent : "";
+    const descriptionText = descriptionElement ? descriptionElement.textContent : "";
+    
+    // টাইটেল, তারপর একটি বিরামচিহ্ন (যেমন পূর্ণচ্ছেদ বা কোলন) এবং ডেসক্রিপশন যোগ করা
+    // এতে পড়ার সময় একটি ছোট পজ (বিরতি) হবে।
+    const textToSpeak = titleText + ". " + descriptionText;
+
+    // যদি কোনো টেক্সট না থাকে, তাহলে কিছু করার দরকার নেই
+    if (!textToSpeak.trim()) {
+        console.warn("No text content found to speak.");
+        return;
+    }
+    
+    // D. বলা শুরু করো
+    speech = new SpeechSynthesisUtterance(textToSpeak);
+    speech.lang = 'bn-BD'; // বাংলা ভাষা সেট করুন
+
+    synth.speak(speech);
+    updateUI(true, false);
+
+    // E. বলা শেষ হলে UI রিসেট করো
+    speech.onend = () => {
+        updateUI(false, false);
+    };
+    
+    // Error হলে
+    speech.onerror = (event) => {
+        console.error('Speech synthesis error:', event);
+        updateUI(false, false);
+    };
+});
+
+// 3. Stop Button Click Event (সমস্ত কিছু বন্ধ করতে) (আগের মতোই থাকবে)
+stopBtn.addEventListener('click', () => {
+    if (synth.speaking || synth.paused) {
+        synth.cancel();
+        updateUI(false, false);
+    }
+});
+
+// Initial state set করা
+updateUI(false, false);
+</script>
+ -->
 
 
 
