@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.db.models import Count
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from .models import BlogPost, Category, Review
@@ -12,6 +11,12 @@ from django.contrib import messages
 from accounts.models import CustomUserModel
 
 # Create your views here.
+
+
+def blog_details_page(request):
+    return render(request, "components/blog_details/demo_blog_details.html")
+
+
 
 
 def home(request):
@@ -75,37 +80,38 @@ def home(request):
             )
         )
         .filter(published_post_count__gt=0)
-        .order_by('-published_post_count')[:6]
+        .order_by('-published_post_count')[:7]
     )
 
-    # 2. Prepare a single, flat list of the top blog posts.
+    # 2. Prepare a single, flat list of the top blog posts (Latest by Category).
     popular_posts_flat_list = []
 
     for category in popular_categories:
-        # Retrieve the top 6 published blog posts within the current category, ordered by 'views'
-        top_posts = (
+       
+        latest_post = (
             BlogPost.objects
             .filter(category=category, status='published')
-            .order_by('-views')[:6]
+            .order_by('-created_at')[:1] 
         )
         
-        # Add individual post entries directly to the flat list
-        for post in top_posts:
+        if latest_post:
+            post = latest_post[0]
+            
+            # Add the post entry directly to the flat list
             popular_posts_flat_list.append({
                 'title': post.title,
+                'created_at':post.created_at,
                 'slug': post.slug,
                 'views': post.views,
                 'author_username': post.author.username,
-                'category_name': category.name,
+                'category_name': category.name, 
                 'category_icon': category.font_awesome_icon, 
                 'featured_image': post.featured_image,
                 'featured_image_url': post.featured_image_url,
             })
-            
-        
 
-    
-    
+        
+        
     
     # news related post
     news__related_posts = BlogPost.objects.filter(
@@ -474,11 +480,15 @@ def create_blog(request):
             messages.error(request, "An internal error occurred while creating the post/images.")
             return redirect(reverse('create_blog'))
 
+  
+
     # Handle GET request (Form Display)
     if request.headers.get("HX-Request"):
         return render(request, "components/blogs/partial_create_blog_content.html", context)
 
     return render(request, "base.html", context)
+
+
 
 
 # Blog filter by category
