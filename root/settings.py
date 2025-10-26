@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     # Third Party Apps
     "django_extensions",
     # "django_browser_reload",  # Temporarily commented out - install with: pip install django-browser-reload
@@ -42,6 +43,11 @@ INSTALLED_APPS = [
 
     "django_browser_reload",
 ]
+
+
+
+
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

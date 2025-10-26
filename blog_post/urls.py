@@ -13,7 +13,8 @@ from .views import (
     popular_category_post,
     # blog_partial_view
     # more_blog_details
-    right_blog_details_partial
+    right_blog_details_partial,
+    blog_details_page
 )
 
 
@@ -42,7 +43,9 @@ urlpatterns = [
     
     path("popular/<slug:slug>/", popular_category_post, name="popular_category_post"),
     
-    path("all-blog/", all_article, name='all_article')
+    path("all-blog/", all_article, name='all_article'),
+    
+    path("blog_details/", blog_details_page, name="blog_details_page")
 
 
 ]
