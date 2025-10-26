@@ -1,0 +1,114 @@
+
+{% comment %} most viewed section {% endcomment %}
+
+<section class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 mt-4" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+
+    <h2 class="text-lg font-bold text-gray-800 border-b border-gray-200 pb-2 mb-4 flex items-center" data-aos="fade-up"
+        data-aos-anchor-placement="top-bottom">
+        <div class="flex items-center flex-grow border-l-4 border-red-500 pl-3">
+            MOST VIEWED
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+
+        <div class="space-y-3" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+
+            <div class="space-y-3" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+
+                {% for most_view in most_viewed_blogs|slice:"2:7" %}
+                <div class="flex space-x-3 items-start overflow-hidden group relative" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                    <div class="flex-shrink-0 w-20 h-[70px] overflow-hidden group relative rounded-md bg-gray-300">
+                        {% if most_view.featured_image %}
+                        <img src="{{ most_view.featured_image }}" alt="{{ most_view.title }}"
+                            class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
+                        {% elif most_view.featured_image_url %}
+                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}"
+                            class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
+                        {% endif %}
+                    </div>
+                    <a href="#"
+                        class="text-gray-800 text-sm font-medium hover:text-blue-600 transition duration-150 leading-relaxed line-clamp-2">
+                        {{ most_view.title }}
+                    </a>
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% for most_blogs in most_viewed_blogs|slice:"1" %}
+        <div class="lg:col-span-1 md:col-span-2 space-y-2" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+
+            <div class="h-64 md:h-[270px] w-full overflow-hidden relative group cursor-pointer bg-gray-300" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom"> 
+                {% if most_blogs.featured_image %}
+                <img src="{{ most_blogs.featured_image.url }}" alt="{{ most_blogs.title }}"
+                    class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]" >
+                {% elif most_blogs.featured_image_url %}
+                <img src="{{ most_blogs.featured_image_url }}" alt="{{ most_blogs.title }}"
+                    class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]" >
+                {% endif %}
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-800 leading-tight" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                <a href="#" class="hover:text-blue-500 transition duration-150 mt-1">{{ most_blogs.title }}</a>
+            </h3>
+
+            <span class="text-gray-600 text-sm line-clamp-3 leading-0 -mt-3" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                {{ most_blogs.description }}
+            </span>
+
+        </div>
+        {% endfor %}
+
+
+        <div class="space-y-4" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+            <div class="space-y-3" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                {% for most_view in most_viewed_blogs|slice:"7:12" %}
+                <div class="flex space-x-3 items-start flex-row-reverse overflow-hidden group relative" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                    <div class="flex-shrink-0 w-20 h-[70px] rounded-md bg-gray-300 overflow-hidden relative" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                        {% if most_view.featured_image %}
+                        <img src="{{ most_view.featured_image }}" alt="{{ most_view.title }}"
+                            class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
+                        {% elif most_view.featured_image_url %}
+                        <img src="{{ most_view.featured_image_url }}" alt="{{ most_view.title }}"
+                            class="w-full h-full object-cover transform transition-transform duration-300 ease-out 
+                                group-hover:-translate-y-1 group-hover:scale-[1.02]" >
+                        {% endif %}
+                    </div>
+                    <a href="#"
+                        class="text-gray-700 text-sm font-medium hover:text-blue-600 transition duration-150 leading-relaxed line-clamp-2" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom">
+                        {{ most_view.title }}
+                    </a>
+                </div>
+                {% endfor %}
+
+
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+</section>
