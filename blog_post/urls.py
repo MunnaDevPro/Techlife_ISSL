@@ -14,7 +14,8 @@ from .views import (
     # blog_partial_view
     # more_blog_details
     right_blog_details_partial,
-    blog_details_page
+    
+    demo_blog_details_view,
 )
 
 
@@ -45,7 +46,9 @@ urlpatterns = [
     
     path("all-blog/", all_article, name='all_article'),
     
-    path("blog_details/", blog_details_page, name="blog_details_page")
+    # path("blog_details/", blog_details_page, name="blog_details_page"),
+    
+    path("demo-blog/", demo_blog_details_view, name="demo_blog_details_view"),
 
 
 ]

@@ -13,7 +13,7 @@ from accounts.models import CustomUserModel
 # Create your views here.
 
 
-def blog_details_page(request):
+def demo_blog_details_view(request):
     return render(request, "components/blog_details/demo_blog_details.html")
 
 
