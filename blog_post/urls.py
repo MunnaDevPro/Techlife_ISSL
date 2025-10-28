@@ -48,7 +48,7 @@ urlpatterns = [
     
     # path("blog_details/", blog_details_page, name="blog_details_page"),
     
-    path("demo-blog/", demo_blog_details_view, name="demo_blog_details_view"),
+    path("demo-blog/<slug:slug>/", demo_blog_details_view, name="demo_blog_details_view"),
 
 
 ]
