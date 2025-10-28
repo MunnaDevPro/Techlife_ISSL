@@ -20,11 +20,13 @@ def demo_blog_details_view(request, slug):
         .get(slug=slug, status="published")
     )
 
-
+    related_news = BlogPost.objects.filter(
+        status="published", category=blog_detail.category
+    ).exclude(slug=slug)[:8]
 
     context = {
         "blog_detail": blog_detail,
-        
+        "related_news":related_news,
     }
 
     return render(request, "components/blog_details/demo_blog_detail.html", context)
