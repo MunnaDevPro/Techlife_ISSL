@@ -2,6 +2,7 @@ from django.db import models
 from blog_post.models import BlogPost
 from accounts.models import CustomUserModel
 
+# comment for blog post
 class Comment(models.Model):
     post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
@@ -27,3 +28,8 @@ class Reply(models.Model):
 
     def __str__(self):
         return f"Reply by {self.user.first_name}"
+
+
+
+
+# comment for forum section

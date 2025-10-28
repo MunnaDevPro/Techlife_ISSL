@@ -13,9 +13,21 @@ from accounts.models import CustomUserModel
 # Create your views here.
 
 
-def demo_blog_details_view(request):
-    return render(request, "components/blog_details/demo_blog_details.html")
+def demo_blog_details_view(request, slug):
+    blog_detail = (
+        BlogPost.objects.select_related("category", "author")
+        .prefetch_related("reviews", "additional_images", "tags")
+        .get(slug=slug, status="published")
+    )
 
+
+
+    context = {
+        "blog_detail": blog_detail,
+        
+    }
+
+    return render(request, "components/blog_details/demo_blog_detail.html", context)
 
 
 

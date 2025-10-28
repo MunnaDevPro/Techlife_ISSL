@@ -76,11 +76,11 @@
                 {% endif %}
             </div>
             <div class="w-4/6 h-full">
-                <h4 class="w-full font-inter font-bold line-clamp-2 hover:text-blue-400 duration-100">{{ popular_posts.title }}</h4>
+                <h4 class="w-full font-inter font-bold line-clamp-2 hover:text-blue-400 duration-100 mb-[6px]">{{ popular_posts.title }}</h4>
                 <span
                 class="py-1 font-semibold text-[12px] text-gray-500 border border-gray-300 rounded-2xl px-3">{{ popular_posts.category_name }}</span>
                 <span
-                class="py-1 font-semibold text-[12px] text-gray-500">{{ popular_posts.created_at|timesince }} ago</span>
+                class="py-1 font-semibold text-[12px] text-gray-500 pl-[13px]">{{ popular_posts.created_at|timesince }} ago</span>
                 
             </div>
         </div>
