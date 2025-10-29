@@ -20,11 +20,10 @@ class Share(models.Model):
     user = models.ForeignKey(CustomUserModel, on_delete=models.SET_NULL, null=True, blank=True)
 
     platform = models.CharField(max_length=50, choices=[
-        ("facebook", "Facebook"),
-        ("twitter", "Twitter / X"),
-        ("whatsapp", "WhatsApp"),
-        ("email", "Email"),
-        ("others", "Others"),
+        ('facebook', 'Facebook'),
+        ('linkedin', 'LinkedIn'),
+        ('twitter', 'Twitter'),
+        ('whatsapp', 'WhatsApp'),
     ])
 
     created_at = models.DateTimeField(auto_now_add=True)
