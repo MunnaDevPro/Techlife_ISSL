@@ -15,14 +15,18 @@ from .views import (
     # more_blog_details
     right_blog_details_partial,
     
-    demo_blog_details_view,
+    blog_details_view,
 )
+
+from interactions.views import share_post
+from save_post.views import save_post,check_saved
 
 
 urlpatterns = [
     path("", home, name="homepage"),
     path("blogs/", blog_post_view, name="blogs"),
-    path("blog/details/<slug:slug>/", blog_details_view, name="blog_details"),
+    
+    # path("blog/details/<slug:slug>/", blog_details_view, name="blog_details"),
 
     path('blog/detials/update/<slug:slug>/', right_blog_details_partial, name='right_blog_details_partial'),
     
@@ -48,7 +52,15 @@ urlpatterns = [
     
     # path("blog_details/", blog_details_page, name="blog_details_page"),
     
-    path("demo-blog/<slug:slug>/", demo_blog_details_view, name="demo_blog_details_view"),
-
-
+    path("blog_details/<slug:slug>/", blog_details_view, name="blog_details"),
+    
+    path('share-post/',share_post, name='share_post'),
+    
+    path('save-post/', save_post, name='save_post'),
+    path('check-saved/<int:post_id>/', check_saved, name='check_saved'),
+    
+    
 ]
+
+
+

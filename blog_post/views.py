@@ -10,26 +10,61 @@ from django.contrib import messages
 
 from accounts.models import CustomUserModel
 
+from comments.models import Comment
 # Create your views here.
 
 
-def demo_blog_details_view(request, slug):
+def blog_details_view(request, slug):
     blog_detail = (
         BlogPost.objects.select_related("category", "author")
         .prefetch_related("reviews", "additional_images", "tags")
         .get(slug=slug, status="published")
     )
-
+    
     related_news = BlogPost.objects.filter(
         status="published", category=blog_detail.category
     ).exclude(slug=slug)[:8]
+    
+    if blog_detail.description:
+        word_count = len(blog_detail.description.split())
+    else:
+        word_count = 0 
+
+
+    
+    
+    # most_viewed blog
+    most_viewed_blogs = BlogPost.objects.filter(status="published").order_by("-views")
+
+
+    # all comment section
+    all_comments = (
+        Comment.objects
+        .filter(post=blog_detail) 
+        .select_related("user", "post")  
+        .prefetch_related("replies__user")
+        .order_by("-created_at")
+    )
+    # total commnent count (reply+main commnet)
+    comment_count = all_comments.count()
+    reply_count = sum(comment.replies.count() for comment in all_comments)
+    total_comments = comment_count + reply_count
 
     context = {
         "blog_detail": blog_detail,
         "related_news":related_news,
+        "word_count":word_count,
+        "most_viewed_blogs":most_viewed_blogs,
+        "all_comments" : all_comments,
+        "total_comments":total_comments,
+        "action":"blog_details",
     }
+    
+    if request.headers.get("HX-Request"):
+        return render(request, "components/blog_details/partial_blog_details_page.html", context)
+    return render(request, "components/blog_details/blog_details_page.html", context)
 
-    return render(request, "components/blog_details/demo_blog_detail.html", context)
+    # return render(request, "components/blog_details/demo_blog_detail.html", context)
 
 
 
@@ -296,67 +331,67 @@ def all_article(request):
     return render(request, "components/category/all_article.html", context)
 
 
-def blog_details_view(request, slug):
+# def blog_details_view(request, slug):
 
-    try:
-        blog = (
-            BlogPost.objects.select_related("category", "author")
-            .prefetch_related("reviews", "additional_images", "tags")
-            .get(slug=slug, status="published")
-        )
-    except BlogPost.DoesNotExist:
-        return render(request, "components/home/404.html")
+#     try:
+#         blog = (
+#             BlogPost.objects.select_related("category", "author")
+#             .prefetch_related("reviews", "additional_images", "tags")
+#             .get(slug=slug, status="published")
+#         )
+#     except BlogPost.DoesNotExist:
+#         return render(request, "components/home/404.html")
 
-    # Get related blogs from the same category
-    category_blogs = (
-        BlogPost.objects.filter(category=blog.category, status="published")
-        .exclude(slug=slug)
-        .select_related("category", "author")[:5]
-    )
+#     # Get related blogs from the same category
+#     category_blogs = (
+#         BlogPost.objects.filter(category=blog.category, status="published")
+#         .exclude(slug=slug)
+#         .select_related("category", "author")[:5]
+#     )
 
-    # Sidebar content
-    sidebar_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-created_at")[:10]
-    )
-    popular_blogs = (
-        BlogPost.objects.filter(status="published")
-        .select_related("category", "author")
-        .order_by("-views", "-likes")[:5]
-    )
+#     # Sidebar content
+#     sidebar_blogs = (
+#         BlogPost.objects.filter(status="published")
+#         .select_related("category", "author")
+#         .order_by("-created_at")[:10]
+#     )
+#     popular_blogs = (
+#         BlogPost.objects.filter(status="published")
+#         .select_related("category", "author")
+#         .order_by("-views", "-likes")[:5]
+#     )
 
-    # All blogs for sidebar or other sections
-    all_blogs = BlogPost.objects.filter(status="published").select_related(
-        "category", "author"
-    )[:10]
+#     # All blogs for sidebar or other sections
+#     all_blogs = BlogPost.objects.filter(status="published").select_related(
+#         "category", "author"
+#     )[:10]
 
-    # Split description for "Read More" functionality
-    words = blog.description.split()
-    first_50_words = " ".join(words[:50])
-    remaining_words = " ".join(words[50:]) if len(words) > 50 else ""
+#     # Split description for "Read More" functionality
+#     words = blog.description.split()
+#     first_50_words = " ".join(words[:50])
+#     remaining_words = " ".join(words[50:]) if len(words) > 50 else ""
 
-    # # Update view count
-    # blog.views += 1
-    # blog.save(update_fields=["views"])
+#     # # Update view count
+#     # blog.views += 1
+#     # blog.save(update_fields=["views"])
 
-    context = {
-        "blog": blog,
-        "all_blogs": all_blogs,
-        "sidebar_blogs": sidebar_blogs,
-        "popular_blogs": popular_blogs,
-        "category_blogs": category_blogs,
-        "first_50_words": first_50_words,
-        "remaining_words": remaining_words,
-        # "is_htmx_request": False,  # Flag for regular page load
-        "action" : "blog_details",
-    }
-    if request.headers.get("HX-Request"):
-        return render(request, "components/blog_details/partial_blog_details_page.html", context)
-    return render(request, "components/blog_details/blog_details_page.html", context)
+#     context = {
+#         "blog": blog,
+#         "all_blogs": all_blogs,
+#         "sidebar_blogs": sidebar_blogs,
+#         "popular_blogs": popular_blogs,
+#         "category_blogs": category_blogs,
+#         "first_50_words": first_50_words,
+#         "remaining_words": remaining_words,
+#         # "is_htmx_request": False,  # Flag for regular page load
+#         "action" : "blog_details",
+#     }
+#     if request.headers.get("HX-Request"):
+#         return render(request, "components/blog_details/partial_blog_details_page.html", context)
+#     return render(request, "components/blog_details/blog_details_page.html", context)
 
 
-    # return render(request, "components/blog_details/blog_details_page.html", context)
+#     # return render(request, "components/blog_details/blog_details_page.html", context)
 
 
 def right_blog_details_partial(request, slug):

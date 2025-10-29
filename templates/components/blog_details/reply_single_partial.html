@@ -1,0 +1,11 @@
+{% load static %}
+<div class="flex gap-3 ml-12 bg-gray-50 border border-gray-100 rounded-xl p-3 shadow-sm">
+    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" class="w-8 h-8 rounded-full" />
+    <div class="flex-1">
+        <div class="flex justify-between items-center mb-1">
+            <h3 class="font-semibold text-gray-800">{{ reply.user.first_name }}</h3>
+            <span class="text-xs text-gray-500">{{ reply.created_at|date:"d M Y, h:i A" }}</span>
+        </div>
+        <p class="text-gray-700 text-sm">{{ reply.content }}</p>
+    </div>
+</div>
