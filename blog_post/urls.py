@@ -54,6 +54,8 @@ urlpatterns = [
     
     path("blog_details/<slug:slug>/", blog_details_view, name="blog_details"),
     
+    
+    
     path('share-post/',share_post, name='share_post'),
     
     path('save-post/', save_post, name='save_post'),

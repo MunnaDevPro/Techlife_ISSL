@@ -6,3 +6,46 @@ Terminal 2: python manage.py tailwind watch
 
 or : python manage.py tailwind runserver
   
+
+
+
+  # install uv
+pip install uv
+
+# init uv
+uv init
+
+
+# install venv
+uv venv
+
+# active venv
+source .venv/Scripts/activate
+
+
+# install packages
+uv add -r requirements.text
+
+
+# Build Tailwind CSS for production
+uv run manage.py tailwind build
+
+
+# Run development server with Tailwind watch
+uv run manage.py tailwind runserver
+
+
+# Create new Django app
+uv run manage.py startapp app_name
+
+# Make migrations
+python manage.py makemigrations
+
+# Apply migrations
+python manage.py migrate
+
+# Create superuser
+python manage.py createsuperuser
+
+# Collect static files
+python manage.py collectstatic

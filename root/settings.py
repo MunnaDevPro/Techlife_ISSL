@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "forum",
 
     "django_browser_reload",
-    "save_post"
+    "save_post",
+    'django_tailwind_cli',
     
 ]
 

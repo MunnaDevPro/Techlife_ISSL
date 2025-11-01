@@ -118,11 +118,10 @@
         <ul class="rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4 py-3 px-4" data-aos="fade-up"
     data-aos-anchor-placement="top-bottom">
             {% for blog in blogs|slice:"4" %}
-            {% comment %} <a hx-get="{% url 'demo_blog_details_view' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" {% endcomment %}
-            <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                class="cursor-pointer ">
+            <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"  class="cursor-pointer">
+               
                 <li class="flex flex-col w-full group gap-y-1 mb-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-                    <div class="w-full h-[160px] sm:h-32 relative overflow-hidden">
+                    <div class="w-full h-[160px] sm:h-32 relative overflow-hidden rounded-md">
                         {% if blog.featured_image %}
                         <img class="w-full h-full object-cover rounded-md shadow 
                                 transform transition-transform duration-300 ease-out 

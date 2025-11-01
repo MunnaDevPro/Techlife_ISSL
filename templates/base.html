@@ -162,6 +162,8 @@
     
     </main>
 
+
+    
  
   <!-- =========== LUCIDE ICONS SCRIPT (এই দুটি লাইন যোগ করুন) =========== -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -180,8 +182,153 @@
 
 
 
+    <!-- Reply Toggle Script -->
+    <script>
+        document.querySelectorAll('.reply-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const form = btn.closest('div').parentNode.querySelector('.reply-form');
+                form.classList.toggle('hidden');
+            });
+        });
+    </script> 
+
+
   <!-- HTMX Configuration & Loading States -->
   <script>
+    // =================================================================================
+    // নতুন কোড: HTMX Swap-এর পর জাভাস্ক্রিপ্ট পুনরায় চালু করার জন্য ফাংশন
+    // =================================================================================
+    
+    function initializeDynamicContent() {
+        let speech = null;
+        // নতুন কন্টেন্টে এলিমেন্টগুলি আবার খুঁজতে হবে
+        const titleElement = document.getElementById('blog-title');
+        const descriptionElement = document.getElementById('blog-description');
+        const mainAudioBtn = document.getElementById('main-audio-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const iconDisplay = document.getElementById('icon-display');
+        const synth = window.speechSynthesis;
+        
+        // Safety check: অডিও বাটন না থাকলে ফাংশন থেকে বের হয়ে যাও
+        if (!mainAudioBtn) {
+            // যদি বাটন না থাকে এবং স্পিচ চলছে, তবে তা বন্ধ করো
+            if(synth.speaking || synth.paused) synth.cancel();
+            return; 
+        }
+        
+        // আগে যদি কোনো স্পিচ চলছিল, তা বন্ধ করা দরকার
+        if (synth.speaking || synth.paused) {
+             synth.cancel();
+        }
+
+        // Button State এবং Icon Update Function 
+        function updateUI(isSpeaking, isPaused) {
+            if (!iconDisplay || !mainAudioBtn || !stopBtn) return;
+            
+            if (isSpeaking) {
+                if (isPaused) {
+                    iconDisplay.textContent = '▶';
+                    mainAudioBtn.title = 'Resume';
+                } else {
+                    iconDisplay.textContent = '⏸';
+                    mainAudioBtn.title = 'Pause';
+                }
+                stopBtn.disabled = false;
+            } else {
+                iconDisplay.textContent = '▶';
+                mainAudioBtn.title = 'Listen';
+                stopBtn.disabled = true;
+            }
+        }
+
+        // mainAudioBtn-এ নতুন ইভেন্ট লিসেনার যোগ করা
+        // **onclick ব্যবহার করা হলো যেন পুরনো লিসেনারগুলি মুছে গিয়ে নতুনটি যুক্ত হয়**
+        mainAudioBtn.onclick = () => { 
+            // A. যদি Pause করা থাকে, তাহলে Resume করো
+            if (synth.paused) {
+                synth.resume();
+                updateUI(true, false);
+                return;
+            }
+
+            // B. যদি কথা বলছে, তাহলে Pause করো
+            if (synth.speaking) {
+                synth.pause();
+                updateUI(true, true);
+                return;
+            }
+
+            // C. টাইটেল এবং ডেসক্রিপশন একসাথে আনা
+            const titleText = titleElement ? titleElement.textContent : '';
+            const descriptionText = descriptionElement ? descriptionElement.textContent : '';
+            const textToSpeak = titleText + '. ' + descriptionText;
+
+            if (!textToSpeak.trim()) {
+                console.warn('No text content found to speak.');
+                return;
+            }
+
+            // D. বলা শুরু করো
+            speech = new SpeechSynthesisUtterance(textToSpeak);
+            speech.lang = 'bn-BD';
+
+            synth.speak(speech);
+            updateUI(true, false);
+
+            // E. বলা শেষ হলে UI রিসেট করো
+            speech.onend = () => {
+                updateUI(false, false);
+            };
+
+            // Error হলে
+            speech.onerror = (event) => {
+                console.error('Speech synthesis error:', event);
+                updateUI(false, false);
+            };
+        };
+
+        // stopBtn-এ নতুন ইভেন্ট লিসেনার যোগ করা
+        stopBtn.onclick = () => {
+            if (synth.speaking || synth.paused) {
+                synth.cancel();
+                updateUI(false, false);
+            }
+        };
+
+        // Initial state set করা
+        updateUI(false, false);
+        
+        
+        // ২. কমেন্ট রিপ্লাই টগল স্ক্রিপ্টকে পুনরায় সচল করা 
+        // (এটিও HTMX swap-এ নষ্ট হয়, তাই এখানে যোগ করা হলো)
+        // --------------------------------------------------------------------
+        document.querySelectorAll('.reply-btn').forEach((btn) => {
+            btn.onclick = function() {
+                const form = this.closest('div').parentNode.querySelector('.reply-form');
+                form.classList.toggle('hidden');
+            };
+        });
+    }
+    
+    // A. প্রথমবার পেজ লোড হওয়ার পর ডাইনামিক কন্টেন্ট ইনিশিয়ালাইজ করা
+    document.addEventListener('DOMContentLoaded', initializeDynamicContent);
+    
+    // B. HTMX Swap সম্পন্ন হওয়ার পর প্রতিবার ডাইনামিক কন্টেন্ট ইনিশিয়ালাইজ করা
+    document.body.addEventListener('htmx:afterSwap', function (evt) {
+        // শুধুমাত্র যখন #container (যেখানে ব্লগ ডিটেইলস আছে) কন্টেন্ট বদলাবে, তখনই initializeDynamicContent() কল করুন।
+        if (evt.detail.target && evt.detail.target.id === 'container') {
+            initializeDynamicContent();
+            
+            // অন্যান্য লাইব্রেরি (যেমন AOS এবং Lucide Icons) নতুন কন্টেন্টের জন্য রিফ্রেশ করা
+            if (typeof lucide !== 'undefined') {
+                 lucide.createIcons();
+            }
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh(); 
+            }
+        }
+    });
+
     // HTMX Loading indicator
     document.body.addEventListener('htmx:beforeRequest', function(evt) {
       // Add loading class to content area
@@ -227,7 +374,7 @@
         document.title = titleElement.textContent || titleElement.getAttribute('data-title');
       }
     });
-  </script>
+</script>
 
   <!-- Script js -->
   <script src="{% static 'js/script.js' %}"></script>
