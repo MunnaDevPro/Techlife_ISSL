@@ -44,7 +44,7 @@
                         </span>
                         <span class="flex flex-row gap-[5px] pt-1">
                             <i class="fa-solid fa-thumbs-up pt-[1px]"></i>
-                            <span class="font-semibold">{{ blog_detail.likes|humanize_number }}</span>
+                            <span class="font-semibold">{{ blog_detail.likes.count|humanize_number }}</span>
                         </span>
                     </div>
 
@@ -116,26 +116,40 @@
                         <span>Update : {{ blog_detail.updated_at|date:"d, M Y" }}</span>
                     </div>
 
-                    <div class="flex flex-wrap items-center space-x-2 text-gray-600 font-semibold text-[13px] pr-2">
-                        <!-- Share Button -->
-                        <span id="shareBtn" class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
-                            <span>Share</span>
-                            <svg width="14" height="20" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"
-                                fill="currentColor">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
-                                </path>
-                            </svg>
-                        </span>
-                        <div id="share-data-container" 
-     style="display:none;" 
-     data-post-id="{{ blog_detail.id }}" 
-     data-share-url="{% url 'share_post' %}" 
-     data-csrf-token="{{ csrf_token }}">
-    </div>
+                    <div class="flex flex-wrap items-center space-x-5 text-gray-600 font-semibold text-[13px] pr-2">
+                        <!-- like section -->
+                        {% if user_has_liked %}
+                        <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}"
+                            class="flex items-center space-x-1 cursor-pointer text-blue-600 hover:text-gray-800">
 
-                        <!-- Share Modal -->
-      
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span>Unlike</span> </a>
+                        {% else %} 
+                            <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}"
+                                class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
+
+                                <i class="fa-solid fa-thumbs-up"></i>
+                                <span>Like</span>
+                            </a>
+                        {% endif %}
+
+                            <!-- Share Button -->
+                            <span id="shareBtn" class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
+
+                                <svg class="pt-[1.5px]" width="14" height="18" viewBox="0 0 12 14"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
+                                    </path>
+                                </svg>
+                                <span>Share</span>
+                            </span>
+                            <div id="share-data-container" style="display:none;" data-post-id="{{ blog_detail.id }}"
+                                data-share-url="{% url 'share_post' %}" data-csrf-token="{{ csrf_token }}">
+                            </div>
+
+                            <!-- Share Modal -->
+
 
                             <div id="shareModal"
                                 class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
@@ -202,69 +216,69 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                                     </div>
                                 </div>
                             </div>
-                
-                        {% comment %} save funtion {% endcomment %}
-                        <!-- Save Button -->
 
-                        <!-- Save Button -->
-                        <span
-                            x-data="saveModalHandler({{ blog_detail.id }}, {{ user.is_authenticated|yesno:'true,false' }})">
-                            <span @click="checkAndOpen()"
-                                class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
-                                <span>Save</span>
-                                <svg width="14" height="20" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor">
-                                    <path
-                                        d="M5.99996 9.43351L9.46496 11.0741L9.46496 2.0125L2.53496 2.0125L2.53496 11.0741L5.99996 9.43351ZM0.959961 13.5625L0.959961 0.4375L11.04 0.4375L11.04 13.5625L5.99996 11.1761L0.959961 13.5625Z" />
-                                </svg>
-                            </span>
+                            {% comment %} save funtion {% endcomment %}
+                            <!-- Save Button -->
 
-                            <!-- Modal + Toast -->
-                            <template x-teleport="body">
-                                <!-- Modal -->
-                                <div x-show="modalOpen" x-cloak
-                                    class="fixed inset-0 z-[99] flex items-center justify-center w-screen h-screen">
-                                    <div @click="modalOpen=false" x-transition.opacity
-                                        class="absolute inset-0 w-full h-full bg-black/50 backdrop-blur-sm"></div>
-                                    <div x-show="modalOpen" x-trap.inert.noscroll x-transition.scale
-                                        class="relative bg-white rounded-xl p-6 w-80 shadow-lg sm:max-w-lg">
-                                        <h2 class="text-xl font-bold mb-4 text-gray-800"
-                                            x-text="userAuthenticated ? 'Save for later' : 'Sign in to save for later'">
-                                        </h2>
-                                        <div class="flex justify-end gap-3">
-                                            <template x-if="userAuthenticated">
-                                                <div>
-                                                    <button @click="modalOpen=false"
-                                                        class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
-                                                    <button @click="savePost()"
-                                                        class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
-                                                </div>
-                                            </template>
-                                            <template x-if="!userAuthenticated">
-                                                <div class="flex gap-3">
-                                                    <!-- Sign In Button -->
-                                                    <a href=""
-                                                        class="px-4 py-2 rounded-md bg-blue-600 text-white font-medium shadow-sm hover:bg-blue-700 transition-colors duration-200">Sign
-                                                        In</a>
+                            <!-- Save Button -->
+                            <span
+                                x-data="saveModalHandler({{ blog_detail.id }}, {{ user.is_authenticated|yesno:'true,false' }})">
+                                <span @click="checkAndOpen()"
+                                    class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
+                                    <span>Save</span>
+                                    <svg width="14" height="20" viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor">
+                                        <path
+                                            d="M5.99996 9.43351L9.46496 11.0741L9.46496 2.0125L2.53496 2.0125L2.53496 11.0741L5.99996 9.43351ZM0.959961 13.5625L0.959961 0.4375L11.04 0.4375L11.04 13.5625L5.99996 11.1761L0.959961 13.5625Z" />
+                                    </svg>
+                                </span>
 
-                                                    <!-- Register Button -->
-                                                    <a href=""
-                                                        class="px-4 py-2 rounded-md bg-green-600 text-white font-medium shadow-sm hover:bg-green-700 transition-colors duration-200">Register</a>
-                                                </div>
-                                            </template>
+                                <!-- Modal + Toast -->
+                                <template x-teleport="body">
+                                    <!-- Modal -->
+                                    <div x-show="modalOpen" x-cloak
+                                        class="fixed inset-0 z-[99] flex items-center justify-center w-screen h-screen">
+                                        <div @click="modalOpen=false" x-transition.opacity
+                                            class="absolute inset-0 w-full h-full bg-black/50 backdrop-blur-sm"></div>
+                                        <div x-show="modalOpen" x-trap.inert.noscroll x-transition.scale
+                                            class="relative bg-white rounded-xl p-6 w-80 shadow-lg sm:max-w-lg">
+                                            <h2 class="text-xl font-bold mb-4 text-gray-800"
+                                                x-text="userAuthenticated ? 'Save for later' : 'Sign in to save for later'">
+                                            </h2>
+                                            <div class="flex justify-end gap-3">
+                                                <template x-if="userAuthenticated">
+                                                    <div>
+                                                        <button @click="modalOpen=false"
+                                                            class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
+                                                        <button @click="savePost()"
+                                                            class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
+                                                    </div>
+                                                </template>
+                                                <template x-if="!userAuthenticated">
+                                                    <div class="flex gap-3">
+                                                        <!-- Sign In Button -->
+                                                        <a href=""
+                                                            class="px-4 py-2 rounded-md bg-blue-600 text-white font-medium shadow-sm hover:bg-blue-700 transition-colors duration-200">Sign
+                                                            In</a>
+
+                                                        <!-- Register Button -->
+                                                        <a href=""
+                                                            class="px-4 py-2 rounded-md bg-green-600 text-white font-medium shadow-sm hover:bg-green-700 transition-colors duration-200">Register</a>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                            <button @click="modalOpen=false"
+                                                class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
                                         </div>
-                                        <button @click="modalOpen=false"
-                                            class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
                                     </div>
-                                </div>
 
-                                <!-- Toast -->
-                                <div x-show="toastOpen" x-transition
-                                    class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-3 rounded shadow-lg z-50">
-                                    <span x-text="toastMessage"></span>
-                                </div>
-                            </template>
-                        </span>
+                                    <!-- Toast -->
+                                    <div x-show="toastOpen" x-transition
+                                        class="fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-3 rounded shadow-lg z-50">
+                                        <span x-text="toastMessage"></span>
+                                    </div>
+                                </template>
+                            </span>
                     </div>
                 </div>
 
@@ -284,8 +298,10 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
                         <h2 class="text-xl font-bold text-gray-700">Total Comments ({{ total_comments }})</h2>
 
+
                         <!-- Sort dropdown -->
                         <div class="relative w-full sm:w-auto">
+
                             <select id="sort-comments"
                                 class="w-full sm:w-auto border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none cursor-pointer">
                                 <option value="newest" selected>Newest</option>
@@ -297,7 +313,8 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
 
                     <!-- Comment Form -->
                     {% if user.is_authenticated %}
-                    <form method="POST" action="{% url 'add_comment' post_slug=blog_detail.slug %}" class="flex gap-3 mb-8">
+                    <form method="POST" action="{% url 'add_comment' post_slug=blog_detail.slug %}"
+                        class="flex gap-3 mb-8">
                         {% csrf_token %}
                         <img src="{{ request.user.profile_picture.url }}" alt="User"
                             class="w-10 h-10 rounded-full border border-[1px] border-gray-500 flex-shrink-0 object-cover" />
@@ -355,14 +372,15 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                                 </div>
 
                                 <!-- Reply Form -->
-                                <form method="POST" action="{% url 'add_reply' comment_id=comment.id %}" class="hidden reply-form mt-3 flex gap-2">
+                                <form method="POST" action="{% url 'add_reply' comment_id=comment.id %}"
+                                    class="hidden reply-form mt-3 flex gap-2">
                                     {% csrf_token %}
                                     <img src="{{ request.user.profile_picture.url }}"
                                         class="w-8 h-8 rounded-full border" />
                                     <textarea name="content" rows="1" placeholder="Write a reply..."
                                         class="flex-1 rounded-lg px-3 py-2 border border-gray-300 focus:ring-1 focus:ring-blue-400 focus:outline-none text-sm resize-none"></textarea>
                                     <button type="submit"
-                                        class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 text-sm">Send</button>
+                                        class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 text-sm">Reply</button>
                                 </form>
 
                                 <!-- Replies -->
@@ -878,19 +896,19 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
 
     {% comment %} reply button toggle reply form {% endcomment %}
     <script>
-  document.querySelectorAll('.reply-btn').forEach((btn) => {
-    btn.onclick = function (e) {
-        e.preventDefault(); 
-        
-        // এটিই মূল লজিক: বাটন থেকে তার parent (কমেন্ট বডি) হয়ে ফর্মটি খুঁজে বের করা।
-        // আপনার HTML স্ট্রাকচার অনুযায়ী: button -> div -> parentNode (comment container) -> .reply-form
-        const form = this.closest('div').parentNode.querySelector('.reply-form');
-        
-        if (form) {
-            form.classList.toggle('hidden'); // 'hidden' ক্লাস টগল করা
-        } else {
-            console.warn("Reply form not found for this button.");
-        }
-    };
-});
+        document.querySelectorAll('.reply-btn').forEach((btn) => {
+            btn.onclick = function (e) {
+                e.preventDefault();
+
+                // এটিই মূল লজিক: বাটন থেকে তার parent (কমেন্ট বডি) হয়ে ফর্মটি খুঁজে বের করা।
+                // আপনার HTML স্ট্রাকচার অনুযায়ী: button -> div -> parentNode (comment container) -> .reply-form
+                const form = this.closest('div').parentNode.querySelector('.reply-form');
+
+                if (form) {
+                    form.classList.toggle('hidden'); // 'hidden' ক্লাস টগল করা
+                } else {
+                    console.warn("Reply form not found for this button.");
+                }
+            };
+        });
     </script>

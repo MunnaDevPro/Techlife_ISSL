@@ -4,6 +4,10 @@ venv
 
 ./env
 
+
+.django_tailwind_cli
+
+
 ./.django_tailwind_cli/
 .django_tailwind_cli/.django_tailwind_cli/
 

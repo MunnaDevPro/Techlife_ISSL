@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog_post.models import Post_view_ip, Category, BlogPost,Review ,BlogAdditionalImage
+from blog_post.models import Post_view_ip, Category, BlogPost,Review ,BlogAdditionalImage, Like
 
 
 
@@ -48,3 +48,28 @@ class ReviewAdmin(admin.ModelAdmin):
     star_rating.short_description = "Rating"
 
 admin.site.register(Post_view_ip)
+
+
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+
+    list_display = ("post_title", "user_email", "created_at")
+
+    list_filter = ("created_at",)
+    
+    search_fields = ("post__title", "user__email")
+    
+
+    autocomplete_fields = ("post", "user")
+
+  
+    def post_title(self, obj):
+        return obj.post.title
+    post_title.short_description = "Blog Post"
+
+
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = "User (Email)"

@@ -16,6 +16,7 @@ from .views import (
     right_blog_details_partial,
     
     blog_details_view,
+    user_like_toggle
 )
 
 from interactions.views import share_post
@@ -65,6 +66,9 @@ urlpatterns = [
     path('post/<slug:post_slug>/comment/', add_comment, name='add_comment'),
 
     path('comment/<int:comment_id>/reply/', add_reply, name='add_reply'),
+    
+    # like section
+    path('like/<slug:like_slug>/', user_like_toggle, name='user_like_toggle'),
 
     
 ]

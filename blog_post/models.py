@@ -65,7 +65,7 @@ class BlogPost(models.Model):
 
     views = models.PositiveIntegerField(default=0)
 
-    likes = models.PositiveIntegerField(default=0)
+    # likes = models.PositiveIntegerField(default=0)
 
     content_quality = models.PositiveIntegerField(default=0)
 
@@ -126,6 +126,25 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return f"{self.title} created by {self.author}"
+
+
+class Like(models.Model):
+    post = models.ForeignKey(
+        BlogPost, on_delete=models.CASCADE, related_name="likes"
+    )
+    user = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (
+            "post",
+            "user",
+        )  # akta user double like dite parbena 1 ta post er jonno
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.first_name} liked {self.post.title}"
 
 
 class BlogAdditionalImage(models.Model):

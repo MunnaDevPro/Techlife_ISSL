@@ -8,6 +8,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from django.db import IntegrityError # Required for handling database constraints
+from .models import BlogPost, Like 
+
 from accounts.models import CustomUserModel
 
 from comments.models import Comment
@@ -29,7 +32,7 @@ from comments.models import Comment, Reply
 def blog_details_view(request, slug):
     blog_detail = (
         BlogPost.objects.select_related("category", "author")
-        .prefetch_related("reviews", "additional_images", "tags")
+        .prefetch_related("reviews", "additional_images", "tags", "likes")
         .get(slug=slug, status="published")
     )
     
@@ -630,3 +633,31 @@ def add_reply(request, comment_id):
     
    
     return redirect('blog_details', slug=post_slug)
+
+
+
+@login_required
+def user_like_toggle(request, like_slug):
+   
+    blog_post = get_object_or_404(BlogPost, slug=like_slug)
+    user = request.user
+    
+    try:
+       
+        like_instance = Like.objects.get(post=blog_post, user=user)
+            
+        
+        like_instance.delete()
+        messages.info(request, "You unliked the post.")
+        
+    except Like.DoesNotExist:
+        try:
+         
+            Like.objects.create(post=blog_post, user=user)
+            messages.success(request, "You liked the post!")
+        except IntegrityError:
+           
+            messages.error(request, "An error occurred while liking the post.")
+
+  
+    return redirect('blog_details', slug=like_slug)
