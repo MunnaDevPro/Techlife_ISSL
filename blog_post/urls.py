@@ -20,7 +20,7 @@ from .views import (
 
 from interactions.views import share_post
 from save_post.views import save_post,check_saved
-
+from .views import add_comment, add_reply
 
 urlpatterns = [
     path("", home, name="homepage"),
@@ -50,7 +50,6 @@ urlpatterns = [
     
     path("all-blog/", all_article, name='all_article'),
     
-    # path("blog_details/", blog_details_page, name="blog_details_page"),
     
     path("blog_details/<slug:slug>/", blog_details_view, name="blog_details"),
     
@@ -61,6 +60,12 @@ urlpatterns = [
     path('save-post/', save_post, name='save_post'),
     path('check-saved/<int:post_id>/', check_saved, name='check_saved'),
     
+    
+    # add commnets
+    path('post/<slug:post_slug>/comment/', add_comment, name='add_comment'),
+
+    path('comment/<int:comment_id>/reply/', add_reply, name='add_reply'),
+
     
 ]
 

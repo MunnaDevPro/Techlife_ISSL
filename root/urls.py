@@ -12,6 +12,7 @@ urlpatterns = [
     path("contact/", include("contact.urls")),
     # path("comment/", include("comments.urls")),
     path("forum/", include("forum.urls")),
+    # path("comments/", include("comments.urls")),
 
     path("__reload__/", include("django_browser_reload.urls")),
 

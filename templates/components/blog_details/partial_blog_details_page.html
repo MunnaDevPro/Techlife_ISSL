@@ -1,5 +1,7 @@
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
+
 
 
 <header class="max-w-7xl mx-auto pr-16 pl-16 mt-4">
@@ -28,7 +30,7 @@
                         </span>
                         <span>
                             <i class="fa-solid fa-eye pt-[5px]"></i>
-                            {{ blog_detail.views }}
+                            {{ blog_detail.views|humanize_number }}
                         </span>
 
                         <span class="flex flex-row gap-[5px] pt-1">
@@ -38,7 +40,11 @@
                                     d="M9.51768 8.96851C8.95518 8.96851 8.44393 9.19851 8.07227 9.57018L4.19727 7.36685C4.24893 7.18768 4.2856 7.00185 4.2856 6.80685C4.2856 6.61102 4.24977 6.42518 4.19893 6.2456L8.06143 4.04935C8.43393 4.42602 8.94977 4.66102 9.51768 4.66102C10.661 4.66102 11.5852 3.73643 11.5852 2.60893C11.5852 1.46518 10.661 0.541016 9.51768 0.541016C8.38977 0.541016 7.4656 1.46518 7.4656 2.60893C7.4656 2.78727 7.49602 2.95768 7.53935 3.12352L3.70727 5.37643C3.33143 4.98477 2.80477 4.73935 2.2181 4.73935C1.09018 4.73935 0.166016 5.6631 0.166016 6.80685C0.166016 7.93476 1.09018 8.85851 2.2181 8.85851C2.8006 8.85851 3.32435 8.61726 3.69977 8.23268L7.54602 10.4943C7.49893 10.6681 7.4656 10.8473 7.4656 11.036C7.4656 12.1639 8.38977 13.0881 9.51768 13.0881C10.661 13.0881 11.5852 12.1639 11.5852 11.036C11.5852 9.89268 10.661 8.96851 9.51768 8.96851">
                                 </path>
                             </svg>
-                            <span class="font-semibold">{{ blog_detail.shares.count }}</span>
+                            <span class="font-semibold">{{ blog_detail.shares.count|humanize_number }}</span>
+                        </span>
+                        <span class="flex flex-row gap-[5px] pt-1">
+                            <i class="fa-solid fa-thumbs-up pt-[1px]"></i>
+                            <span class="font-semibold">{{ blog_detail.likes|humanize_number }}</span>
                         </span>
                     </div>
 
@@ -95,7 +101,8 @@
                                 <span
                                     class="font-inter text-gray-500 text-[12px] group-hover:text-blue-500 transition-all duration-300">Listen</span>
                                 <span id="icon-display"
-                                    class="text-gray-700 text-[16px] group-hover:text-blue-500 animate-float"><i class="fa-solid fa-microphone"></i></span>
+                                    class="text-gray-700 text-[16px] group-hover:text-blue-500 animate-float"><i
+                                        class="fa-solid fa-microphone"></i></span>
                             </button>
                         </div>
                     </div>
@@ -120,68 +127,82 @@
                                 </path>
                             </svg>
                         </span>
+                        <div id="share-data-container" 
+     style="display:none;" 
+     data-post-id="{{ blog_detail.id }}" 
+     data-share-url="{% url 'share_post' %}" 
+     data-csrf-token="{{ csrf_token }}">
+    </div>
 
                         <!-- Share Modal -->
-                        <div id="shareModal"
-                            class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-                            <div class="bg-white rounded-xl p-6 w-80 relative shadow-lg">
-                                <h2 class="text-xl font-bold mb-4 text-gray-800">Share this post</h2>
-                                <button id="closeModal"
-                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+      
 
-                                <div class="flex flex-col gap-3">
-                                    <a href="#" class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
-                                        data-platform="facebook">
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28"
-                                            viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                                            <path fill="#1877F2"
-                                                d="M16,0L16,0c8.837,0,16,7.163,16,16l0,0c0,8.837-7.163,16-16,16l0,0C7.163,32,0,24.837,0,16l0,0 C0,7.163,7.163,0,16,0z">
-                                            </path>
-                                            <path fill="#FFFFFF"
-                                                d="M18,17.5h2.5l1-4H18v-2c0-1.03,0-2,2-2h1.5V6.14C21.174,6.097,19.943,6,18.643,6C15.928,6,14,7.657,14,10.7 v2.8h-3v4h3V26h4V17.5z">
-                                            </path>
-                                        </svg>
-                                        Facebook
-                                    </a>
-                                    <a href="#" class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
-                                        data-platform="linkedin">
-                                        <svg height="28" width="28" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                                            viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                                            <path fill="#0072B1"
-                                                d="M16,0L16,0c8.837,0,16,7.163,16,16l0,0c0,8.837-7.163,16-16,16l0,0C7.163,32,0,24.837,0,16l0,0 C0,7.163,7.163,0,16,0z">
-                                            </path>
-                                            <path fill="#FFFFFF"
-                                                d="M11.333,9.667c0,0.442-0.176,0.866-0.489,1.178c-0.313,0.312-0.737,0.488-1.179,0.488 c-0.442,0-0.866-0.176-1.178-0.489C8.175,10.532,8,10.108,8,9.666C8,9.224,8.176,8.8,8.489,8.488C8.801,8.175,9.225,8,9.667,8 c0.442,0,0.866,0.176,1.178,0.489S11.333,9.225,11.333,9.667L11.333,9.667z M11.383,12.567H8.05V23h3.333V12.567z M16.649,12.567 h-3.316V23h3.283v-5.475c0-3.05,3.975-3.333,3.975,0V23h3.291v-6.608c0-5.141-5.883-4.95-7.266-2.425L16.649,12.567L16.649,12.567z">
-                                            </path>
-                                        </svg>
-                                        LinkedIn
-                                    </a>
-                                    <a href="#" class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
-                                        data-platform="twitter">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                            enable-background="new 0 0 24 24" xml:space="preserve" height="28"
-                                            width="28">
-                                            <circle fill="#0F1419" cx="12" cy="12" r="12"></circle>
-                                            <path fill="#FFFFFF" d="M15.531,7h1.662l-3.63,4.236L17.833,17h-3.343l-2.62-3.495L8.876,17H7.212l3.882-4.531L7,7h3.427
+                            <div id="shareModal"
+                                class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+                                <div class="bg-white rounded-xl p-6 w-80 relative shadow-lg">
+                                    <h2 class="text-xl font-bold mb-4 text-gray-800">Share this post</h2>
+                                    <button id="closeModal"
+                                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-2xl">&times;</button>
+
+                                    <div class="flex flex-col gap-3">
+                                        <a href="#"
+                                            class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
+                                            data-platform="facebook">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="28" width="28"
+                                                viewBox="0 0 32 32" enable-background="new 0 0 32 32"
+                                                xml:space="preserve">
+                                                <path fill="#1877F2"
+                                                    d="M16,0L16,0c8.837,0,16,7.163,16,16l0,0c0,8.837-7.163,16-16,16l0,0C7.163,32,0,24.837,0,16l0,0 C0,7.163,7.163,0,16,0z">
+                                                </path>
+                                                <path fill="#FFFFFF"
+                                                    d="M18,17.5h2.5l1-4H18v-2c0-1.03,0-2,2-2h1.5V6.14C21.174,6.097,19.943,6,18.643,6C15.928,6,14,7.657,14,10.7 v2.8h-3v4h3V26h4V17.5z">
+                                                </path>
+                                            </svg>
+                                            Facebook
+                                        </a>
+                                        <a href="#"
+                                            class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
+                                            data-platform="linkedin">
+                                            <svg height="28" width="28" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                y="0px" viewBox="0 0 32 32" enable-background="new 0 0 32 32"
+                                                xml:space="preserve">
+                                                <path fill="#0072B1"
+                                                    d="M16,0L16,0c8.837,0,16,7.163,16,16l0,0c0,8.837-7.163,16-16,16l0,0C7.163,32,0,24.837,0,16l0,0 C0,7.163,7.163,0,16,0z">
+                                                </path>
+                                                <path fill="#FFFFFF"
+                                                    d="M11.333,9.667c0,0.442-0.176,0.866-0.489,1.178c-0.313,0.312-0.737,0.488-1.179,0.488 c-0.442,0-0.866-0.176-1.178-0.489C8.175,10.532,8,10.108,8,9.666C8,9.224,8.176,8.8,8.489,8.488C8.801,8.175,9.225,8,9.667,8 c0.442,0,0.866,0.176,1.178,0.489S11.333,9.225,11.333,9.667L11.333,9.667z M11.383,12.567H8.05V23h3.333V12.567z M16.649,12.567 h-3.316V23h3.283v-5.475c0-3.05,3.975-3.333,3.975,0V23h3.291v-6.608c0-5.141-5.883-4.95-7.266-2.425L16.649,12.567L16.649,12.567z">
+                                                </path>
+                                            </svg>
+                                            LinkedIn
+                                        </a>
+                                        <a href="#"
+                                            class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
+                                            data-platform="twitter">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                enable-background="new 0 0 24 24" xml:space="preserve" height="28"
+                                                width="28">
+                                                <circle fill="#0F1419" cx="12" cy="12" r="12"></circle>
+                                                <path fill="#FFFFFF" d="M15.531,7h1.662l-3.63,4.236L17.833,17h-3.343l-2.62-3.495L8.876,17H7.212l3.882-4.531L7,7h3.427
 l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></path>
-                                        </svg>
-                                        Twitter
-                                    </a>
-                                    <a href="#" class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
-                                        data-platform="whatsapp">
-                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px"
-                                            y="0px" viewBox="0 0 28 28" width="28" height="28">
-                                            <circle id="Ellipse_3" fill="#4AC959" cx="14" cy="14" r="13.5"></circle>
-                                            <path id="Path_525" fill="#ffffff"
-                                                d="M19.6,8.3c-3.1-3.1-8.1-3.1-11.2,0c-2.5,2.5-3,6.5-1.3,9.6L6,22l4.2-1.1c1.2,0.6,2.5,1,3.8,1l0,0 c4.4,0.1,7.9-3.4,8-7.8C22,11.9,21.2,9.8,19.6,8.3L19.6,8.3z M14,20.5c-1.2,0-2.3-0.3-3.4-0.9l-0.2-0.1l-2.5,0.7l0.7-2.4l-0.2-0.2 c-1.9-3.1-0.9-7.2,2.2-9.1c3.1-1.9,7.2-0.9,9.1,2.2c0.6,1,0.9,2.2,1,3.3C20.6,17.6,17.7,20.5,14,20.5z M17.6,15.6 c-0.2-0.1-1.2-0.6-1.4-0.6s-0.3-0.1-0.4,0.1s-0.5,0.6-0.6,0.8S15,16,14.8,15.9c-1.1-0.5-2.1-1.3-2.7-2.4c-0.2-0.4,0.2-0.3,0.6-1.1 c0.1-0.1,0-0.2,0-0.3C12.6,12,12.2,11,12,10.6s-0.3-0.3-0.4-0.3s-0.2,0-0.4,0c-0.2,0-0.4,0.1-0.5,0.2c-0.5,0.4-0.7,1-0.7,1.7 c0.1,0.7,0.3,1.5,0.8,2.1c0.9,1.3,2,2.3,3.4,3c0.7,0.4,1.6,0.6,2.4,0.5c0.6-0.1,1-0.5,1.3-0.9c0.1-0.3,0.2-0.6,0.1-0.9 C17.9,15.7,17.8,15.7,17.6,15.6L17.6,15.6z">
-                                            </path>
-                                        </svg>
-                                        WhatsApp
-                                    </a>
+                                            </svg>
+                                            Twitter
+                                        </a>
+                                        <a href="#"
+                                            class="share-link flex items-center gap-3 p-2 rounded hover:bg-gray-100"
+                                            data-platform="whatsapp">
+                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px"
+                                                y="0px" viewBox="0 0 28 28" width="28" height="28">
+                                                <circle id="Ellipse_3" fill="#4AC959" cx="14" cy="14" r="13.5"></circle>
+                                                <path id="Path_525" fill="#ffffff"
+                                                    d="M19.6,8.3c-3.1-3.1-8.1-3.1-11.2,0c-2.5,2.5-3,6.5-1.3,9.6L6,22l4.2-1.1c1.2,0.6,2.5,1,3.8,1l0,0 c4.4,0.1,7.9-3.4,8-7.8C22,11.9,21.2,9.8,19.6,8.3L19.6,8.3z M14,20.5c-1.2,0-2.3-0.3-3.4-0.9l-0.2-0.1l-2.5,0.7l0.7-2.4l-0.2-0.2 c-1.9-3.1-0.9-7.2,2.2-9.1c3.1-1.9,7.2-0.9,9.1,2.2c0.6,1,0.9,2.2,1,3.3C20.6,17.6,17.7,20.5,14,20.5z M17.6,15.6 c-0.2-0.1-1.2-0.6-1.4-0.6s-0.3-0.1-0.4,0.1s-0.5,0.6-0.6,0.8S15,16,14.8,15.9c-1.1-0.5-2.1-1.3-2.7-2.4c-0.2-0.4,0.2-0.3,0.6-1.1 c0.1-0.1,0-0.2,0-0.3C12.6,12,12.2,11,12,10.6s-0.3-0.3-0.4-0.3s-0.2,0-0.4,0c-0.2,0-0.4,0.1-0.5,0.2c-0.5,0.4-0.7,1-0.7,1.7 c0.1,0.7,0.3,1.5,0.8,2.1c0.9,1.3,2,2.3,3.4,3c0.7,0.4,1.6,0.6,2.4,0.5c0.6-0.1,1-0.5,1.3-0.9c0.1-0.3,0.2-0.6,0.1-0.9 C17.9,15.7,17.8,15.7,17.6,15.6L17.6,15.6z">
+                                                </path>
+                                            </svg>
+                                            WhatsApp
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
+                
                         {% comment %} save funtion {% endcomment %}
                         <!-- Save Button -->
 
@@ -276,7 +297,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
 
                     <!-- Comment Form -->
                     {% if user.is_authenticated %}
-                    <form method="POST" action="" class="flex gap-3 mb-8">
+                    <form method="POST" action="{% url 'add_comment' post_slug=blog_detail.slug %}" class="flex gap-3 mb-8">
                         {% csrf_token %}
                         <img src="{{ request.user.profile_picture.url }}" alt="User"
                             class="w-10 h-10 rounded-full border border-[1px] border-gray-500 flex-shrink-0 object-cover" />
@@ -334,7 +355,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                                 </div>
 
                                 <!-- Reply Form -->
-                                <form method="POST" action="" class="hidden reply-form mt-3 flex gap-2">
+                                <form method="POST" action="{% url 'add_reply' comment_id=comment.id %}" class="hidden reply-form mt-3 flex gap-2">
                                     {% csrf_token %}
                                     <img src="{{ request.user.profile_picture.url }}"
                                         class="w-8 h-8 rounded-full border" />
@@ -397,7 +418,8 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
 
                 <!-- related news -->
                 {% for news in related_news %}
-                <a hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="flex items-start mb-4 border-b pb-3 relative group">
+                <a hx-get="{% url 'blog_details' news.slug %}" hx-target="#container" hx-swap="innerHTML"
+                    hx-push-url="true" class="flex items-start mb-4 border-b pb-3 relative group">
                     <div
                         class="w-[120px] h-[73px] min-w-[120px] flex-shrink-0 overflow-hidden rounded-md transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-100">
                         <img class="w-full h-full object-cover block" src="{{ news.featured_image_url }}"
@@ -594,23 +616,35 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
         const synth = window.speechSynthesis;
 
         // Button State এবং Icon Update Function (আগের মতোই থাকবে)
+        // ... initializeDynamicContent ফাংশনের ভেতরে ...
+
+        // Button State এবং Icon Update Function 
         function updateUI(isSpeaking, isPaused) {
+            if (!iconDisplay || !mainAudioBtn || !stopBtn) return;
+
+            // **পরিবর্তন:** একটি ভেরিয়েবলে আইকন HTML স্ট্রিং রাখুন
+            const micIconHTML = '<i class="fa-solid fa-microphone"></i>';
+
             if (isSpeaking) {
                 if (isPaused) {
-                    iconDisplay.textContent = '<i class="fa-solid fa-microphone"></i>';
+                    // FIX: textContent-এর বদলে innerHTML ব্যবহার করা হয়েছে
+                    iconDisplay.innerHTML = micIconHTML;
                     mainAudioBtn.title = 'Resume';
                 } else {
-                    iconDisplay.textContent = '<i class="fa-solid fa-microphone"></i>';
+                    // FIX: textContent-এর বদলে innerHTML ব্যবহার করা হয়েছে
+                    iconDisplay.innerHTML = micIconHTML;
                     mainAudioBtn.title = 'Pause';
                 }
                 stopBtn.disabled = false;
             } else {
-                iconDisplay.textContent = '<i class="fa-solid fa-microphone"></i>';
+                // FIX: textContent-এর বদলে innerHTML ব্যবহার করা হয়েছে
+                iconDisplay.innerHTML = micIconHTML;
                 mainAudioBtn.title = 'Listen';
                 stopBtn.disabled = true;
             }
         }
 
+        // ... initializeDynamicContent ফাংশনের বাকি কোড ...
         // Main Button Click Event
         mainAudioBtn.addEventListener('click', () => {
             // A. যদি Pause করা থাকে, তাহলে Resume করো
@@ -703,7 +737,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
         });
     </script>
 
-    {% comment %} share section {% endcomment %}
+    <!-- {% comment %} share section {% endcomment %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const shareBtn = document.getElementById('shareBtn'); // je button e click kore modal khulbe
@@ -776,7 +810,12 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                 });
             });
         });
-    </script>
+            // 1. Prothom bar page load hobar shomoy call kora hobe
+        document.addEventListener('DOMContentLoaded', attachShareEventListeners);
+
+        // 2. htmx jokhon content load kore, tokhon abar call kora hobe
+        document.body.addEventListener('htmx:afterSwap', attachShareEventListeners);
+        </script> -->
 
     {% comment %} save sectioin {% endcomment %}
 
@@ -837,12 +876,21 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
         }
     </script>
 
-    <!-- Reply Toggle Script
+    {% comment %} reply button toggle reply form {% endcomment %}
     <script>
-        document.querySelectorAll('.reply-btn').forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const form = btn.closest('div').parentNode.querySelector('.reply-form');
-                form.classList.toggle('hidden');
-            });
-        });
-    </script> -->
+  document.querySelectorAll('.reply-btn').forEach((btn) => {
+    btn.onclick = function (e) {
+        e.preventDefault(); 
+        
+        // এটিই মূল লজিক: বাটন থেকে তার parent (কমেন্ট বডি) হয়ে ফর্মটি খুঁজে বের করা।
+        // আপনার HTML স্ট্রাকচার অনুযায়ী: button -> div -> parentNode (comment container) -> .reply-form
+        const form = this.closest('div').parentNode.querySelector('.reply-form');
+        
+        if (form) {
+            form.classList.toggle('hidden'); // 'hidden' ক্লাস টগল করা
+        } else {
+            console.warn("Reply form not found for this button.");
+        }
+    };
+});
+    </script>

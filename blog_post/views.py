@@ -13,6 +13,18 @@ from accounts.models import CustomUserModel
 from comments.models import Comment
 # Create your views here.
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+from blog_post.models import BlogPost 
+from comments.models import Comment, Reply
+
+
+
+
+
+
 
 def blog_details_view(request, slug):
     blog_detail = (
@@ -331,68 +343,6 @@ def all_article(request):
     return render(request, "components/category/all_article.html", context)
 
 
-# def blog_details_view(request, slug):
-
-#     try:
-#         blog = (
-#             BlogPost.objects.select_related("category", "author")
-#             .prefetch_related("reviews", "additional_images", "tags")
-#             .get(slug=slug, status="published")
-#         )
-#     except BlogPost.DoesNotExist:
-#         return render(request, "components/home/404.html")
-
-#     # Get related blogs from the same category
-#     category_blogs = (
-#         BlogPost.objects.filter(category=blog.category, status="published")
-#         .exclude(slug=slug)
-#         .select_related("category", "author")[:5]
-#     )
-
-#     # Sidebar content
-#     sidebar_blogs = (
-#         BlogPost.objects.filter(status="published")
-#         .select_related("category", "author")
-#         .order_by("-created_at")[:10]
-#     )
-#     popular_blogs = (
-#         BlogPost.objects.filter(status="published")
-#         .select_related("category", "author")
-#         .order_by("-views", "-likes")[:5]
-#     )
-
-#     # All blogs for sidebar or other sections
-#     all_blogs = BlogPost.objects.filter(status="published").select_related(
-#         "category", "author"
-#     )[:10]
-
-#     # Split description for "Read More" functionality
-#     words = blog.description.split()
-#     first_50_words = " ".join(words[:50])
-#     remaining_words = " ".join(words[50:]) if len(words) > 50 else ""
-
-#     # # Update view count
-#     # blog.views += 1
-#     # blog.save(update_fields=["views"])
-
-#     context = {
-#         "blog": blog,
-#         "all_blogs": all_blogs,
-#         "sidebar_blogs": sidebar_blogs,
-#         "popular_blogs": popular_blogs,
-#         "category_blogs": category_blogs,
-#         "first_50_words": first_50_words,
-#         "remaining_words": remaining_words,
-#         # "is_htmx_request": False,  # Flag for regular page load
-#         "action" : "blog_details",
-#     }
-#     if request.headers.get("HX-Request"):
-#         return render(request, "components/blog_details/partial_blog_details_page.html", context)
-#     return render(request, "components/blog_details/blog_details_page.html", context)
-
-
-#     # return render(request, "components/blog_details/blog_details_page.html", context)
-
 
 def right_blog_details_partial(request, slug):
 
@@ -620,3 +570,63 @@ def contact_page(request):
         return render(request, "partial_contact_us_page.html", context)
     return render(request, 'contact_us_page.html',context)
 
+
+
+
+
+# comment section
+@login_required
+
+# requires POST method use kora valo, karon aita save
+@require_POST 
+def add_comment(request, post_slug):
+
+    post = get_object_or_404(BlogPost, slug=post_slug)
+    
+
+    content = request.POST.get('content', '').strip()
+
+    if not content:
+        messages.error(request, "Comment content cannot be empty.")
+        return redirect('post_detail', slug=post_slug)
+
+
+    Comment.objects.create(
+        post=post,
+        user=request.user, 
+        content=content
+    )
+    
+    messages.success(request, "Your comment has been posted successfully.")
+    
+    
+    return redirect('blog_details', slug=post_slug)
+
+
+
+@login_required
+@require_POST
+def add_reply(request, comment_id):
+
+    parent_comment = get_object_or_404(Comment, id=comment_id)
+    post_slug = parent_comment.post.slug 
+    
+    
+    content = request.POST.get('content', '').strip()
+
+    if not content:
+        messages.error(request, "Reply content cannot be empty.")
+     
+        return redirect('post_detail', slug=post_slug)
+
+
+    Reply.objects.create(
+        comment=parent_comment,
+        user=request.user, 
+        content=content
+    )
+    
+    messages.success(request, "Your reply has been posted successfully.")
+    
+   
+    return redirect('blog_details', slug=post_slug)

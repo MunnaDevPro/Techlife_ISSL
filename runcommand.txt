@@ -9,7 +9,7 @@ or : python manage.py tailwind runserver
 
 
 
-  # install uv
+# install uv
 pip install uv
 
 # init uv
