@@ -11,9 +11,9 @@
     <a class="text-sm text-gray-600 hover:text-blue-600 cursor-pointer">{{ blog_detail.category.name }}</a>
 </header>
 
-<div class="max-w-7xl mx-auto pr-16 pl-16">
+<div class="max-w-7xl mx-auto pr-12 pl-12">
     <div class="flex flex-col md:flex-row md:space-x-8">
-        <main class="w-full md:w-2/3 blog-content-area">
+        <main class="w-full md:w-5/6 blog-content-area">
             <div class="details">
                 <!-- Title -->
                 <h1 id="blog-title"
@@ -119,14 +119,14 @@
                     <div class="flex flex-wrap items-center space-x-5 text-gray-600 font-semibold text-[13px] pr-2">
                         <!-- like section -->
                         {% if user_has_liked %}
-                        <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}"
-                            class="flex items-center space-x-1 cursor-pointer text-blue-600 hover:text-gray-800">
+                        <a hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url = "true"
+                            class="flex items-center space-x-1 cursor-pointer text-blue-600">
 
                             <i class="fa-solid fa-thumbs-up"></i>
-                            <span>Unlike</span> </a>
+                            <span>liked</span> </a>
                         {% else %} 
-                            <a href="{% url 'user_like_toggle' like_slug=blog_detail.slug %}"
-                                class="flex items-center space-x-1 cursor-pointer hover:text-gray-800">
+                            <a hx-get="{% url 'user_like_toggle' like_slug=blog_detail.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url = "true"
+                                class="flex items-center space-x-1 cursor-pointer hover:text-blue-500">
 
                                 <i class="fa-solid fa-thumbs-up"></i>
                                 <span>Like</span>
@@ -149,7 +149,6 @@
                             </div>
 
                             <!-- Share Modal -->
-
 
                             <div id="shareModal"
                                 class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
@@ -250,7 +249,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                                                     <div>
                                                         <button @click="modalOpen=false"
                                                             class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
-                                                        <button @click="savePost()"
+                                                        <button  @click="savePost()"
                                                             class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">OK</button>
                                                     </div>
                                                 </template>
@@ -296,7 +295,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                 <section id="comments" class="mt-12 border-t border-gray-200 pt-8 font-inter">
                     <!-- Header -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-                        <h2 class="text-xl font-bold text-gray-700">Total Comments ({{ total_comments }})</h2>
+                        <h2 class="text-xl font-bold text-gray-700">Total Comments ({{ total_comments|humanize_number }})</h2>
 
 
                         <!-- Sort dropdown -->
@@ -313,7 +312,8 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
 
                     <!-- Comment Form -->
                     {% if user.is_authenticated %}
-                    <form method="POST" action="{% url 'add_comment' post_slug=blog_detail.slug %}"
+                    <form method="POST" hx-post="{% url 'add_comment' post_slug=blog_detail.slug %}"
+                    hx-target="#container" hx-swap="innerHTML" hx-push-url="true" 
                         class="flex gap-3 mb-8">
                         {% csrf_token %}
                         <img src="{{ request.user.profile_picture.url }}" alt="User"
@@ -372,7 +372,8 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
                                 </div>
 
                                 <!-- Reply Form -->
-                                <form method="POST" action="{% url 'add_reply' comment_id=comment.id %}"
+                                <form method="POST" hx-post="{% url 'add_reply' comment_id=comment.id %}"
+                                    hx-target="#container" hx-swap="innerHTML" hx-push-url="true" 
                                     class="hidden reply-form mt-3 flex gap-2">
                                     {% csrf_token %}
                                     <img src="{{ request.user.profile_picture.url }}"
@@ -416,7 +417,7 @@ l2.366,3.195L15.531,7z M14.947,15.986h0.92L9.926,7.962H8.937L14.947,15.986z"></p
         <div class="w-[1px] h-auto bg-gray-200"></div>
 
         {% comment %} aside button {% endcomment %}
-        <aside class="w-full md:w-1/3 mt-8 md:mt-0">
+        <aside class="w-full md:w-2/6 mt-8 md:mt-0">
             <div class="bg-gray-200 p-6 flex items-center justify-center h-32">
                 <div class="text-center">
                     <img src="https://via.placeholder.com/80x40/FFFFFF/2d3748?text=BSRM" alt="TECHLIFE"

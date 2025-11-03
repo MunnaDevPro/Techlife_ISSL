@@ -16,7 +16,8 @@ from .views import (
     right_blog_details_partial,
     
     blog_details_view,
-    user_like_toggle
+    user_like_toggle,
+    # blog_save
 )
 
 from interactions.views import share_post
@@ -69,7 +70,9 @@ urlpatterns = [
     
     # like section
     path('like/<slug:like_slug>/', user_like_toggle, name='user_like_toggle'),
-
+    
+    # save section for blog details
+    # path('save/<slug:save_slug>/', blog_save, name='blog_save'),
     
 ]
 

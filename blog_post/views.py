@@ -18,6 +18,7 @@ from comments.models import Comment
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout 
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from blog_post.models import BlogPost 
@@ -64,6 +65,17 @@ def blog_details_view(request, slug):
     comment_count = all_comments.count()
     reply_count = sum(comment.replies.count() for comment in all_comments)
     total_comments = comment_count + reply_count
+    
+    
+    # user like system check
+    user_has_liked = False
+    if request.user.is_authenticated:
+        try:
+            Like.objects.get(post=blog_detail, user=request.user)
+            user_has_liked = True
+        except Like.DoesNotExist:
+            user_has_liked = False
+    
 
     context = {
         "blog_detail": blog_detail,
@@ -72,6 +84,7 @@ def blog_details_view(request, slug):
         "most_viewed_blogs":most_viewed_blogs,
         "all_comments" : all_comments,
         "total_comments":total_comments,
+        "user_has_liked":user_has_liked,
         "action":"blog_details",
     }
     
@@ -579,7 +592,6 @@ def contact_page(request):
 
 # comment section
 @login_required
-
 # requires POST method use kora valo, karon aita save
 @require_POST 
 def add_comment(request, post_slug):
@@ -590,7 +602,7 @@ def add_comment(request, post_slug):
     content = request.POST.get('content', '').strip()
 
     if not content:
-        messages.error(request, "Comment content cannot be empty.")
+        # messages.error(request, "Comment content cannot be empty.")
         return redirect('post_detail', slug=post_slug)
 
 
@@ -600,7 +612,7 @@ def add_comment(request, post_slug):
         content=content
     )
     
-    messages.success(request, "Your comment has been posted successfully.")
+    # messages.success(request, "Your comment has been posted successfully.")
     
     
     return redirect('blog_details', slug=post_slug)
@@ -618,7 +630,6 @@ def add_reply(request, comment_id):
     content = request.POST.get('content', '').strip()
 
     if not content:
-        messages.error(request, "Reply content cannot be empty.")
      
         return redirect('post_detail', slug=post_slug)
 
@@ -628,10 +639,7 @@ def add_reply(request, comment_id):
         user=request.user, 
         content=content
     )
-    
-    messages.success(request, "Your reply has been posted successfully.")
-    
-   
+
     return redirect('blog_details', slug=post_slug)
 
 
@@ -642,22 +650,36 @@ def user_like_toggle(request, like_slug):
     blog_post = get_object_or_404(BlogPost, slug=like_slug)
     user = request.user
     
-    try:
-       
-        like_instance = Like.objects.get(post=blog_post, user=user)
-            
-        
-        like_instance.delete()
-        messages.info(request, "You unliked the post.")
-        
-    except Like.DoesNotExist:
+    if request.headers.get("HX-Request"):
+    
         try:
-         
-            Like.objects.create(post=blog_post, user=user)
-            messages.success(request, "You liked the post!")
-        except IntegrityError:
-           
-            messages.error(request, "An error occurred while liking the post.")
-
-  
+            like_instance = Like.objects.get(post=blog_post, user=user)
+            like_instance.delete()
+            
+        except Like.DoesNotExist:
+            try:
+                Like.objects.create(post=blog_post, user=user)
+               
+            except IntegrityError:
+            
+                # messages.error(request, "An error occurred while liking the post.")
+                logout(request)
+                return redirect('login')
+                # return redirect('blog_details', slug=like_slug)
+    
     return redirect('blog_details', slug=like_slug)
+
+
+
+# def blog_save(request, save_slug):
+#     blog_post = get_object_or_404(BlogPost, slug=save_slug)
+#     user = request.user
+    
+#     if request.headers.get("HX-Request"):
+    
+#         if blog_post in user.saved_posts.all():
+#             user.saved_posts.remove(blog_post)
+#         else:
+#             user.saved_posts.add(blog_post)
+
+#     return redirect('blog_details', slug=save_slug)
