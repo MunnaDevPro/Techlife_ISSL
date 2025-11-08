@@ -6,11 +6,11 @@
     class="hero_section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6 w-full px-3 pt-1 lg:pt-4 mx-auto">
     <!-- Left Section Carousel and Blogs and Add -->
     <div class="w-full md:col-span-3 flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <!-- Enhanced Blog Carousel -->
         <div class="blog-carousel relative rounded-2xl shadow-sm overflow-hidden group mb-4" x-data="blogCarousel()">
             <div class="carousel-container relative h-48 sm:h-64 md:h-80 lg:h-96" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% for blog in carousel_blogs %}
                 <div class="carousel-slide absolute inset-0 transition-all duration-500 ease-in-out"
                     :class="currentSlide === {{ forloop.counter0 }} ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'"
@@ -116,11 +116,11 @@
 
         <!-- Display blogs -->
         <ul class="rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4 py-3 px-4" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             {% for blog in blogs|slice:"4" %}
-            <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"  class="cursor-pointer">
+            <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="cursor-pointer">
                
-                <li class="flex flex-col w-full group gap-y-1 mb-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+                <li class="flex flex-col w-full group gap-y-1 mb-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-full h-[160px] sm:h-32 relative overflow-hidden rounded-md">
                         {% if blog.featured_image %}
                         <img class="w-full h-full object-cover rounded-md shadow 
@@ -153,17 +153,17 @@
     <!-- Middle Section -->
     <div
         class="w-full md:col-span-1 xl:col-span-2 px-3 py-2 border border-gray-200 rounded-lg flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         {% if latest_blog %}
         <a hx-get="{% url 'blog_details' latest_blog.slug %}" hx-target="#container" hx-push-url="true"
             hx-swap="innerHTML" class="flex flex-col cursor-pointer">
-            <div class="flex flex-col gap-1 group relative overflow-hidden">
+            <div class="flex w-full rounded-md flex-col gap-1 group relative overflow-hidden">
                 {% if latest_blog.featured_image %}
-                <img class="rounded-md w-full transform transition-transform duration-300 ease-out 
+                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out 
                                 group-hover:-translate-y-1 group-hover:scale-[1.03]"
                     src="{{ latest_blog.featured_image.url }}" alt="{{ latest_blog.title }}" />
                 {% elif latest_blog.featured_image_url %}
-                <img class="rounded-md w-full transform transition-transform duration-300 ease-out 
+                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out 
                                 group-hover:-translate-y-1 group-hover:scale-[1.03]"
                     src="{{ latest_blog.featured_image_url }}" alt="{{ latest_blog.title }}" />
                 {% else %}
@@ -180,9 +180,9 @@
 
         <!-- Small blogs list -->
         <ul class="flex flex-col gap-y-2 mt-2" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <div class="" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <i class="fa-solid fa-square-plus"></i>
                 <span class="text-lg font-bold text-center text-gray-950">Recent Post</span>
             </div>
@@ -192,8 +192,8 @@
                 class="flex flex-col cursor-pointer">
                 <li
                     class="flex items-center gap-x-3 p-1 rounded-lg hover:scale-104 transition-transform duration-300 group" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 group relative overflow-hidden">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                    <div class="w-12 h-12 rounded-md sm:w-14 sm:h-14 flex-shrink-0 group relative overflow-hidden">
                         {% if blog.featured_image %}
                         <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}"
                             class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out 
@@ -231,22 +231,22 @@
 
     <!-- Right Section -->
     <div class="w-full justify-start overflow-hidden md:col-span-1 flex flex-col gap-y-2 lg:gap-y-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <!-- Top question -->
 
         <div class=" mb-2" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <i class="fa-solid fa-trophy"></i>
             <span class="text-lg font-bold text-center text-gray-950">Top Questions</span>
         </div>
         <hr class="text-gray-200 mb-1" />
 
         <ul class="space-y-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             {% for user in top_users|slice:"4" %}
             <li
                 class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% if not user.profile_picture %}
                 <div
                     class="size-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-800 font-semibold">
@@ -266,20 +266,20 @@
         </ul>
         <!-- Top Authors -->
         <div class="mt-5" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <div class="p-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <i class="fa-solid fa-trophy"></i>
                 <span class="text-lg font-bold text-center text-gray-950">Top Authors</span>
             </div>
             <hr class="text-gray-200 mb-2" />
 
             <ul class="space-y-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% for user in top_users|slice:"3" %}
                 <li
                     class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     {% if not user.profile_picture %}
                     <div
                         class="size-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-800 font-semibold">
@@ -304,7 +304,7 @@
         <div class="tag-filter w-full rounded-2xl mt-3" data-aos="fade-up"
     data-aos-anchor-placement="top-bottom">
             <div class="p-1 mt-4" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <i class="fa-solid fa-tag"></i>
                 <span class="text-lg font-bold mb-2 text-gray-950">Popular Tags</span>
             </div>
@@ -315,7 +315,7 @@
             {% endcomment %}
 
             <ul class="flex flex-wrap gap-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% for tag in tags|slice:"12" %}
                 <li>
                     <span
@@ -348,12 +348,12 @@
 
 <!-- Blog Posts Grid -->
 <div class="flex flex-col md:flex-row justify-between gap-3 mt-8 mb-16" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
-    <div class="w-full md:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+    <div class="w-full md:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <div class="flex items-center justify-between px-2 mb-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <div class="flex items-center flex-grow border-l-4 border-red-500 pl-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 class="font-inter font-bold text-lg text-gray-800 pr-3 pb-1">TECHNOLOGY</h3>
 
                 <div class="flex-grow border-b border-gray-400 h-px"></div>
@@ -362,15 +362,15 @@
             <a href="#" class="text-gray-600 hover:text-red-600 font-semibold text-sm pl-3 whitespace-nowrap">more ></a>
         </div>
         {% for blog in technology_posts|slice:"1" %}
-        <a href="{% url 'blog_details' blog.slug %}" 
+        <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"  
             class="bg-white rounded-lg overflow-hidden duration-200 pb-2 mb-6 cursor-pointer" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <!-- Image section -->
-            <div class="relative overflow-hidden group p-2 pt-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+            <div class="relative overflow-hidden group p-2 pt-3 rounded-t-l" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% if blog.featured_image %}
                 <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}"
-                    class="w-full h-44 object-cover rounded-t-l transform transition-transform duration-300 ease-out 
+                    class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out 
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]" />
                 {% elif blog.featured_image_url %}
                 <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}"
@@ -378,7 +378,7 @@
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]" />
                 {% else %}
                 <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}"
-                    class="w-full h-44 object-cover rounded-t-l transform transition-transform duration-300 ease-out 
+                    class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out 
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]" />
                 {% endif %}
             </div>
@@ -386,7 +386,7 @@
             <!-- Title & Description -->
             {% for blog in technology_posts|slice:"1" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -395,7 +395,7 @@
             </div>
             {% endfor %} {% for blog in technology_posts|slice:"1:2" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -405,7 +405,7 @@
             {% endfor %}
             {% for blog in technology_posts|slice:"2:3" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -415,7 +415,7 @@
             {% endfor %}
             {% for blog in technology_posts|slice:"3:4" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -428,9 +428,9 @@
 
     <div class="w-full md:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <div class="flex items-center justify-between px-2 mb-1" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <div class="flex items-center flex-grow border-l-4 border-red-500 pl-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 class="font-bold text-lg text-gray-800 pr-3 pb-1">TIPS & TRICKS</h3>
 
                 <div class="flex-grow border-b border-gray-400 h-px"></div>
@@ -441,10 +441,10 @@
         {% for blog in tips_posts|slice:"1" %}
         <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
             class="bg-white rounded-lg overflow-hidden duration-200 pb-2 mb-6 cursor-pointer" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <!-- Image section -->
-            <div class="overflow-hidden relative group p-2 pt-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+            <div class="overflow-hidden relative group p-2 pt-3 rounded-t-lg" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% if blog.featured_image %}
                 <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}"
                     class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out 
@@ -463,7 +463,7 @@
             <!-- Title & Description -->
             {% for blog in tips_posts|slice:"1" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -472,7 +472,7 @@
             </div>
             {% endfor %} {% for blog in tips_posts|slice:"1:2" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -481,7 +481,7 @@
             </div>
             {% endfor %} {% for blog in tips_posts|slice:"2:3" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -491,7 +491,7 @@
             {% endfor %}
             {% for blog in tips_posts|slice:"2:3" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -503,7 +503,7 @@
     </div>
 
     <div class="w-full md:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <div class="flex items-center justify-between px-2 mb-1" data-aos="fade-up"
     data-aos-anchor-placement="top-bottom">
             <div class="flex items-center flex-grow border-l-4 border-red-500 pl-3" data-aos="fade-up"
@@ -518,10 +518,10 @@
         {% for blog in news_posts|slice:"1" %}
         <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
             class="bg-white rounded-lg overflow-hidden duration-200 pb-2 mb-6 cursor-pointer" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
             <!-- Image section -->
-            <div class="group overflow-hidden relative p-2 pt-3" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+            <div class="group overflow-hidden relative p-2 pt-3 rounded-t-lg" data-aos="fade-up"
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 {% if blog.featured_image %}
                 <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}"
                     class="w-full h-44 object-cover rounded-t-lg transform transition-transform duration-300 ease-out 
@@ -540,7 +540,7 @@
             <!-- Title & Description -->
             {% for blog in news_posts|slice:"1" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -552,7 +552,7 @@
 
             {% for blog in news_posts|slice:"1:2" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -561,7 +561,7 @@
             </div>
             {% endfor %} {% for blog in news_posts|slice:"2:3" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -571,7 +571,7 @@
             {% endfor %}
             {% for blog in news_posts|slice:"2:3" %}
             <div class="mb-3 px-3 group:" data-aos="fade-up"
-    data-aos-anchor-placement="top-bottom">
+    data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true"
                     hx-swap="innerHTML"
                     class="font-semibold group-hover:scale-105 text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">
@@ -588,7 +588,7 @@
 
 
 <!-- Add Section -->
-<div class="w-full flex justify-center items-center rounded-lg mt-16 mb-4 mx-auto">
+<div class="w-full flex justify-center items-center rounded-xl mt-16 mb-4 mx-auto">
     <img class="w-full max-w-[980px] h-[120px] object-cover rounded-xl flex justify-center items-center text-sm text-gray-400 border border-gray-300"
         src="#" alt="Google add fixed size (980 * 120) px" />
 </div>
@@ -605,17 +605,7 @@
 {% include 'components/home/marque.html' %}
 
 
-
-
-
-
-
-
-
-
-
-
-<!-- Alpine.js Carousel Script -->
+<!-- Alpine.js Carousel Script for homepage -->
 <script>
     function blogCarousel() {
         return {
@@ -655,3 +645,13 @@
         }; // <-- THIS CLOSING BRACE WAS MISSING/MISPLACED
     }
 </script>
+
+
+
+
+
+
+
+
+
+

@@ -11,17 +11,15 @@ from .views import (
     popular_blog_post,
     all_article,
     popular_category_post,
-    # blog_partial_view
-    # more_blog_details
+
     right_blog_details_partial,
     
     blog_details_view,
     user_like_toggle,
-    # blog_save
+    category_wise_post,
 )
 
 from interactions.views import share_post
-from save_post.views import save_post,check_saved
 from .views import add_comment, add_reply
 
 urlpatterns = [
@@ -36,6 +34,7 @@ urlpatterns = [
 
     # path("blog/partial/<slug:slug>/", blog_partial_view, name="blog_partial"),  # HTMX partial
     path('category/<slug:slug>/', category_post, name='category_post'),
+    path('category/', category_wise_post, name='category_wise_post'),
     path(
         "update/<slug:slug>/<str:stat_type>/",
         update_blog_stat,
@@ -59,9 +58,7 @@ urlpatterns = [
     
     path('share-post/',share_post, name='share_post'),
     
-    path('save-post/', save_post, name='save_post'),
-    path('check-saved/<int:post_id>/', check_saved, name='check_saved'),
-    
+
     
     # add commnets
     path('post/<slug:post_slug>/comment/', add_comment, name='add_comment'),
@@ -71,9 +68,7 @@ urlpatterns = [
     # like section
     path('like/<slug:like_slug>/', user_like_toggle, name='user_like_toggle'),
     
-    # save section for blog details
-    # path('save/<slug:save_slug>/', blog_save, name='blog_save'),
-    
+ 
 ]
 
 

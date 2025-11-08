@@ -20,7 +20,7 @@ uv init
 uv venv
 
 # active venv
-
+source .venv/Scripts/activate
 
 
 

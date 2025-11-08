@@ -1,0 +1,49 @@
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<div class="-mt-[40px]  bg-gray-300 login flex items-center justify-center px-4 ">
+  <form class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8" method="post">
+    {% csrf_token %}
+
+    <!-- Title -->
+    <h1 class="text-center text-3xl font-bold text-gray-900 mb-4">Verify Email</h1>
+
+    <!-- Email Input -->
+    <div class="mb-4">
+      <!-- <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Code:</label> -->
+      <input type="text" name="code" placeholder="Enter 6-digit Code" maxlength="6" required
+        class="w-full px-4 py-1 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none shadow-sm text-gray-900" />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-4">
+      <button type="submit"
+        class="w-full py-1 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 shadow-md transition-all duration-200">
+        Verify
+      </button>
+    </div>
+    {% for message in messages %}<p class="text-center text-green-600 text-bold font-medium ">{{ message }}</p>{% endfor %}
+
+
+  </form>
+</div>
+
+
+
+
+<!-- <h2>Verify Email</h2>
+<form method="POST">
+  {% csrf_token %}
+  <input type="text" name="code" placeholder="Enter 6-digit Code" required maxlength="6"><br>
+  <button type="submit">Verify</button>
+</form>
+{% for message in messages %}<p>{{ message }}</p>{% endfor %}
+ -->
+
+
+{% endblock content %}

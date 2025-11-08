@@ -1,0 +1,240 @@
+<!-- Load Tailwind CSS CDN - (Ideally this script should be in your base.html <head>) -->
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+
+    
+    <style>
+        /* Custom styles to match the newsprint feel and color palette */
+        :root {
+            --green-header: #388e3c; /* Darker green for header */
+            --text-primary: #333333;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background-color: #f7f7f7;
+        }
+
+        .header-bg {
+            /* background-color: var(--green-header); */
+            /* Simulating the pattern shown in the image */
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 10px, transparent 10px, transparent 20px);
+        }
+
+        .in-pictures-bg {
+            background-image: url('https://placehold.co/400x500/1e293b/ffffff?text=IN+PICTURES+AD');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+
+<!-- Start of the main content section -->
+<section class="max-w-7xl mx-auto bg-white border-t border-b border-gray-200">
+
+    <!-- TOP HEADER BAR (Green Background) -->
+    <div class="header-bg bg-blue-500 p-2 md:px-6">
+        <h1 class="text-3xl font-bold text-white tracking-wider">Sports</h1>
+    </div>
+
+    <!-- CATEGORY NAVIGATION/TABS -->
+    <nav class="border-b border-gray-200 md:px-6">
+        <ul class="flex overflow-x-auto whitespace-nowrap text-sm font-medium text-gray-700">
+            <!-- Updated <li> items to contain <a> tags for navigation -->
+            <li>
+                <a href="#cricket" class="block px-4 py-3 border-b-4 hover:border-blue-600 text-blue-600">Cricket</a>
+            </li>
+            <li>
+                <a href="#football" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Football</a>
+            </li>
+            <li>
+                <a href="#moresports" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">More Sports</a>
+            </li>
+            <li>
+                <a href="#tennis" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Tennis</a>
+            </li>
+            <li>
+                <a href="#womenssports" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Women's Sports</a>
+            </li>
+            <li>
+                <a href="#toppicks" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Top picks</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- MAIN FEATURE SECTION -->
+    <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-6 border-b border-gray-200">
+
+        <!-- 1. MAIN LEFT FEATURE (Image and Story) -->
+        <div class="md:col-span-2 lg:col-span-6 space-y-4">
+            <!-- Large Image -->
+            <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQebuBh5omO5Rd8xSyyyxjDK1OwnbXmNpX8Pw&s" alt="Manjurul leading investigation" class="w-full h-full object-cover">
+            </div>
+
+            <!-- Main Story Text -->
+            <div class="space-y-4">
+                <h2 class="text-1xl md:text-2xl font-bold line-clamp-2 leading-tight">Manjurul willing to face investigation</h2>
+                <p class="text-gray-700 text-base line-clamp-3">Former head coach of the Bangladesh women's cricket team, Manjurul Islam, has said he will face any forthcoming investigation and present his side of the story after being accused of a disciplinary breach.</p>
+
+                <!-- Sub Story 1
+                <div class="pt-4 border-t border-gray-200">
+                    <h3 class="line-clamp-2 text-lg font-semibold hover:text-green-700 cursor-pointer">Guardiola says 'numbers are insane' as he reaches 1,000 games in charge</h3>
+                    <p class="line-clamp-2 text-sm text-gray-600">Manchester City boss Pep Guardiola admitted Friday he had enjoyed "insane" success as he prepares for the 1,000th game of a spectacular managerial career against Liverpool.</p>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- 2. CENTRAL HEADLINES -->
+        <div class="md:col-span-1 lg:col-span-4 space-y-3">
+            <!-- Headline Item 1 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+            <!-- Headline Item 2 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <!-- Headline Item 2 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+
+        </div>
+
+        <!-- 3. RIGHT AD/PICTURES BLOCK -->
+        <div class="hidden lg:block lg:col-span-2 relative p-4 bg-gray-900 text-white rounded overflow-hidden in-pictures-bg">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            <div class="relative flex flex-col justify-between h-full">
+                <div class="text-right text-xs font-serif italic text-yellow-300">The Daily Star</div>
+                <div>
+                    <h2 class="text-4xl font-extrabold mb-2">IN PICTURES</h2>
+                    <p class="text-sm italic mb-4">CLICK HERE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM ROW: VIDEO and SECONDARY STORY -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
+        <!-- Video Story -->
+        <div class="flex items-start space-x-4">
+            <div class="relative w-28 h-20 flex-shrink-0 bg-gray-900 rounded overflow-hidden">
+                <img src="https://placehold.co/120x80/e5e7eb/333?text=Video" alt="Video Placeholder" class="w-full h-full object-cover opacity-70">
+                <!-- Play button icon (SVG or simple text) -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white bg-black bg-opacity-50 rounded-full p-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 5.4l.7-.7c.3-.3.8-.3 1.1 0L14 10l-5.9 5.3c-.3.3-.8.3-1.1 0l-.7-.7c-.3-.3-.3-.8 0-1.1L10.9 10 6.3 6.5c-.3-.3-.3-.8 0-1.1z"/>
+                    </svg>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Watch | Bangladesh cricket: Is the old culture of interference back?</h3>
+                <p class="text-sm text-gray-600 mt-1">BCB president Aminul Islam Bulbul has stated that he will "intervene" from the Ireland series onwards to ensure team stability...</p>
+            </div>
+        </div>
+
+        <!-- Secondary Story -->
+        <div class="space-y-1">
+            <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Financial safeguards in place, but integrity unchecked</h3>
+            <p class="text-sm text-gray-600">While the Bangladesh Cricket Board (BCB) has implemented financial safeguards to prevent a repeat of last year's scandal, the board's integrity remains under scrutiny.</p>
+            <span class="text-xs text-gray-400 block pt-1">4h ago</span>
+        </div>
+    </div>
+
+    <!-- CRICKET SECTION DIVIDER -->
+    <div class="py-6 border-y border-gray-200 flex justify-center items-center relative">
+        <h2 class="text-2xl font-bold uppercase tracking-widest">Cricket</h2>
+        <span class="ml-3 text-2xl text-green-700"> &gt; </span>
+    </div>
+
+    <!-- CRICKET NEWS GRID -->
+    <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+        <!-- Article 1 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Emons+Joy" alt="Emon's Joy" class="w-full aspect-video object-cover rounded">
+            <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Emon six for in rain as Afghanistan U-19s go 2-1 up</h3>
+            <p class="text-sm text-gray-700">Bangladesh youth could not secure a victory against their counterpart with a dramatic six for from Emon's excellent bowling, giving Afghanistan the lead.</p>
+            <span class="text-xs text-gray-400 block">3h ago</span>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Tamim+Call" alt="Tamim Call" class="w-full aspect-video object-cover rounded">
+            <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Tamim calls for probe after Jahanara allegations: Sports adviser seeks 'exemplary punishment'</h3>
+            <p class="text-sm text-gray-700">Tamim described the allegations as "grave and deeply troubling" and urged the board to conduct a transparent and swift investigation.</p>
+            <span class="text-xs text-gray-400 block">8h ago</span>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Mosaddek+Joy" alt="Mosaddek and Akbar" class="w-full aspect-video object-cover rounded">
+            <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Mosaddek, Akbar help Bangladesh beat Sri Lanka in Hong Kong</h3>
+            <p class="text-sm text-gray-700">Earlier in the day, their match against hosts Hong Kong was abandoned due to rain, putting their tournament hopes on a knife edge.</p>
+            <span class="text-xs text-gray-400 block">8h ago</span>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Supta+Rated" alt="Supta Rated" class="w-full aspect-video object-cover rounded">
+            <h3 class="text-lg font-bold hover:text-green-700 cursor-pointer">Supta rated Bangladesh's top performer in Women's World Cup 2025</h3>
+            <p class="text-sm text-gray-700">India may have lifted the trophy after a win over South Africa, but the tournament was also about the outstanding display from Bangladesh's Supta.</p>
+            <span class="text-xs text-gray-400 block">1h ago</span>
+        </div>
+    </div>
+
+    <!-- SUB-ARTICLES BELOW GRID -->
+    <div class="p-4 md:px-6 grid grid-cols-1 md:grid-cols-4 gap-6 text-sm text-gray-700">
+        
+        <!-- Column 1 Sub-Articles -->
+        <div class="space-y-4">
+             <a href="#" class="block hover:text-green-700 font-semibold">Financial safeguards in place, but integrity unchecked</a>
+        </div>
+
+        <!-- Column 2 Sub-Articles -->
+        <div class="space-y-4">
+            <a href="#" class="block hover:text-green-700 font-semibold">BCB to form committee to investigate Jahanara's harassment allegations</a>
+        </div>
+
+        <!-- Column 3 Sub-Articles -->
+        <div class="space-y-4">
+            <a href="#" class="block hover:text-green-700 font-semibold">De Kock slams century as South Africa level series</a>
+            <a href="#" class="block hover:text-green-700 font-semibold">First Division: 12 clubs complete players' transfer, eight missing</a>
+            <a href="#" class="block hover:text-green-700 font-semibold">A total of 106 players have been roped in by 12 First Division teams as the four-day player transfer window closed yesterday.</a>
+        </div>
+
+        <!-- Column 4 Sub-Articles -->
+        <div class="space-y-4">
+            <a href="#" class="block hover:text-green-700 font-semibold">A big blow for the national team: Captain injured out of ODI series</a>
+            <a href="#" class="block hover:text-green-700 font-semibold">Top coach resigns after heated argument with board officials</a>
+            <a href="#" class="block hover:text-green-700 font-semibold">A new batting sensation emerges from the domestic league</a>
+        </div>
+    </div>
+
+</section>
+<!-- End of the main content section -->
+
+
+{% endblock content %}

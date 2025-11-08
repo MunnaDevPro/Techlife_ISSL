@@ -24,9 +24,7 @@ from django.contrib import messages
 from blog_post.models import BlogPost 
 from comments.models import Comment, Reply
 
-
-
-
+# from save_post.models import SavedPost
 
 
 
@@ -39,7 +37,7 @@ def blog_details_view(request, slug):
     
     related_news = BlogPost.objects.filter(
         status="published", category=blog_detail.category
-    ).exclude(slug=slug)[:8]
+    ).exclude(slug=slug)[:10]
     
     if blog_detail.description:
         word_count = len(blog_detail.description.split())
@@ -67,6 +65,19 @@ def blog_details_view(request, slug):
     total_comments = comment_count + reply_count
     
     
+    # sort by comment
+    sort_by = request.GET.get('sort_by', 'newest')
+    comment_order = '-created_at'
+
+    if sort_by == 'oldest':
+        comment_order = 'created_at'
+    elif sort_by == 'recent':
+        comment_order = '-updated_at'
+
+    all_comments = Comment.objects.filter(post=blog_detail).order_by(comment_order)
+        
+        
+    
     # user like system check
     user_has_liked = False
     if request.user.is_authenticated:
@@ -75,7 +86,7 @@ def blog_details_view(request, slug):
             user_has_liked = True
         except Like.DoesNotExist:
             user_has_liked = False
-    
+            
 
     context = {
         "blog_detail": blog_detail,
@@ -85,6 +96,8 @@ def blog_details_view(request, slug):
         "all_comments" : all_comments,
         "total_comments":total_comments,
         "user_has_liked":user_has_liked,
+        "sort_by":sort_by,
+        # "is_saved" : is_saved,
         "action":"blog_details",
     }
     
@@ -543,7 +556,8 @@ def category_post(request, slug):
     return render(request, "components/category/category_post.html", context)
 
 
-
+def category_wise_post(request):
+    return render(request, "components/category/category.html")
 
 def popular_category_post(request, slug):
     popular_category = get_object_or_404(Category, slug=slug)
@@ -671,15 +685,21 @@ def user_like_toggle(request, like_slug):
 
 
 
-# def blog_save(request, save_slug):
-#     blog_post = get_object_or_404(BlogPost, slug=save_slug)
-#     user = request.user
-    
-#     if request.headers.get("HX-Request"):
-    
-#         if blog_post in user.saved_posts.all():
-#             user.saved_posts.remove(blog_post)
-#         else:
-#             user.saved_posts.add(blog_post)
 
-#     return redirect('blog_details', slug=save_slug)
+# @login_required
+# def save_post(request, save_slug):
+#     post = get_object_or_404(BlogPost, slug=save_slug)
+
+#     if request.method == "POST":
+#         already_saved = SavedPost.objects.filter(post=post, user=request.user).exists()
+
+#         if not already_saved:
+#             SavedPost.objects.create(post=post, user=request.user)
+#         else:
+#             # Optional: Unsave if already saved
+#             SavedPost.objects.filter(post=post, user=request.user).delete()
+
+#         return redirect("blog_details", post_slug=save_slug)
+
+#     return redirect("blog_details", post_slug=save_slug)
+

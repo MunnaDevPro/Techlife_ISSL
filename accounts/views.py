@@ -1,130 +1,174 @@
+# accounts/views.py
+
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from accounts.forms import CustomUserSignupForm
 from django.contrib import messages
-from django.contrib.auth.tokens import default_token_generator
-from django.shortcuts import redirect, render
-from django.utils.http import urlsafe_base64_decode
-
-from django.http import HttpResponse
-from accounts.utils import send_password_reset_email, send_verification_email
-from accounts.models import CustomUserModel
-
-from blog_post.models import BlogPost
+from django.contrib.auth import authenticate, login, logout
+from django.utils import timezone
+from accounts.models import CustomUserModel, EmailVerificationCode
+from accounts.utils import send_verification_code_email
+from blog_post.models import BlogPost 
+from django.shortcuts import render
+from django.db.models import Sum, Count
 
 from blog_post.models import BlogPost
 from comments.models import Comment
-from django.db.models import Sum,Count
+from earnings.models import EarningSetting  # replace 'your_app_name' with the actual app name where EarningSetting is defined
 
-from earnings.models import EarningSetting
-
-def signup_form(request):
+# -------------------- SIGNUP -------------------
+def signup_view(request):
     if request.method == "POST":
-        form = CustomUserSignupForm(request.POST, request.FILES or None)
-        if form.is_valid():
-            user = form.save()
-            # send_verification_email(request, user)  # your email function
-            messages.success(
-                request, "Account created. Check your email for verification."
-            )
-            return redirect("homepage")  # or redirect to homepage
-        else:
-            # helpful for debugging server logs
-            print("SIGNUP form errors:", form.errors.as_json())
-            return render(request, "account/register_page.html", {"form": form})
-    else:
-        form = CustomUserSignupForm()
-        return render(request, "account/register_page.html", {"form": form})
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        
+        
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect("signup")
+
+        if CustomUserModel.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+            return redirect("signup")
+
+        user = CustomUserModel.objects.create_user(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            is_active=False
+        )
+
+        code_obj = EmailVerificationCode.objects.create(user=user, purpose="verify")
+        send_verification_code_email(user, code_obj.code, "verify")
+
+        request.session["pending_user_id"] = user.id
+        messages.info(request, "A verification code has been sent to your email.")
+        return redirect("verify-code")
+
+    return render(request, "account/register_page.html")
 
 
-def verify_email(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = CustomUserModel.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, CustomUserModel.DoesNotExist):
-        user = None
-
-    if user and default_token_generator.check_token(user, token):
-        user.is_verified = True
-        user.save()
-        messages.success(request, "Your email has been verified successfully.")
-        return redirect("login")
-    else:
-        messages.error(request, "The verification link is invalid or has expired.")
+# -------------------- VERIFY EMAIL --------------------
+def verify_code_view(request):
+    user_id = request.session.get("pending_user_id")
+    if not user_id:
         return redirect("signup")
 
+    user = CustomUserModel.objects.get(id=user_id)
 
-def user_login(request):
+    if request.method == "POST":
+        code = request.POST.get("code")
+        try:
+            code_obj = EmailVerificationCode.objects.get(user=user, code=code, is_used=False, purpose="verify")
+            user.is_verified = True
+            user.is_active = True
+            user.save()
+            code_obj.is_used = True
+            code_obj.save()
+            messages.success(request, "Email verified successfully! Please login.")
+            # del request.session["pending_user_id"]
+            return redirect("login")
+        except EmailVerificationCode.DoesNotExist:
+            messages.error(request, "Invalid or expired code.")
+
+    return render(request, "account/verify_code.html")
+
+
+# -------------------- LOGIN --------------------
+def login_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
         password = request.POST.get("password")
+
         user = authenticate(request, email=email, password=password)
         if not user:
-            messages.error(request, "Invalid username or password.")
-        elif not user.is_verified:
-            messages.error(request, "Your email is not verified yet.")
-        else:
-            login(request, user)
-            messages.success(request, "You have successfully logged in.")
-            return redirect("homepage")
+            messages.error(request, "Invalid email or password.")
+            return redirect("login")
+
+        if not user.is_verified:
+            messages.error(request, "Please verify your email first.")
+            return redirect("login")
+
+        login(request, user)
+        messages.success(request, "Logged in successfully.")
+        return redirect("homepage")
 
     return render(request, "account/login_page.html")
 
 
-@login_required
-def user_logout(request):
+# -------------------- LOGOUT --------------------
+def logout_view(request):
     logout(request)
+    messages.info(request, "Logged out successfully.")
     return redirect("login")
 
 
- 
-
-def reset_password(request):
+# -------------------- PASSWORD RESET REQUEST --------------------
+def forget_password_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
         try:
             user = CustomUserModel.objects.get(email=email)
+            code_obj = EmailVerificationCode.objects.create(user=user, purpose="reset")
+            send_verification_code_email(user, code_obj.code, "reset")
+            request.session["reset_user_id"] = user.id
+            messages.info(request, "A password reset code has been sent to your email.")
+            return redirect("reset-code")
         except CustomUserModel.DoesNotExist:
-            messages.error(request, "User does not exist.")
-            return redirect("password-reset")
-
-        send_password_reset_email(request, user)
-        messages.info(
-            request, "We have sent you an email with password reset instructions"
-        )
-        return redirect("login")
-
-    return render(request, "accounts/forget.html")
+            messages.error(request, "No account found with this email.")
+    return render(request, "account/forget_password.html")
 
 
-def reset_password_confirm(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = CustomUserModel.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, CustomUserModel.DoesNotExist):
-        user = None
+# -------------------- VERIFY RESET CODE --------------------
+def reset_code_view(request):
+    user_id = request.session.get("reset_user_id")
+    if not user_id:
+        return redirect("forget-password")
 
-    if user and default_token_generator.check_token(user, token):
-        user.is_verified = True
-        user.save()
-        login(request, user)
-        return redirect("new-password")
-    else:
-        messages.error(request, "The verification link is invalid or has expired.")
-        return redirect("login")
+    user = CustomUserModel.objects.get(id=user_id)
+
+    if request.method == "POST":
+        code = request.POST.get("code")
+        try:
+            code_obj = EmailVerificationCode.objects.get(user=user, code=code, is_used=False, purpose="reset")
+            code_obj.is_used = True
+            code_obj.save()
+            request.session["allow_new_password"] = user.id
+            messages.success(request, "Code verified. Please set your new password.")
+            return redirect("new-password")
+        except EmailVerificationCode.DoesNotExist:
+            messages.error(request, "Invalid or expired code.")
+
+    return render(request, "account/reset_password.html")
 
 
-@login_required
-def set_new_password(request):
+# -------------------- SET NEW PASSWORD --------------------
+def new_password_view(request):
+    user_id = request.session.get("allow_new_password")
+    if not user_id:
+        return redirect("forget-password")
+
+    user = CustomUserModel.objects.get(id=user_id)
+
     if request.method == "POST":
         password = request.POST.get("password")
-        user = request.user
+        confirm_password = request.POST.get("confirm_password")
+
+        if password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return redirect("new-password")
+
         user.set_password(password)
         user.save()
-        messages.success(request, "Password updated successfully.")
-        return redirect("profile")
-    return render(request, "accounts/new-password.html")
+
+        del request.session["allow_new_password"]
+        messages.success(request, "Password updated successfully. Please login.")
+        return redirect("login")
+
+    return render(request, "account/new_password.html")
 
 
 def contact_us_view(request):
@@ -140,7 +184,6 @@ def contact_us_view(request):
 
 
 # User dashboard section
-@login_required
 
 def user_dashboard_view(request):
     user = request.user

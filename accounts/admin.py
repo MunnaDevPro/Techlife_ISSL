@@ -1,14 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import CustomUserModel
+from accounts.models import CustomUserModel, EmailVerificationCode
 
 
 
-admin.site.site_header = "TechLife Administration"
-admin.site.site_title = "TechLife Admin"
-admin.site.index_title = "Welcome to TechLife Control Panel"
-
-
+admin.site.register(EmailVerificationCode)
 
 @admin.register(CustomUserModel)
 class CustomUserAdmin(UserAdmin):
