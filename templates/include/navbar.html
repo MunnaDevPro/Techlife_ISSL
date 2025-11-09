@@ -115,11 +115,11 @@
             
         {% if request.user.is_authenticated and request.user.is_verified %}
             <!-- <a href="{% url 'logout' %}" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-red-500 text-red-500 hover:bg-gray-100 transition duration-150">Logout</a> -->
-            <div class="w-14 h-14 cursor-pointer" hx-get="{% url 'user_dashboard' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true">
+            <a class="w-12 h-12 cursor-pointer" href="{% url 'user_dashboard' %}">
                 <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" 
                 alt="{{ user.first_name|slice:'1' }}"
-                    class="w-full h-full rounded-full border-2 border-blue-400 object-cover flex items-center justify-center text-3xl">
-            </div>
+                    class="w-full h-full rounded-full border-2 border-blue-500 object-cover flex items-center justify-center text-3xl">
+            </a>
         {% else %}
             <a href="{% url 'login' %}" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Login</a>
         {% endif %}
