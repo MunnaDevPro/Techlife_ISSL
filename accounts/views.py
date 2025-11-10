@@ -247,10 +247,12 @@ def user_dashboard_view(request):
         "post_point" : post_point,
         "total_point" : total_point,
         "badge_level" : badge_level,
+        "action":"user_dashboard"
        
     }
 
-    return render(request, "account/user_dashboard.html", context)
+    # return render(request, "account/user_dashboard.html", context)
+    return render(request, "account/demo/user_dashboard.html")
 
 
 

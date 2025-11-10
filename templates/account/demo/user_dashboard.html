@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Dashboard - Light Theme{% endblock %}
+
+{% block head %}
+    {% endblock %}
+
+{% block content %}
+
+<div class="flex min-h-screen bg-gray-100 text-gray-800">
+    
+    {% include 'account/demo/sidebar.html' %}
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        
+        {% include 'account/demo/header.html' %}
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-10">
+            
+            {% include 'account/demo/main_stats.html' %}
+            
+            {% include 'account/demo/data_rows.html' %}
+
+            {% include 'account/demo/order_table.html' %}
+
+            {% include 'account/demo/visitors_map.html' %}
+            
+        </main>
+
+        {% include 'account/demo/footer.html' %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sidebar');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    
+    // 1. Sidebar Toggle for Mobile (ছোট স্ক্রিনের জন্য) - Logic remains same
+    if (sidebar && mobileMenuBtn) {
+        // ছোট স্ক্রিনে ডিফল্টভাবে সাইডবার হাইড করে রাখা
+        if (window.innerWidth < 768) { // 768px হলো Tailwind-এর 'md' ব্রেকপয়েন্ট
+            sidebar.classList.add('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            // অতিরিক্ত: যদি আপনি স্লাইড-ইন ইফেক্ট চান তবে 'hidden' এর বদলে ট্রান্সফর্ম ক্লাস ব্যবহার করতে পারেন।
+        });
+    }
+
+    // 2. Chart.js Initialization (Transaction History) - Logic remains same
+    const transactionChartCanvas = document.getElementById('transactionChart');
+    if (transactionChartCanvas) {
+        // Chart.js লাইব্রেরি লোড করার পর এই কোড কাজ করবে।
+        // এখানে শুধু কাঠামোর জন্য প্লেসহোল্ডার দেওয়া হলো
+        // new Chart(transactionChartCanvas, { /* Chart Config */ }); 
+    }
+
+    // 3. To Do List Checkbox (ইন্টারেক্টিভ)
+    const todoCheckboxes = document.querySelectorAll('.form-checkbox');
+    todoCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            const label = e.target.closest('label').querySelector('span');
+            if (e.target.checked) {
+                // Light Theme adjustment: text-gray-500 (line-through color)
+                // text-gray-300 (default color in dark theme) removed
+                // New default color for text: text-gray-800
+                label.classList.add('line-through', 'text-gray-500');
+                label.classList.remove('text-gray-800'); // Assuming text-gray-800 is the new default text color
+            } else {
+                label.classList.remove('line-through', 'text-gray-500');
+                label.classList.add('text-gray-800'); // Set back to light theme default text color
+            }
+        });
+    });
+
+});
+</script>
+{% endblock %}

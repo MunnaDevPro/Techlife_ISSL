@@ -118,7 +118,10 @@
 
 </head>
 
-<body class="font-inter leading-normal tracking-normal bg-white">
+<body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
+    
+
+ 
     {% include 'include/navbar.html' %}
 
 
@@ -132,6 +135,7 @@
         <!-- Main Content -->
         <main id="container" class="container mt-24 mx-auto flex-grow min-h-[calc(100vh-128px)] py-6 bg-white">
 
+            
             {% block content %}
             <!-- Page content here -->
             {% if action == 'post_create' %}
