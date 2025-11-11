@@ -134,6 +134,12 @@
 
     <nav class="max-w-7xl mx-auto px-4 py-2 hidden lg:block">
         <ul class="flex items-center justify-start space-x-6">
+            <li>
+                <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Home</a>
+            </li>
+            <li>
+                <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Question</a>
+            </li>
             <li class="group relative">
                 <a href="#" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 flex items-center cursor-pointer">
                     News
@@ -153,9 +159,7 @@
                     </ul>
                 </div>
             </li>
-            <li>
-                <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Popular</a>
-            </li>
+            
             <li>
                 <a hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Business</a>
             </li>

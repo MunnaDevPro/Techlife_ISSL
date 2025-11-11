@@ -9,7 +9,7 @@ from accounts.utils import send_verification_code_email
 from blog_post.models import BlogPost 
 from django.shortcuts import render
 from django.db.models import Sum, Count
-
+from django.contrib.auth.decorators import login_required
 from blog_post.models import BlogPost
 from comments.models import Comment
 from earnings.models import EarningSetting  # replace 'your_app_name' with the actual app name where EarningSetting is defined
@@ -103,7 +103,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.info(request, "Logged out successfully.")
-    return redirect("login")
+    return redirect("homepage")
 
 
 # -------------------- PASSWORD RESET REQUEST --------------------
@@ -256,3 +256,38 @@ def user_dashboard_view(request):
 
 
 
+@login_required
+def profile_update_view(request):
+    user = request.user
+    
+    if request.method == 'POST':
+
+        profile_picture_file = request.FILES.get('profile_picture') 
+        
+ 
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.address_line_1 = request.POST.get('address_line_1', user.address_line_1)
+        user.address_line_2 = request.POST.get('address_line_2', user.address_line_2)
+        user.city = request.POST.get('city', user.city)
+        user.postcode = request.POST.get('postcode', user.postcode)
+        user.country = request.POST.get('country', user.country)
+        user.mobile = request.POST.get('mobile', user.mobile)
+        
+        if profile_picture_file:
+            user.profile_picture = profile_picture_file
+    
+            
+        try:
+            user.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('user_dashboard') 
+        except Exception as e:
+            messages.error(request, f'An error occurred: {e}')
+            
+    context = {
+        'user_data': user, 
+        "action": "profile_update"
+    }
+    
+    return render(request, 'account/demo/profile_update.html', context)

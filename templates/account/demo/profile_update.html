@@ -1,0 +1,115 @@
+{% extends "base.html" %} 
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <div class="bg-white shadow-2xl rounded-2xl p-6 md:p-10 border border-gray-100">
+        
+        <h2 class="text-3xl font-black text-gray-900 mb-8 pb-3 text-center border-b border-blue-100">
+            <i class="fas fa-user-edit mr-2 text-blue-600"></i> Edit Your Profile Information
+        </h2>
+
+        {% for message in messages %}
+            <div class="p-3 mb-5 text-sm font-medium {% if message.tags == 'success' %}text-green-800 bg-green-50 border-l-4 border-green-400{% else %}text-red-800 bg-red-50 border-l-4 border-red-400{% endif %} rounded-lg shadow-sm">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <form method="POST" enctype="multipart/form-data" action="" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="flex flex-col items-center justify-center pb-6 border-b border-gray-100">
+                <label for="profile_picture" class="relative cursor-pointer group">
+                    <img class="h-24 w-24 rounded-full object-cover shadow-lg ring-4 ring-blue-50 ring-opacity-50 transition duration-300 group-hover:opacity-75" 
+                        src="{{ user_data.profile_picture.url }}" 
+                        alt="Current profile picture">
+                    
+                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-full opacity-0 group-hover:opacity-100 transition duration-300">
+                        <i class="fas fa-camera text-white text-xl"></i>
+                    </div>
+                    
+                    <input type="file" name="profile_picture" id="profile_picture" class="hidden">
+                </label>
+                <p class="mt-2 text-sm font-medium text-gray-600">Click image to change</p>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mt-6 mb-3 flex items-center">
+                <i class="fas fa-info-circle mr-2 text-blue-500 text-sm"></i> Personal & Contact Info
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="first_name" class="block text-xs font-medium text-gray-700">First Name</label>
+                    <input type="text" name="first_name" id="first_name" 
+                            value="{{ user_data.first_name|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="last_name" class="block text-xs font-medium text-gray-700">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" 
+                            value="{{ user_data.last_name|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                
+                <div>
+                    <label for="mobile" class="block text-xs font-medium text-gray-700">Mobile Number</label>
+                    <input type="text" name="mobile" id="mobile" 
+                            value="{{ user_data.mobile|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div></div>
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mt-6 mb-3 pt-4 border-t border-gray-100 flex items-center">
+                <i class="fas fa-map-marker-alt mr-2 text-blue-500 text-sm"></i> Address Details
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="address_line_1" class="block text-xs font-medium text-gray-700">Address Line 1</label>
+                    <input type="text" name="address_line_1" id="address_line_1" 
+                            value="{{ user_data.address_line_1|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="address_line_2" class="block text-xs font-medium text-gray-700">Address Line 2 (Optional)</label>
+                    <input type="text" name="address_line_2" id="address_line_2" 
+                            value="{{ user_data.address_line_2|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="city" class="block text-xs font-medium text-gray-700">City</label>
+                    <input type="text" name="city" id="city" 
+                            value="{{ user_data.city|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="postcode" class="block text-xs font-medium text-gray-700">Postcode</label>
+                    <input type="text" name="postcode" id="postcode" 
+                            value="{{ user_data.postcode|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="country" class="block text-xs font-medium text-gray-700">Country</label>
+                    <input type="text" name="country" id="country" 
+                            value="{{ user_data.country|default:'' }}" 
+                            class="mt-1 block w-full border border-gray-300 bg-gray-50 rounded-md shadow-sm p-2 transition focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+            </div>
+
+            ---
+
+            <div class="flex justify-end pt-6 mt-6 border-t border-gray-200">
+                <button type="submit" 
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-bold rounded-xl shadow-lg text-white bg-blue-600 hover:bg-blue-700 transform hover:scale-[1.01] transition duration-200 ease-in-out focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-blue-500">
+                    <i class="fas fa-save mr-2"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
