@@ -25,7 +25,7 @@ source .venv/Scripts/activate
 
 
 # install packages
-uv add -r requirements.text
+uv add -r requirements.txt
 
 
 # Build Tailwind CSS for production

@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from blog_post.models import BlogPost
 from comments.models import Comment
 from earnings.models import EarningSetting  # replace 'your_app_name' with the actual app name where EarningSetting is defined
+from django.utils import timezone
+from datetime import timedelta
+
 
 # -------------------- SIGNUP -------------------
 def signup_view(request):
@@ -184,15 +187,34 @@ def contact_us_view(request):
 
 
 # User dashboard section
+@login_required
 
 def user_dashboard_view(request):
     user = request.user
-
-    user_posts = BlogPost.objects.filter(author=user).select_related('author').prefetch_related('comments')
+    user_blog_posts = BlogPost.objects.filter(author=user).select_related('author','category').prefetch_related('comments').order_by('-created_at')
     
-    total_likes = user_posts.aggregate(total=Sum('likes'))['total'] or 0
-    total_views = user_posts.aggregate(total=Sum('views'))['total'] or 0
-    total_quality = user_posts.aggregate(total=Sum('content_quality'))['total'] or 0
+
+    total_likes = user_blog_posts.aggregate(total=Sum('likes'))['total'] or 0
+    total_views = user_blog_posts.aggregate(total=Sum('views'))['total'] or 0
+    total_quality = user_blog_posts.aggregate(total=Sum('content_quality'))['total'] or 0
+    
+    
+    last_week_start = timezone.now() - timedelta(days=7)
+    views_last_week = total_views / 4
+    
+    
+    last_month_start = timezone.now() - timedelta(days=30) 
+    views_last_month = int(total_views / 3)
+    
+    
+    latest_comment = (
+        Comment.objects
+        .filter(post__author=user) 
+        .order_by('-created_at')   
+        .select_related('post')    
+        .first()         
+    )
+    
 
     comment_count = Comment.objects.filter(post__author=user).count()
     reply_count = Comment.objects.filter(post__author=user).annotate(
@@ -239,7 +261,7 @@ def user_dashboard_view(request):
 
     context = {
         "user": user,
-        "user_posts": user_posts,
+        "user_blog_posts": user_blog_posts,
         "total_views": total_views,
         "total_comments": total_comments,
         "total_likes" : total_likes,
@@ -247,12 +269,15 @@ def user_dashboard_view(request):
         "post_point" : post_point,
         "total_point" : total_point,
         "badge_level" : badge_level,
+        "views_last_week": int(views_last_week),
+        "latest_comment":latest_comment,
+        "views_last_month":views_last_month,
         "action":"user_dashboard"
        
     }
 
     # return render(request, "account/user_dashboard.html", context)
-    return render(request, "account/demo/user_dashboard.html")
+    return render(request, "account/demo/user_dashboard.html", context)
 
 
 
@@ -280,7 +305,7 @@ def profile_update_view(request):
             
         try:
             user.save()
-            messages.success(request, 'Your profile has been updated successfully!')
+            # messages.success(request, 'Your profile has been updated successfully!')
             return redirect('user_dashboard') 
         except Exception as e:
             messages.error(request, f'An error occurred: {e}')

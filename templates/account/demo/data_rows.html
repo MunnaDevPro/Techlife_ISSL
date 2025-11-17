@@ -1,40 +1,23 @@
+{% load static %} {% load humanize %} {% load custom_filters %}
+
 <style>
-/* This custom utility class ensures the progress line is rounded.
+    /* This custom utility class ensures the progress line is rounded.
     Tailwind doesn't have a direct class for stroke-linecap: round on SVG elements.
 */
-.stroke-line-cap-round {
-    stroke-linecap: round;
-}
+    .stroke-line-cap-round {
+        stroke-linecap: round;
+    }
 </style>
 
-
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 lg:col-span-1">
         <h3 class="text-lg font-semibold mb-4 border-b border-gray-200 text-gray-800 pb-2">Earning History (Last 30 Days)</h3>
 
         <div class="w-full flex justify-center items-center h-48">
             <div id="earning-chart" class="relative w-36 h-36" data-progress="75">
                 <svg class="w-full h-full transform -rotate-90">
-                    <circle 
-                        class="text-indigo-200" 
-                        stroke-width="8" 
-                        stroke="currentColor" 
-                        fill="transparent" 
-                        r="66" 
-                        cx="72" 
-                        cy="72"
-                    />
-                    <circle 
-                        class="text-blue-600 transition-all duration-1000 ease-in-out stroke-line-cap-round" 
-                        stroke-width="8" 
-                        stroke="currentColor" 
-                        fill="transparent" 
-                        r="66" 
-                        cx="72" 
-                        cy="72"
-                        style="stroke-dasharray: 414.69; stroke-dashoffset: 414.69;" 
-                    />
+                    <circle class="text-indigo-200" stroke-width="8" stroke="currentColor" fill="transparent" r="66" cx="72" cy="72" />
+                    <circle class="text-blue-600 transition-all duration-1000 ease-in-out stroke-line-cap-round" stroke-width="8" stroke="currentColor" fill="transparent" r="66" cx="72" cy="72" style="stroke-dasharray: 414.69; stroke-dashoffset: 414.69" />
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center text-center text-xs text-gray-500">
                     <span class="text-xl font-bold text-gray-800">$450.50</span>
@@ -71,6 +54,7 @@
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 lg:col-span-2">
         <h3 class="text-lg font-semibold mb-4 border-b border-gray-200 text-gray-800 pb-2">Recent User Activities</h3>
         <div class="space-y-4">
+            {% for post in user_blog_posts|slice:"1" %}
             <div class="flex justify-between items-center border-b border-gray-200 pb-3">
                 <div class="flex items-start space-x-4">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-600 text-white flex-shrink-0">
@@ -78,14 +62,17 @@
                     </div>
                     <div>
                         <p class="font-medium text-gray-800">New Blog Post Published</p>
-                        <p class="text-sm text-gray-500">Title: "Future of AI in Journalism"</p>
+                        <p class="text-sm text-gray-500">Title: "{{ post.title|truncatechars:40 }}"</p>
                     </div>
                 </div>
                 <div class="text-right text-sm text-gray-500">
-                    <p>18 minutes ago</p>
-                    <span class="text-xs text-green-600">50 views</span>
+                    <p>{{ post.created_at|date }}</p>
+                    <span class="text-xs text-green-600">{{ post.views }} views</span>
                 </div>
             </div>
+            {% endfor %}
+
+            {% comment %} question section {% endcomment %}
             <div class="flex justify-between items-center border-b border-gray-200 pb-3">
                 <div class="flex items-start space-x-4">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-green-600 text-white flex-shrink-0">
@@ -101,29 +88,68 @@
                     <span class="text-xs text-yellow-600">3 answers</span>
                 </div>
             </div>
+
+            {% comment %} comment section {% endcomment %}
+            {% if latest_comment %}
             <div class="flex justify-between items-center border-b border-gray-200 pb-3">
                 <div class="flex items-start space-x-4">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-600 text-white flex-shrink-0">
                         <i class="fas fa-comment-alt"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-gray-800">New Comment on your Post</p>
-                        <p class="text-sm text-gray-500">Comment: "Great analysis!"</p>
+                        <p class="font-medium text-gray-800">
+                            New Comment on your post:
+                            {% comment %} <a href="{% url 'blog_detail' slug=latest_comment.post.slug %}" class="text-indigo-600 hover:underline">"{{ latest_comment.post.title|truncatechars:25 }}"</a> {% endcomment %}
+                            {% comment %} <a href="" class="text-indigo-600 hover:underline">"{{ latest_comment.post.title|truncatechars:25 }}"</a> {% endcomment %}
+                            
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            Comment:
+                            <span class="text-gray-800 font-normal">"{{ latest_comment.content|truncatechars:40 }}"</span>
+                        </p>
                     </div>
                 </div>
+
                 <div class="text-right text-sm text-gray-500">
-                    <p>35 mins ago</p>
-                    <span class="text-xs text-green-600">Reply now</span>
+                    <p>{{ latest_comment.created_at|timesince }} ago</p>
+
+                    <a href="{% url 'blog_details' slug=latest_comment.post.slug %}#comment-{{ latest_comment.id }}" class="text-xs text-green-600 hover:text-green-800 hover:transition-colors duration-150">Reply now</a>
+
                 </div>
             </div>
+
+            {% else %}
+            <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+                <div class="flex items-start space-x-4">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-600 text-white flex-shrink-0">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-800">No Recent Activity</p>
+                        <p class="text-sm text-gray-500">
+                            <span class="text-gray-800 font-normal">No comments found on your posts.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-right text-sm text-gray-500">
+                    <p>0 min ago</p>
+
+                    <span class="text-xs text-gray-400">Reply disabled</span>
+                </div>
+            </div>
+            {% endif %}
+
+
+            {% comment %} user section {% endcomment %}
             <div class="flex justify-between items-center border-b border-gray-200 pb-3">
                 <div class="flex items-start space-x-4">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-red-600 text-white flex-shrink-0">
                         <i class="fas fa-user-plus"></i>
                     </div>
                     <div>
-                        <p class="font-medium text-gray-800">New User Registered</p>
-                        <p class="text-sm text-gray-500">Username: NewJournalist24</p>
+                        <p class="font-medium text-gray-800">New Followers</p>
+                        <p class="text-sm text-gray-500">UserName: Tahmidur Rahman</p>
                     </div>
                 </div>
                 <div class="text-right text-sm text-gray-500">
@@ -136,12 +162,11 @@
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex justify-between items-center">
         <div>
             <h3 class="text-lg font-semibold mb-2 text-gray-800">Total Article Views</h3>
-            <div class="text-3xl font-bold text-gray-900">45,850</div>
-            <div class="text-green-600 text-sm font-medium mt-1">+1.5% (Last 7 Days)</div>
+            <div class="text-3xl font-bold text-gray-900">{{ total_views|intcomma }}</div>
+            <div class="text-green-600 text-sm font-medium mt-1">+{{ views_last_week }} (Last 7 Days)</div>
         </div>
         <i class="fas fa-eye text-4xl text-gray-300"></i>
     </div>
@@ -149,8 +174,8 @@
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex justify-between items-center">
         <div>
             <h3 class="text-lg font-semibold mb-2 text-gray-800">Total Forum Answers</h3>
-            <div class="text-3xl font-bold text-gray-900">5,200</div>
-            <div class="text-red-600 text-sm font-medium mt-1">-2.3% (Unanswered Qs)</div>
+            <div class="text-3xl font-bold text-gray-900">105</div>
+            <div class="text-green-600 text-sm font-medium mt-1">+25 (Last 7 Days)</div>
         </div>
         <i class="fas fa-comments text-4xl text-gray-300"></i>
     </div>
@@ -158,47 +183,58 @@
     <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex justify-between items-center">
         <div>
             <h3 class="text-lg font-semibold mb-2 text-gray-800">Total Post Likes</h3>
-            <div class="text-3xl font-bold text-gray-900">10,539</div>
-            <div class="text-green-600 text-sm font-medium mt-1">+8.1% (Engagement Rate)</div>
+
+            <div class="text-3xl font-bold text-gray-900">{{ total_likes|intcomma }}</div>
+
+            <div class="text-sm font-medium mt-1">
+                {% comment %}
+                <i class="fas fa-heart text-green-500"></i>
+                {% endcomment %}
+
+                <span class="text-green-600 font-normal">+ High Reaction Ratio</span>
+                <span class="text-gray-500">(Vs. Total Views)</span>
+            </div>
         </div>
         <i class="fas fa-heart text-4xl text-gray-300"></i>
     </div>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const chart = document.getElementById('earning-chart');
-    if (!chart) return;
+        const chart = document.getElementById('earning-chart');
+        if (!chart) return;
 
-    const progressElement = chart.querySelector('circle:nth-child(2)'); // Foreground circle
-    const progressValue = parseInt(chart.dataset.progress) || 0; // 75%
-    const circumference = 2 * Math.PI * 66; // 66 is the radius (r)
+        const progressElement = chart.querySelector('circle:nth-child(2)'); // Foreground circle
+        const progressValue = parseInt(chart.dataset.progress) || 0; // 75%
+        const circumference = 2 * Math.PI * 66; // 66 is the radius (r)
 
-    // Set the initial state (fully hidden)
-    progressElement.style.strokeDasharray = circumference;
-    progressElement.style.strokeDashoffset = circumference;
-    
-    // Calculate the final offset based on the percentage
-    const offset = circumference - (progressValue / 100) * circumference;
-    
-    // Intersection Observer to trigger animation on scroll
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // When element enters viewport, start animation
-                progressElement.style.strokeDashoffset = offset;
-                
-                // Stop observing once animated
-                observer.unobserve(entry.target);
+        // Set the initial state (fully hidden)
+        progressElement.style.strokeDasharray = circumference;
+        progressElement.style.strokeDashoffset = circumference;
+
+        // Calculate the final offset based on the percentage
+        const offset = circumference - (progressValue / 100) * circumference;
+
+        // Intersection Observer to trigger animation on scroll
+        const observer = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        // When element enters viewport, start animation
+                        progressElement.style.strokeDashoffset = offset;
+
+                        // Stop observing once animated
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            {
+                // Options
+                root: null, // Use the viewport as the root
+                threshold: 0.5 // Trigger when 50% of the element is visible
             }
-        });
-    }, {
-        // Options
-        root: null, // Use the viewport as the root
-        threshold: 0.5 // Trigger when 50% of the element is visible
-    });
+        );
 
-    observer.observe(chart);
-});
+        observer.observe(chart);
+    });
 </script>

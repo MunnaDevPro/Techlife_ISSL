@@ -44,7 +44,7 @@ class BlogPostAdmin(ModelAdmin):
 
     fieldsets = (
         ("Basic Info", {
-            "fields": ("title", "subtitle", "slug", "category", "tags", "author", "status"),
+            "fields": ("title", "subtitle", "slug", "category", "tags", "author", "status", "views"),
         }),
         ("Media", {
             "fields": ("featured_image", "featured_image_url"),
