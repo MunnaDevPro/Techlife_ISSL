@@ -515,9 +515,6 @@
   .-mr-3 {
     margin-right: calc(var(--spacing) * -3);
   }
-  .mr-1 {
-    margin-right: calc(var(--spacing) * 1);
-  }
   .mr-2 {
     margin-right: calc(var(--spacing) * 2);
   }
@@ -649,9 +646,6 @@
   }
   .inline-flex {
     display: inline-flex;
-  }
-  .table {
-    display: table;
   }
   .aspect-video {
     aspect-ratio: var(--aspect-video);
@@ -2061,9 +2055,6 @@
   .text-indigo-600 {
     color: var(--color-indigo-600);
   }
-  .text-indigo-700 {
-    color: var(--color-indigo-700);
-  }
   .text-neutral-500 {
     color: var(--color-neutral-500);
   }
@@ -2697,13 +2688,6 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-indigo-700);
-      }
-    }
-  }
-  .hover\:text-indigo-900 {
-    &:hover {
-      @media (hover: hover) {
-        color: var(--color-indigo-900);
       }
     }
   }

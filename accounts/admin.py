@@ -1,30 +1,45 @@
+# app_name/admin.py
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from accounts.models import CustomUserModel, EmailVerificationCode
-
-
-
-admin.site.register(EmailVerificationCode)
+from django.utils.safestring import mark_safe 
+from .models import CustomUserModel 
 
 @admin.register(CustomUserModel)
 class CustomUserAdmin(UserAdmin):
-    model = CustomUserModel
-    list_display = ( "email", "id", "is_verified", "first_name", "last_name", "mobile", "is_active", "is_staff")
-    list_filter = ("is_verified", "is_active", "is_staff")
-    search_fields = ("email", "first_name", "last_name", "mobile")
-    ordering = ("-date_joined",)
+    list_display = (
+        'user_photo',  
+        'email', 
+        'first_name', 
+        'last_name', 
+        'is_verified', 
+        'is_staff', 
+    )
+    
+    ordering = ('email',) 
 
     fieldsets = (
-        (None, {"fields": ("email", "password", "is_verified")}),
-        ("Personal Info", {"fields": ("first_name", "last_name", "profile_picture", "mobile")}),
-        ("Address", {"fields": ("address_line_1", "address_line_2", "city", "postcode", "country")}),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
-        ("Important dates", {"fields": ("last_login", "date_joined")}),
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'mobile', 'profile_picture')}),
+        ('Address', {'fields': ('address_line_1', 'address_line_2', 'city', 'postcode', 'country')}),
+        ('Permissions', {'fields': ('is_active', 'is_verified', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
+    
 
-    add_fieldsets = (
-        (None, {
-            "classes": ("wide",),
-            "fields": ("email", "password1", "password2", "is_verified", "is_active", "is_staff"),
-        }),
-    )
+    def user_photo(self, obj):
+
+        if obj.profile_picture:
+            img_url = obj.profile_picture.url
+
+            img_url = obj.profile_picture.url 
+            
+        # Return safe HTML for the image thumbnail
+        return mark_safe(
+            f'<img src="{img_url}" width="40" height="40" style="border-radius: 50%; object-fit: cover; border: 1px solid #ccc;" />'
+        )
+
+    user_photo.short_description = 'Photo' 
+    
+    search_fields = ('email', 'first_name', 'last_name')
+    list_filter = ('is_verified', 'is_staff', 'is_superuser', 'created_at')
