@@ -7,8 +7,17 @@ from blog_post.models import (
     Review,
     BlogAdditionalImage,
     Like,
+    SubCategory,
 )
 from django.utils.html import format_html
+
+
+class SubCategoryInline(admin.TabularInline):
+    model = SubCategory
+    extra = 1 
+    classes = ["collapse"]
+    fields = ('name', 'description', 'slug',)
+    readonly_fields = ('slug',)
 
 # Inline classes
 class ReviewInline(admin.TabularInline):
@@ -30,6 +39,23 @@ class CategoryAdmin(ModelAdmin):
     search_fields = ("name",)
     ordering = ("-created_at",)
     list_filter = ("created_at",)
+    
+    inlines = [SubCategoryInline]
+
+
+# --- SUB-CATEGORY ADMIN ---
+@admin.register(SubCategory)
+class SubCategoryAdmin(ModelAdmin):
+    list_display = ("name", "category_name", "slug", "created_at")
+    search_fields = ("name", "category__name")
+    ordering = ("category__name", "name")
+    list_filter = ("category", "created_at")
+    autocomplete_fields = ("category",)
+
+    def category_name(self, obj):
+        return obj.category.name
+    
+    category_name.short_description = "Category"
 
 
 # BLOG POST ADMIN (main section)

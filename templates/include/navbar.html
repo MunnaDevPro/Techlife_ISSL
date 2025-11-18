@@ -86,7 +86,7 @@
     }
 </style>
 
-<header class="navbar_for_hidden bg-white border-b border-gray-300 shadow-sm fixed top-0 w-full z-50 font-inter text-gray-300" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+<header class="navbar_for_hidden bg-white border-b border-gray-300 shadow-sm fixed top-0 w-full z-50 font-inter text-gray-300" >
     <div class="flex items-center justify-between max-w-7xl mx-auto py-3 px-4 border-b border-gray-100">
         <div class="flex items-center space-x-4 w-1/3 justify-start lg:w-auto lg:flex-grow-0 max-w-7">
             <button id="menu-toggle" class="lg:hidden text-xl text-gray-700 cursor-pointer focus:outline-none">
@@ -135,10 +135,13 @@
     <nav class="max-w-7xl mx-auto px-4 py-2 hidden lg:block">
         <ul class="flex items-center justify-start space-x-6">
             <li>
-                <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Home</a>
+                <a href="{% url 'homepage' %}" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Home</a>
             </li>
             <li>
                 <a hx-get="{% url 'popular_blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Question</a>
+            </li>
+             <li>
+                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Create News</a>
             </li>
             <li class="group relative">
                 <a href="#" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 flex items-center cursor-pointer">
@@ -160,24 +163,22 @@
                 </div>
             </li>
             
-            <li>
-                <a hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Business</a>
-            </li>
-            <li>
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Sports</a>
-            </li>
-            <li>
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Entertainment</a>
-            </li>
-            <li>
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Tech & Startup</a>
-            </li>
-            <li>
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Programming</a>
-            </li>
-            <li>
-                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Create News</a>
-            </li>
+
+            
+            
+            {% for category in popular_categories|slice:"4" %}
+                <li>
+                <!-- <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">{{ category.name }}</a> -->
+                <a href="{% url 'category_post' category.slug %}" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">{{ category.name }}</a>
+
+                </li>
+            {% endfor %}
+                
+           
+            
+
+
+           
 
             <li class="group relative">
                 <a href="#" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 flex items-center cursor-pointer">
@@ -185,8 +186,8 @@
                     <i class="fas fa-chevron-down text-xs ml-1 text-gray-500 group-hover:text-blue-600 transition duration-150"></i>
                 </a>
                 <div class="absolute rounded-b-xl right-0 top-full mt-0 w-96 bg-white border border-gray-200 shadow-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-2 transition-all duration-300 ease-in-out">
-                    <ul class="py-2 grid grid-cols-2 gap-y-1 w-full px-4 divide-x divide-gray-200">
-                        {% for category in categories %}
+                    <ul class="py-4  grid grid-cols-2 gap-y-1 w-full px-4 divide-x divide-gray-200">
+                        {% for category in popular_categories|slice:"4:" %}
                         <li class="col-span-1">
                             <a href="{% url 'category_post' category.slug %}" class="text-gray-700 text-md px-3 py-1 hover:bg-gray-100 block rounded-md hover:text-blue-600 transition duration-150">{{ category.name }}</a>
                         </li>

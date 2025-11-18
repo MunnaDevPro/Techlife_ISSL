@@ -1,125 +1,211 @@
+<!-- Load Tailwind CSS CDN - (Ideally this script should be in your base.html <head>) -->
+{% extends 'base.html' %}
 {% load static %}
 
-<!-- SEO Data for HTMX -->
-<div data-title="{{ category.name }} - TechLife Blog" style="display: none"></div>
 
-<div class="category-list mx-auto">
-    <div class="collapse collapse-arrow rounded-box mb-3">
-        <div class="relative w-full">
-            <!-- Left Scroll Button -->
-            <button id="leftBtn" class="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10">&#10094;</button>
+{% block content %}
+    
 
-            <!-- Scrollable container -->
-            <ul x-data="{ active: '{{ category.slug }}' }" id="catScroll" class="flex flex-nowrap space-x-3 overflow-x-auto scrollbar-hide px-10 py-2 scroll-smooth whitespace-nowrap">
-                <!-- Dynamic Categories -->
-                {% for cat in categories %}
-                <li
-                    @click="active = '{{ cat.slug }}'"
-                    :class="active === '{{ cat.slug }}' 
-          ? 'bg-blue-400 text-white border-blue-500 shadow-md' 
-          : 'bg-white text-gray-700 border-gray-300 shadow-md'"
-                    class="rounded-lg px-3 py-1 cursor-pointer border inline-flex items-center gap-2 transition-all duration-200 hover:bg-gray-200">
-                    <a hx-get="{% url 'category_post' cat.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-md">{{ cat.name }}</a>
-                </li>
-                {% endfor %}
-            </ul>
+    
+    <style>
+        /* Custom styles to match the newsprint feel and color palette */
+        :root {
+            --green-header: #388e3c; /* Darker green for header */
+            --text-primary: #333333;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+        }
 
-            <!-- Right Scroll Button -->
-            <button id="rightBtn" class="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 p-2 rounded-full shadow-md z-10">&#10095;</button>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background-color: #f7f7f7;
+        }
+
+        .header-bg {
+            /* background-color: var(--green-header); */
+            /* Simulating the pattern shown in the image */
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 10px, transparent 10px, transparent 20px);
+        }
+
+        .in-pictures-bg {
+            background-image: url('https://placehold.co/400x500/1e293b/ffffff?text=IN+PICTURES+AD');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+
+<!-- Start of the main content section -->
+<section class="max-w-7xl mx-auto bg-white border-t border-b border-gray-200">
+
+    <!-- TOP HEADER BAR (Green Background) -->
+    <div class="header-bg bg-blue-500 p-2 md:px-6">
+        <h1 class="text-3xl font-bold text-white tracking-wider">{{ category.name }}</h1>
+    </div>
+
+    <!-- CATEGORY NAVIGATION/TABS -->
+    <nav class="border-b border-gray-200 md:px-6">
+        <ul class="flex overflow-x-auto whitespace-nowrap text-sm font-medium text-gray-700">
+            <!-- Updated <li> items to contain <a> tags for navigation -->
+            <li>
+                <a href="#cricket" class="block px-4 py-3 border-b-4 hover:border-blue-600 text-blue-600">Cricket</a>
+            </li>
+            <li>
+                <a href="#football" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Football</a>
+            </li>
+            <li>
+                <a href="#moresports" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">More Sports</a>
+            </li>
+            <li>
+                <a href="#tennis" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Tennis</a>
+            </li>
+            <li>
+                <a href="#womenssports" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Women's Sports</a>
+            </li>
+            <li>
+                <a href="#toppicks" class="block px-4 py-3 border-b-4 border-transparent hover:border-blue-500 hover:text-blue-600">Top picks</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- MAIN FEATURE SECTION -->
+    <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-12 gap-6 border-b border-gray-200">
+
+        <!-- 1. MAIN LEFT FEATURE (Image and Story) -->
+        <div class="md:col-span-2 lg:col-span-6 space-y-4">
+            <!-- Large Image -->
+            <div class="w-full h-80 bg-gray-100 overflow-hidden">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQebuBh5omO5Rd8xSyyyxjDK1OwnbXmNpX8Pw&s" alt="Manjurul leading investigation" class="w-full h-full object-cover rounded-md">
+            </div>
+
+            <!-- Main Story Text -->
+            <div class="space-y-4">
+                <h2 class="text-1xl md:text-2xl font-bold line-clamp-1 leading-tight">Manjurul willing to face investigation</h2>
+                <p class="text-gray-700 text-base line-clamp-3">Former head coach of the Bangladesh women's cricket team, Manjurul Islam, has said he will face any forthcoming investigation and present his side of the story after being accused of a disciplinary breach.</p>
+
+                <!-- Sub Story 1
+                <div class="pt-4 border-t border-gray-200">
+                    <h3 class="line-clamp-2 text-lg font-semibold hover:text-green-700 cursor-pointer">Guardiola says 'numbers are insane' as he reaches 1,000 games in charge</h3>
+                    <p class="line-clamp-2 text-sm text-gray-600">Manchester City boss Pep Guardiola admitted Friday he had enjoyed "insane" success as he prepares for the 1,000th game of a spectacular managerial career against Liverpool.</p>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- 2. CENTRAL HEADLINES -->
+        <div class="md:col-span-1 lg:col-span-4 space-y-3">
+            <!-- Headline Item 1 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+            <!-- Headline Item 2 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <!-- Headline Item 2 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+            <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
+                <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">Women's World Cup final matches men's numbers, sets new records in India</p>
+                <img src="https://placehold.co/100x80/d1d5db/333?text=WWC" alt="Womens World Cup" class="w-16 h-16 object-cover flex-shrink-0 rounded">
+            </div>
+
+
+        </div>
+
+        <!-- 3. RIGHT AD/PICTURES BLOCK -->
+        <div class="hidden lg:block lg:col-span-2 relative p-4 bg-gray-900 text-white rounded overflow-hidden in-pictures-bg">
+            <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+            <div class="relative flex flex-col justify-between h-full">
+                <!-- <div class="text-right text-xs font-serif italic text-yellow-300">The Daily Star</div> -->
+                <div>
+                    <!-- <h2 class="text-4xl font-extrabold mb-2">IN PICTURES</h2> -->
+                    <!-- <p class="text-sm italic mb-4">CLICK HERE</p> -->
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Category Header -->
-    <div class="mb-6 text-center">
-        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ category.name }}</h1>
-        <p class="text-gray-600 mt-2">Explore {{ blogs.count }} article{{ blogs.count|pluralize }} in {{ category.name }}</p>
-    </div>
-
-    <!-- Blog Posts Grid -->
-    <!-- Blog Posts Grid -->
-    <!-- Blog Posts Grid -->
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 mt-6 mx-auto">
-        {% for blog in blogs %}
-        <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="bg-white rounded-lg overflow-hidden hover:drop-shadow-lg duration-200 pb-2 mb-6 cursor-pointer border border-gray-200">
-            <!-- Image section -->
-            <div class="relative p-2 pt-3">
-                {% if blog.featured_image %}
-                <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
-                {% elif blog.featured_image_url %}
-                <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
-                {% else %}
-                <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-44 object-cover rounded-sm" />
-                {% endif %}
-            </div>
-
-            <!-- Category name and date -->
-            <div class="flex flex-row items-center justify-between mt-2 px-3 py-2">
-                <span class="bg-blue-100 text-gray-800 px-3 py-1 text-xs rounded-full font-medium hover:bg-blue-500 hover:text-white duration-300">{{ blog.category.name|truncatewords:1 }}</span>
-                <p class="text-gray-500 text-sm">{{ blog.created_at|date:"d M, Y" }}</p>
-            </div>
-
-            <!-- Title & Description -->
-            <div class="mb-2 px-3">
-                <h3 class="font-semibold text-gray-800 text-md line-clamp-1 hover:text-blue-500 duration-300 font-inter">{{ blog.title }}</h3>
-                <div class="mt-2">
-                    <p class="text-gray-500 font-normal text-xs h-15 font-inter">{{ blog.description|truncatechars:140 }}</p>
-                </div>
-            </div>
-
-            <!-- Read more & Stats -->
-            <div class="flex items-center justify-between px-3">
-                <span class="flex flex-row gap-1 text-xs items-center text-blue-500 font-normal group cursor-pointer">
-                    Read more
-                    <svg class="w-4 h-4 group-hover:translate-x-1 duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+    <!-- BOTTOM ROW: VIDEO and SECONDARY STORY -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
+        <!-- Video Story -->
+        <div class="flex items-start space-x-4">
+            <div class="relative w-28 h-20 flex-shrink-0 bg-gray-900 rounded overflow-hidden">
+                <img src="https://placehold.co/120x80/e5e7eb/333?text=Video" alt="Video Placeholder" class="w-full h-full object-cover opacity-70">
+                <!-- Play button icon (SVG or simple text) -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-white bg-black bg-opacity-50 rounded-full p-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 5.4l.7-.7c.3-.3.8-.3 1.1 0L14 10l-5.9 5.3c-.3.3-.8.3-1.1 0l-.7-.7c-.3-.3-.3-.8 0-1.1L10.9 10 6.3 6.5c-.3-.3-.3-.8 0-1.1z"/>
                     </svg>
-                </span>
-
-                <!-- Stats -->
-                <div class="flex items-center text-gray-600 text-sm gap-5 mt-3">
-                    <span class="flex items-center gap-1">
-                        <i class="fa-solid fa-eye"></i>
-                        {{ blog.views }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                        <i class="fa-solid fa-thumbs-up"></i>
-                        {{ blog.likes }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                        <i class="fa-solid fa-share-nodes"></i>
-                        {{ blog.shares.count }}
-                    </span>
                 </div>
             </div>
-        </a>
-        {% empty %}
-        <div class="col-span-full text-center py-12">
-            <div class="max-w-md mx-auto">
-                <div class="text-6xl mb-4">📝</div>
-                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Articles Found</h3>
-                <p class="text-gray-500">There are no published articles in the {{ category.name }} category yet.</p>
-                <a hx-get="{% url 'blogs' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" hx-swap="innerHTML" class="inline-block mt-4 px-4 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition-colors cursor-pointer">Browse All Articles</a>
+            <div>
+                <h3 class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">Watch | Bangladesh cricket: Is the old culture of interference back?</h3>
+                <p class="text-sm text-gray-600 mt-1">BCB president Aminul Islam Bulbul has stated that he will "intervene" from the Ireland series onwards to ensure team stability...</p>
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Secondary Story -->
+        <div class="space-y-1">
+            <h3 class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">Financial safeguards in place, but integrity unchecked</h3>
+            <p class="text-sm text-gray-600">While the Bangladesh Cricket Board (BCB) has implemented financial safeguards to prevent a repeat of last year's scandal, the board's integrity remains under scrutiny.</p>
+        </div>
     </div>
- 
-</div>
-   <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const leftBtn = document.getElementById('leftBtn');
-            const rightBtn = document.getElementById('rightBtn');
-            const catScroll = document.getElementById('catScroll');
 
-            if (leftBtn && rightBtn && catScroll) {
-                leftBtn.addEventListener('click', () => {
-                    catScroll.scrollBy({ left: -200, behavior: 'smooth' });
-                });
+    <!-- CRICKET SECTION DIVIDER -->
+    <div class="py-6 border-y border-gray-200 flex justify-center items-center relative">
+        <h2 class="text-2xl font-bold uppercase tracking-widest">Cricket</h2>
+        <span class="ml-3 text-2xl text-blue-700"> &gt; </span>
+    </div>
 
-                rightBtn.addEventListener('click', () => {
-                    catScroll.scrollBy({ left: 200, behavior: 'smooth' });
-                });
-            }
-        });
-    </script>
+    <!-- CRICKET NEWS GRID -->
+    <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+        <!-- Article 1 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Emons+Joy" alt="Emon's Joy" class="w-full aspect-video object-cover rounded-md">
+            <h3 class="text-lg font-bold hover:text-blue-600 cursor-pointer line-clamp-2">Emon six for in rain as Afghanistan U-19s go 2-1 up</h3>
+            <p class="text-sm text-gray-700 line-clamp-4">Bangladesh youth could not secure a victory against their counterpart with a dramatic six for from Emon's excellent bowling, giving Afghanistan the lead.</p>
+        </div>
+
+        <!-- Article 1 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Emons+Joy" alt="Emon's Joy" class="w-full aspect-video object-cover rounded-md">
+            <h3 class="text-lg font-bold hover:text-blue-600 cursor-pointer line-clamp-2">Emon six for in rain as Afghanistan U-19s go 2-1 up</h3>
+            <p class="text-sm text-gray-700 line-clamp-4">Bangladesh youth could not secure a victory against their counterpart with a dramatic six for from Emon's excellent bowling, giving Afghanistan the lead.</p>
+        </div>
+
+        <!-- Article 3 -->
+        <!-- Article 1 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Emons+Joy" alt="Emon's Joy" class="w-full aspect-video object-cover rounded-md">
+            <h3 class="text-lg font-bold hover:text-blue-600 cursor-pointer line-clamp-2">Emon six for in rain as Afghanistan U-19s go 2-1 up</h3>
+            <p class="text-sm text-gray-700 line-clamp-4">Bangladesh youth could not secure a victory against their counterpart with a dramatic six for from Emon's excellent bowling, giving Afghanistan the lead.</p>
+        </div>
+
+        <!-- Article 4 -->
+        <!-- Article 1 -->
+        <div class="space-y-2">
+            <img src="https://placehold.co/400x250/d1d5db/333?text=Emons+Joy" alt="Emon's Joy" class="w-full aspect-video object-cover rounded-md">
+            <h3 class="text-lg font-bold hover:text-blue-600 cursor-pointer line-clamp-2">Emon six for in rain as Afghanistan U-19s go 2-1 up</h3>
+            <p class="text-sm text-gray-700 line-clamp-4">Bangladesh youth could not secure a victory against their counterpart with a dramatic six for from Emon's excellent bowling, giving Afghanistan the lead.</p>
+        </div>
+    </div>
+
+   
+
+</section>
+<!-- End of the main content section -->
+
+
+{% endblock content %}

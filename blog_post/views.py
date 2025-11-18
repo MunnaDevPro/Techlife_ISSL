@@ -117,6 +117,8 @@ def home(request):
     latest_blog = (
         BlogPost.objects.filter(status="published").order_by("-created_at").first()
     )
+    
+    all_category = Category.objects.all()
 
     # Get top 5 published blogs for carousel
     carousel_blogs = BlogPost.objects.filter(status="published").order_by(
@@ -247,6 +249,7 @@ def home(request):
         "Teacnology_related_posts":Teacnology_related_posts,
         "programming_related_posts":programming_related_posts,
         "most_viewed_blogs":most_viewed_blogs,
+        "all_category":all_category,
         
         
         "action" : "home_page",
@@ -556,8 +559,6 @@ def category_post(request, slug):
     return render(request, "components/category/category_post.html", context)
 
 
-def category_wise_post(request):
-    return render(request, "components/category/category.html")
 
 def popular_category_post(request, slug):
     popular_category = get_object_or_404(Category, slug=slug)
