@@ -25,12 +25,6 @@
         /* Simulating the pattern shown in the image */
         background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .05) 10px, transparent 10px, transparent 20px);
     }
-
-    .in-pictures-bg {
-        background-image: url('https://placehold.co/400x500/1e293b/ffffff?text=IN+PICTURES+AD');
-        background-size: cover;
-        background-position: center;
-    }
 </style>
 
 <!-- Start of the main content section -->
@@ -47,8 +41,8 @@
 
             {% for sub_cat in category.subcategories.all %}
             <li>
-                <a href="#{{ sub_cat }}"
-                    class="block px-4 py-3 border-b-4 hover:border-blue-500 hover:text-blue-500">{{ sub_cat.name }}</a>
+                <a href="#{{ sub_cat }}" class="block px-4 py-3 border-b-4 hover:border-blue-500 hover:text-blue-500">{{
+                    sub_cat.name }}</a>
             </li>
             {% endfor %}
 
@@ -79,7 +73,10 @@
                 </div>
 
                 <div class="space-y-4">
-                    <h2 class="text-1xl md:text-2xl font-bold line-clamp-1 leading-tight">{{ blog.title }}</h2>
+                    <h2 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML"
+                        hx-push-url="true"
+                        class="cursor-pointer text-1xl md:text-2xl font-bold line-clamp-1 leading-tight hover:text-blue-500">
+                        {{ blog.title }}</h2>
                     <p class="text-gray-700 text-base line-clamp-3">{{ blog.description }}</p>
                 </div>
                 {% endfor %}
@@ -90,7 +87,8 @@
             <div class="md:col-span-1 lg:col-span-4 space-y-3">
 
                 {% for blog in blogs|slice:"1:6" %}
-                <a href="{% url 'blog_details' blog.slug %}" class="block">
+                <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                    class="block group">
                     <div class="flex items-center space-x-3 pb-4 border-b border-gray-200">
 
                         <p class="text-sm font-semibold hover:text-blue-600 cursor-pointer flex-1 line-clamp-2">
@@ -101,13 +99,14 @@
 
                             {% if blog.featured_image %}
                             <img src="{{ blog.featured_image.url }}" alt="{{ blog.title|default:'Headline Image' }}"
-                                class="w-full h-full object-cover">
+                                class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
                             {% elif blog.featured_image_url %}
                             <img src="{{ blog.featured_image_url }}" alt="{{ blog.title|default:'Headline Image' }}"
-                                class="w-full h-full object-cover">
+                                class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
                             {% else %}
                             <img src="https://placehold.co/100x80/d1d5db/333?text=NEWS"
-                                alt="{{ blog.title|default:'Placeholder Image' }}" class="w-full h-full object-cover">
+                                alt="{{ blog.title|default:'Placeholder Image' }}"
+                                class="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105">
                             {% endif %}
 
                         </div>
@@ -120,31 +119,36 @@
 
             <!-- 3. RIGHT AD/PICTURES BLOCK -->
             <div
-                class="hidden lg:block lg:col-span-2 relative p-4 bg-gray-900 text-white rounded overflow-hidden in-pictures-bg">
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-                <div class="relative flex flex-col justify-between h-full">
-                    <!-- <div class="text-right text-xs font-serif italic text-yellow-300">The Daily Star</div> -->
-                    <div>
-                        <!-- <h2 class="text-4xl font-extrabold mb-2">IN PICTURES</h2> -->
-                        <!-- <p class="text-sm italic mb-4">CLICK HERE</p> -->
-                    </div>
+                class="hidden lg:block lg:col-span-2 relative h-[400px] p-4 bg-gray-500 text-white rounded overflow-hidden in-pictures-bg">
+                <div class="absolute inset-0 bg-gray-500 bg-opacity-30"></div>
+
+                <div class="relative h-full flex items-center justify-center">
+
+                    <span class="text-4xl font-extrabold tracking-widest uppercase opacity-70">
+                        <span class="transform rotate-270">
+                            ADD SECTION
+                        </span>
+                    </span>
+
                 </div>
             </div>
         </div>
 
         <!-- BOTTOM ROW: VIDEO and SECONDARY STORY -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4 group ">
 
-            {% for blog in blogs|slice:"4:5" %}
+            {% for blog in blogs|slice:"6:7" %}
             <div class="flex items-start space-x-4">
                 <div class="relative w-28 h-20 flex-shrink-0 bg-gray-900 rounded overflow-hidden">
                     {% if blog.featured_image %}
-                    <img src="{{ blog.featured_image.url }}" alt="No image" class="w-full h-full object-cover opacity-70">
+                    <img src="{{ blog.featured_image.url }}" alt="No image"
+                        class="w-full h-full object-cover opacity-70 transition-transform duration-500 ease-in-out group-hover:scale-105">
                     {% elif blog.featured_image_url %}
-                    <img src="{{ blog.featured_image_url }}" alt="No image" class="w-full h-full object-cover opacity-70">
+                    <img src="{{ blog.featured_image_url }}" alt="No image"
+                        class="w-full h-full object-cover opacity-70 transition-transform duration-500 ease-in-out group-hover:scale-105">
                     {% else %}
                     <img src="https://placehold.co/120x80/e5e7eb/333?text=Video" alt="No image"
-                        class="w-full h-full object-cover opacity-70">
+                        class="w-full h-full object-cover opacity-70 transition-transform duration-500 ease-in-out group-hover:scale-105">
                     {% endif %}
                     <!-- Play button icon (SVG or simple text) -->
                     <div class="absolute inset-0 flex items-center justify-center">
@@ -152,7 +156,8 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">
+                    <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML"
+                        hx-push-url="true" class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">
                         {{ blog.title }}
                     </h3>
                     <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ blog.description }}</p>
@@ -160,10 +165,12 @@
             </div>
             {% endfor %}
 
+
             <!-- Secondary Story -->
-            {% for blog in blogs|slice:"5:6" %}
+            {% for blog in blogs|slice:"7:8" %}
             <div class="space-y-1">
-                <h3 class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">
+                <h3 hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML"
+                    hx-push-url="true" class="text-lg font-bold hover:text-blue-700 cursor-pointer line-clamp-1">
                     {{ blog.title }}
                 </h3>
                 <p class="text-sm text-gray-600 line-clamp-2">{{ blog.description }}</p>
@@ -171,59 +178,69 @@
             {% endfor %}
         </div>
 
-        {% for featured_sub_cat in category.subcategories.all|slice:"1" %}
 
-            <div id="{{ featured_sub_cat }}" class="py-6 border-y border-gray-200 flex justify-center items-center relative">
-                <h2 class="text-2xl font-bold uppercase tracking-widest">{{ featured_sub_cat.name }}</h2>
-                <span class="ml-3 text-2xl text-blue-700"> &gt; </span>
+        {% for featured_sub_cat, sub_blogs in subcategory_blogs_map.items|slice:"1" %}
+
+            <div id="{{ featured_sub_cat.slug }}"
+                class="mt-5 py-6 border-y border-gray-200 flex justify-center items-center relative">
+                <h2 class="text-2xl font-bold">{{ featured_sub_cat.name }}</h2>
+                <span class="ml-3 text-2xl text-blue-500"> &gt; </span>
             </div>
 
             <div class="p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                {% for post in blogs %}
 
-                    {% if post.subcategory == featured_sub_cat %}
-                        {% if forloop.counter0 < 4 %}
+                {% for post in sub_blogs %}
 
-                            <a hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
-                                class="block group">
-                                <div class="space-y-2">
+                {% if forloop.counter0 < 4 %} <a hx-get="{% url 'blog_details' post.slug %}" hx-target="#container"
+                    hx-swap="innerHTML" hx-push-url="true" class="block group">
+                    <div class="space-y-2">
 
-                                    <div class="w-full aspect-video overflow-hidden rounded-md bg-gray-100 cursor-pointer">
-                                        {% if post.featured_image %}
-                                        <img src="{{ post.featured_image.url }}" alt="{{ post.title|default:'Blog Post Image' }}"
-                                            class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
-                                        {% elif post.featured_image_url %}
-                                        <img src="{{ post.featured_image_url }}" alt="{{ post.title|default:'Blog Post Image' }}"
-                                            class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
-                                        {% else %}
-                                        <img src="https://placehold.co/400x250/d1d5db/333?text=NEWS"
-                                            alt="{{ post.title|default:'Placeholder Image' }}" class="w-full h-full object-cover">
-                                        {% endif %}
-                                    </div>
+                        <div class="w-full aspect-video overflow-hidden rounded-md bg-gray-100 cursor-pointer">
+                            {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|default:'Blog Post Image' }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                            {% elif post.featured_image_url %}
+                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|default:'Blog Post Image' }}"
+                                class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                            {% else %}
+                            <img src="https://placehold.co/400x250/d1d5db/333?text=NEWS"
+                                alt="{{ post.title|default:'Placeholder Image' }}" class="w-full h-full object-cover">
+                            {% endif %}
+                        </div>
 
-                                    <h3
-                                        class="text-lg font-bold line-clamp-2 transition-colors duration-200 group-hover:text-blue-700 cursor-pointer">
-                                        {{ post.title }}
-                                    </h3>
-                                    <p class="text-sm text-gray-700 line-clamp-4">
-                                        {{ post.description|default:post.description|safe|truncatewords:40 }}
-                                    </p>
-                                </div>
-                            </a>
-                        {% endif %}
+                        <h3
+                            class="text-lg font-bold line-clamp-2 transition-colors duration-200 group-hover:text-blue-700 cursor-pointer">
+                            {{ post.title }}
+                        </h3>
+                        <p class="text-sm text-gray-700 line-clamp-4">
+                            {{ post.description|default:post.description|safe|truncatewords:40 }}
+                        </p>
+                    </div>
+                    </a>
                     {% endif %}
 
-                
-                {% endfor %}
+                    {% endfor %}
 
+            </div>
+
+            <div class="flex items-center justify-center p-8">
+                <button class="px-6 py-2 text-base font-semibold rounded-lg cursor-pointer
+                            text-blue-600 border-2 border-blue-600 bg-transparent
+                            transition duration-300 ease-in-out 
+                            hover:text-white hover:bg-blue-600 
+                            active:scale-95 
+                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                        ">
+                    See More
+                </button>
             </div>
 
         {% empty %}
             <div class="py-6 text-center border-y border-gray-200">
                 <h2 class="text-2xl font-bold uppercase tracking-widest">{{ category.name }} Stories</h2>
             </div>
-            <p class="p-4 text-gray-500 text-center">No subcategories found for this section.</p>
+            <p class="p-4 text-gray-500 text-center">No posts found in any subcategories for this section.</p>
         {% endfor %}
 
     {% else %}
@@ -240,13 +257,11 @@
                 We currently do not have any published posts in the {{ category.name }} category. Please check back soon!
             </p>
 
-            {% comment %} <a href="{% url 'homepage' %}"
-                class=" px-8 py-2 bg-blue-600 text-white font-semibold text-lg rounded-xl shadow-md hover:bg-blue-600 ">
-                Go to Homepage
-            </a> {% endcomment %}
 
         </div>
     {% endif %}
+
+
 
 </section>
 <!-- End of the main content section -->

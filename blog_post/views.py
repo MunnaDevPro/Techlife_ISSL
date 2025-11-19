@@ -535,6 +535,17 @@ def category_post(request, slug):
         .select_related("category")
         .prefetch_related("shares")
     )
+    
+    subcategory_blogs_map = {}
+    
+    for subcategory in category.subcategories.all():
+        sub_blogs = (
+            BlogPost.objects.filter(subcategory=subcategory, status="published")
+            .select_related("category", "subcategory")
+            .prefetch_related("shares")
+        )
+        if sub_blogs.exists():
+            subcategory_blogs_map[subcategory] = sub_blogs
 
     # Get sidebar content for HTMX requests
     sidebar_blogs = (
@@ -553,6 +564,7 @@ def category_post(request, slug):
         "blogs": blogs,
         "sidebar_blogs": sidebar_blogs,
         "popular_blogs": popular_blogs,
+        "subcategory_blogs_map": subcategory_blogs_map,
         "action" : 'category_post',
     }
 
