@@ -92,6 +92,16 @@ class BlogPost(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, null=True, blank=True
     )
+    
+    subcategory = models.ForeignKey(
+        SubCategory, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='posts', 
+        verbose_name="Sub Category" 
+    )
+    
     author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")

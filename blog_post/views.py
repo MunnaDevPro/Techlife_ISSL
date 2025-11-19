@@ -524,7 +524,11 @@ def create_blog(request):
 
 # Blog filter by category
 def category_post(request, slug):
-    category = get_object_or_404(Category, slug=slug)
+    
+    category = get_object_or_404(
+        Category.objects.prefetch_related('subcategories'),
+        slug=slug
+    )
 
     blogs = (
         BlogPost.objects.filter(category=category, status="published")

@@ -61,16 +61,16 @@ class SubCategoryAdmin(ModelAdmin):
 # BLOG POST ADMIN (main section)
 @admin.register(BlogPost)
 class BlogPostAdmin(ModelAdmin):
-    list_display = ("image_preview", "title", "author", "category", "status", "created_at")
-    list_filter = ("status", "category", "created_at")
-    search_fields = ("title", "author__email", "category__name")
+    list_display = ("image_preview", "title", "author", "category", "subcategory", "status", "created_at")
+    list_filter = ("status", "category", "subcategory", "created_at")
+    search_fields = ("title", "author__email", "category__name", "subcategory__name")
     ordering = ("-created_at",)
     inlines = [ReviewInline, BlogAdditionalImageInline]
     readonly_fields = ("content_hash", "image_hash", "created_at", "updated_at")
 
     fieldsets = (
         ("Basic Info", {
-            "fields": ("title", "subtitle", "slug", "category", "tags", "author", "status", "views"),
+            "fields": ("title", "subtitle", "slug", "category","subcategory", "tags", "author", "status", "views"),
         }),
         ("Media", {
             "fields": ("featured_image", "featured_image_url"),

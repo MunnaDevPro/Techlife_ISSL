@@ -169,7 +169,7 @@
             {% for category in popular_categories|slice:"4" %}
                 <li>
                 <!-- <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">{{ category.name }}</a> -->
-                <a href="{% url 'category_post' category.slug %}" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">{{ category.name }}</a>
+                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML"  hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">{{ category.name }}</a>
 
                 </li>
             {% endfor %}
@@ -189,7 +189,7 @@
                     <ul class="py-4  grid grid-cols-2 gap-y-1 w-full px-4 divide-x divide-gray-200">
                         {% for category in popular_categories|slice:"4:" %}
                         <li class="col-span-1">
-                            <a href="{% url 'category_post' category.slug %}" class="text-gray-700 text-md px-3 py-1 hover:bg-gray-100 block rounded-md hover:text-blue-600 transition duration-150">{{ category.name }}</a>
+                            <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML"  hx-push-url="true" class="text-gray-700 cursor-pointer text-md px-3 py-1 hover:bg-gray-100 block rounded-md hover:text-blue-600 transition duration-150">{{ category.name }}</a>
                         </li>
                         {% endfor %}
                     </ul>
