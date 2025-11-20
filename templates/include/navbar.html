@@ -141,11 +141,11 @@
                 <a href="http://127.0.0.1:8000/forum/all_question/" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Question</a>
             </li>
              <li>
-                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Create News</a>
+                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Create Blog</a>
             </li>
             <li class="group relative">
                 <a href="#" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 flex items-center cursor-pointer">
-                    News
+                    Country
                     <i class="fas fa-chevron-down text-xs ml-1 text-gray-500 group-hover:text-blue-600 transition duration-150"></i>
                 </a>
                 <div class="absolute rounded-b-xl left-0 top-full mt-0 w-48 bg-white border border-gray-200 shadow-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:mt-2 transition-all duration-300 ease-in-out">
@@ -196,12 +196,12 @@
                 </div>
             </li>
             <li class="hidden lg:block">
-                <form hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="relative w-56">
-                    <input type="search" name="q" placeholder="Search News..." class="w-72 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 transition duration-150" />
-                    <button type="submit" class="absolute inset-y-0 left-64 flex items-center pr-3 text-gray-500 hover:text-blue-600 transition duration-150">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
+                <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" method="GET" class="relative w-56"> 
+    <input type="search" name="q" placeholder="Search News..." class="text-gray-950 w-72 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 transition duration-150" />
+    <button type="submit" class="absolute inset-y-0 left-64 flex items-center pr-3 text-gray-500 hover:text-blue-600 transition duration-150">
+        <i class="fa fa-search"></i>
+    </button>
+</form>
             </li>
         </ul>
     </nav>
@@ -252,15 +252,6 @@
                 <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 block py-2">Contact</a>
             </li>
 
-            <li class="py-2">
-                <div class="text-gray-700 text-base font-medium flex items-center justify-between">
-                    Resource
-                    <i class="fas fa-chevron-down text-xs ml-1 text-gray-500"></i>
-                </div>
-                <ul class="pl-4 mt-1 space-y-1 text-sm">
-                    <li><a href="{% url 'category_post' 'technology' %}" class="text-gray-600 hover:text-blue-600 block py-1">Bangladesh</a></li>
-                </ul>
-            </li>
 
             <li class="py-2">
                 <div class="text-gray-700 text-base font-medium flex items-center justify-between">

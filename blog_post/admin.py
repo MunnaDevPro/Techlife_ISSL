@@ -8,8 +8,12 @@ from blog_post.models import (
     BlogAdditionalImage,
     Like,
     SubCategory,
+    compnay_logo,
 )
 from django.utils.html import format_html
+
+
+admin.site.register(compnay_logo)
 
 
 class SubCategoryInline(admin.TabularInline):

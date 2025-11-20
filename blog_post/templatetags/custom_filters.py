@@ -1,6 +1,7 @@
 
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.timesince import timesince
 
 register = template.Library()
 
@@ -24,3 +25,18 @@ def humanize_number(value):
     else:
       
         return value
+    
+    
+
+
+@register.filter
+def first_timesince(value):
+
+    if not value:
+        return ""
+        
+    ts = timesince(value)
+
+    first_part = ts.split(',')[0].strip()
+    
+    return first_part

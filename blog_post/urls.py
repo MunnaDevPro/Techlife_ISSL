@@ -16,6 +16,7 @@ from .views import (
     
     blog_details_view,
     user_like_toggle,
+    redirect_search_results
 )
 
 from interactions.views import share_post
@@ -54,6 +55,10 @@ urlpatterns = [
     
     # like section
     path('like/<slug:like_slug>/', user_like_toggle, name='user_like_toggle'),
+    
+    
+    
+    path('search/', redirect_search_results, name='redirect_search_results'),
     
  
 ]

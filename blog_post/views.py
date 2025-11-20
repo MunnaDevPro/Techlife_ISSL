@@ -21,7 +21,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-from blog_post.models import BlogPost 
+from blog_post.models import BlogPost, compnay_logo
 from comments.models import Comment, Reply
 
 # from save_post.models import SavedPost
@@ -229,9 +229,13 @@ def home(request):
     most_viewed_blogs = BlogPost.objects.filter(status="published").order_by("-views")
 
 
+    #company logo
+    company_logo = compnay_logo.objects.all()
 
 
     tags = Tag.objects.all()
+
+
 
     context = {
         "blogs": blogs,
@@ -250,6 +254,7 @@ def home(request):
         "programming_related_posts":programming_related_posts,
         "most_viewed_blogs":most_viewed_blogs,
         "all_category":all_category,
+        "company_logo":company_logo,
         
         
         "action" : "home_page",
@@ -261,6 +266,42 @@ def home(request):
 
     # Regular request, return full page
     return render(request, "home.html", context)
+
+
+
+def redirect_search_results(request):
+    """
+    Handles search queries and redirects to the relevant category page.
+    """
+    query = request.GET.get('q', '').strip()
+    
+    if not query:
+        return redirect('homepage') 
+
+    try:
+        category_match = Category.objects.get(name__iexact=query)
+        return redirect('category_post', slug=category_match.slug)
+    except Category.DoesNotExist:
+        pass
+    
+    # 2. Search for SubCategory Match (Exact, case-insensitive)
+    try:
+        subcategory_match = SubCategory.objects.select_related('category').get(name__iexact=query)
+        return redirect('category_post', slug=subcategory_match.category.slug)
+    except SubCategory.DoesNotExist:
+        pass
+        
+
+    blog_post_match = BlogPost.objects.select_related('category').filter(
+        Q(title__icontains=query) | Q(subtitle__icontains=query), 
+        status="published"
+    ).first()
+
+    if blog_post_match and blog_post_match.category:
+        return redirect('category_post', slug=blog_post_match.category.slug)
+            
+    return redirect('homepage')
+
 
 
 def blog_post_view(request):

@@ -247,3 +247,14 @@ class Post_view_ip(models.Model):
 
     def __str__(self):
         return f"{self.post.title} viewed by {self.user or self.ip_address}"
+
+
+
+
+
+class compnay_logo(models.Model):
+    name = models.CharField(max_length=200, blank=True, null=True)
+    logo_svg = models.TextField()
+
+    def __str__(self):
+        return self.name
