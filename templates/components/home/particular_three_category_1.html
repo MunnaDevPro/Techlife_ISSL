@@ -6,17 +6,23 @@
     <div class="flex flex-col sm:flex-row justify-between border-b border-gray-300" data-aos="fade-up"
         data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <div class="flex flex-col sm:flex-row w-full sm:w-3/4">
-            <div
+            <div 
                 class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg text-gray-800 border-b-2 border-transparent hover:border-blue-600 transition duration-150 cursor-pointer min-w-0">
-                NEWS
+                <a href="{% url 'category_post' 'news' %}">
+                    NEWS
+                </a>
             </div>
-            <div
+            <div href="{% url 'category_post' 'technology' %}"
                 class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg text-gray-800 border-b-2 border-transparent hover:border-blue-600 transition duration-150 cursor-pointer min-w-0">
+                <a href="{% url 'category_post' 'technology' %}">
                 TECHNOLOGY
+                </a>
             </div>
-            <div
+            <div href="{% url 'category_post' 'programming' %}"
                 class="w-full sm:w-1/3 py-3 text-center font-bold text-base md:text-lg text-gray-800 border-b-2 border-transparent hover:border-blue-600 transition duration-150 cursor-pointer min-w-0">
+                <a href="{% url 'category_post' 'programming' %}">
                 PROGRAMMING
+                </a>
             </div>
         </div>
         <div
@@ -45,15 +51,15 @@
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]">
                         {% endif %}
                     </div>
-                    <h3
+                    <a href="{% url 'blog_details' post.slug %}" 
                         class="font-bold text-lg leading-snug text-gray-900 hover:text-blue-500 cursor-pointer line-clamp-2">
-                        {{ post.title }}</h3>
+                        {{ post.title }}</a>
                 </div>
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up"
                     data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in news__related_posts|slice:"1:2" %}
+                    {% for post in news__related_posts|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
                         data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         <div class="w-16 h-12 flex-shrink-0 rounded-md bg-gray-200 overflow-hidden relative group">
@@ -68,70 +74,21 @@
                             {% endif %}
 
                         </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
+                        <a href="{% url 'blog_details' slug=post.slug %}" class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</a>
                     </div>
                     {% endfor %}
-                    {% for post in news__related_posts|slice:"2:3" %}
-                    <div class="flex gap-3 items-start md cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden relative group">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
 
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in news__related_posts|slice:"3:4" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden relative group">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in news__related_posts|slice:"4:5" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
                 </div>
 
+                
                 <button
                     class="mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150"
                     data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    More
+                    <a href="{% url 'category_post' 'news' %}">
+                        More
+                    </a>
                 </button>
+                
             </div>
 
             <div class="flex flex-col gap-4 w-full lg:w-1/3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
@@ -149,15 +106,15 @@
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]">
                         {% endif %}
                     </div>
-                    <h3
+                    <a href="{% url 'blog_details' post.slug %}" 
                         class="font-bold text-lg leading-snug text-gray-900 hover:text-blue-500 cursor-pointer line-clamp-2">
-                        {{ post.title }}</h3>
+                        {{ post.title }}</a>
                 </div>
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up"
                     data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in Teacnology_related_posts|slice:"1:2" %}
+                    {% for post in Teacnology_related_posts|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group " data-aos="fade-up"
                         data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                         <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
@@ -172,69 +129,19 @@
                             {% endif %}
 
                         </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
+                        <a href="{% url 'blog_details' slug=post.slug %}" class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</a>
                     </div>
                     {% endfor %}
-                    {% for post in Teacnology_related_posts|slice:"2:3" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in Teacnology_related_posts|slice:"3:4" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden relative group">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in Teacnology_related_posts|slice:"4:5" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden relative group">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
+                  
+            
                 </div>
 
                 <button
                     class="mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150"
                     data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    More
+                    <a href="{% url 'category_post' 'technology' %}">
+                        More
+                    </a>
                 </button>
             </div>
 
@@ -253,15 +160,15 @@
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]">
                         {% endif %}
                     </div>
-                    <h3
+                    <a href="{% url 'blog_details' post.slug %}" 
                         class="font-bold text-lg leading-snug text-gray-900 hover:text-blue-500 cursor-pointer line-clamp-2">
-                        {{ post.title }}</h3>
+                        {{ post.title }}</a>
                 </div>
                 {% endfor %}
 
                 <div class="flex flex-col gap-3 border-t pt-4" data-aos="fade-up"
                     data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    {% for post in programming_related_posts|slice:"1:2" %}
+                    {% for post in programming_related_posts|slice:"1:5" %}
                     <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
                         data-aos-anchor-placement="top-bottom">
                         <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
@@ -276,69 +183,18 @@
                             {% endif %}
 
                         </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
+                        <a href="{% url 'blog_details' slug=post.slug %}" class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</a>
                     </div>
                     {% endfor %}
-                    {% for post in programming_related_posts|slice:"2:3" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in programming_related_posts|slice:"3:4" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden group relative">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
-                    {% for post in programming_related_posts|slice:"4:5" %}
-                    <div class="flex gap-3 items-start cursor-pointer group" data-aos="fade-up"
-                        data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                        <div class="w-16 h-12 rounded-md flex-shrink-0 bg-gray-200 overflow-hidden relative group">
-                            {% if post.featured_image %}
-                            <img src="{{ post.featured_image.url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% elif post.featured_image_url %}
-                            <img src="{{ post.featured_image_url }}" alt="{{ post.title|truncatechars:'5' }}"
-                                class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.02]">
-                            {% endif %}
-
-                        </div>
-                        <p class="font-medium text-sm leading-tight group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
-                    </div>
-                    {% endfor %}
+                
                 </div>
 
                 <button
                     class="mt-4 py-2 border border-blue-600 text-blue-600 font-bold hover:bg-blue-500 hover:text-white transition duration-150"
                     data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                    More
+                    <a href="{% url 'category_post' 'programming' %}">
+                        More
+                    </a>
                 </button>
             </div>
 
@@ -362,7 +218,7 @@
                     data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <span class="text-xl font-bold text-blue-600 mr-2 flex-shrink-0">{{ forloop.counter }}</span>
                     <div class="flex flex-col">
-                        <p class="font-medium text-base leading-snug group-hover:text-blue-600 line-clamp-2">{{ post.title }}</p>
+                        <a href="{% url 'blog_details' post.slug %}" class="font-medium text-base leading-snug group-hover:text-blue-600 line-clamp-2">{{ post.title }}</a>
                         <span class="text-xs text-gray-500">{{ post.category.name }}</span>
                     </div>
                 </li>

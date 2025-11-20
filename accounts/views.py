@@ -194,7 +194,10 @@ def user_dashboard_view(request):
     user_blog_posts = BlogPost.objects.filter(author=user).select_related('author','category').prefetch_related('comments').order_by('-created_at')
     
 
-    total_likes = user_blog_posts.aggregate(total=Sum('likes'))['total'] or 0
+    total_reaction = BlogPost.objects.filter(author=request.user).annotate(
+    like_count=Count('likes')
+    ).aggregate(total_likes=Sum('like_count'))['total_likes'] or 0
+    
     total_views = user_blog_posts.aggregate(total=Sum('views'))['total'] or 0
     total_quality = user_blog_posts.aggregate(total=Sum('content_quality'))['total'] or 0
     
@@ -226,37 +229,37 @@ def user_dashboard_view(request):
 
 
     # earning section logic
-    earning = EarningSetting.objects.first()  
+    # earning = EarningSetting.objects.first()  
 
-    post_point = earning.quality_rate * total_quality
+    # post_point = earning.quality_rate * total_quality
 
-    others_point = (
-        total_views * earning.view_rate +
-        total_likes * earning.like_rate +
-        total_comments * earning.comment_rate
-    )
+    # others_point = (
+    #     total_views * earning.view_rate +
+    #     total_reaction * earning.like_rate +
+    #     total_comments * earning.comment_rate
+    # )
 
-    total_point = post_point + others_point
+    # total_point = post_point + others_point
 
 
     # badge section
-    badge_level  = ""
-    if (1<total_point<=50):
-        badge_level +="Bronze"
-    elif (50<total_point<=80):
-        badge_level +="Silver"
-    elif (80<total_point<=120):
-        badge_level +="Gold"
-    elif (120<total_point<=150):
-        badge_level +="Platinum"
-    elif (150<total_point<=200):
-        badge_level +="Diamond"
-    elif (200<total_point<=250):
-        badge_level +="Master"
-    elif (250<total_point<=300):
-        badge_level +="Legend"
-    elif total_point > 300:
-        badge_level  += "Grand Master"   
+    # badge_level  = ""
+    # if (1<total_point<=50):
+    #     badge_level +="Bronze"
+    # elif (50<total_point<=80):
+    #     badge_level +="Silver"
+    # elif (80<total_point<=120):
+    #     badge_level +="Gold"
+    # elif (120<total_point<=150):
+    #     badge_level +="Platinum"
+    # elif (150<total_point<=200):
+    #     badge_level +="Diamond"
+    # elif (200<total_point<=250):
+    #     badge_level +="Master"
+    # elif (250<total_point<=300):
+    #     badge_level +="Legend"
+    # elif total_point > 300:
+    #     badge_level  += "Grand Master"   
 
 
     context = {
@@ -264,11 +267,11 @@ def user_dashboard_view(request):
         "user_blog_posts": user_blog_posts,
         "total_views": total_views,
         "total_comments": total_comments,
-        "total_likes" : total_likes,
-        "others_point" : others_point,
-        "post_point" : post_point,
-        "total_point" : total_point,
-        "badge_level" : badge_level,
+        "total_reaction" : total_reaction,
+        # "others_point" : others_point,
+        # "post_point" : post_point,
+        # "total_point" : total_point,
+        # "badge_level" : badge_level,
         "views_last_week": int(views_last_week),
         "latest_comment":latest_comment,
         "views_last_month":views_last_month,

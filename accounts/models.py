@@ -9,7 +9,6 @@ from django.conf import settings
 class CustomUserModel(AbstractUser):
     email = models.EmailField(unique=True)
     is_verified = models.BooleanField(default=False)
-
     address_line_1 = models.CharField(null=True, blank=True, max_length=100)
     address_line_2 = models.CharField(null=True, blank=True, max_length=100)
     city = models.CharField(blank=True, max_length=20)

@@ -178,29 +178,41 @@
     }
 </style>
 
-<div class="login-container mx-auto">
+<div class="mt-10 login-container mx-auto">
     <div class="login-card border border-gray-300 font-inter shadow-sm">
         <form class="login-form scrollbar-hide" id="loginForm" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <!-- header -->
             <div class="mb-8 pb-4 border-b border-gray-200 flex items-center justify-center space-x-4">
                 <div class="w-11 h-11 flex items-center justify-center flex-shrink-0">
-                    <img src="{% static 'image/company_logo.png' %}" alt="Company Logo" class="rounded-full" />
+                    <img src="{% static 'image/company_logo.png' %}" alt="Company Logo" class="ml-14 rounded-full" />
                 </div>
-                <h1 class="text-3xl ml-2 font-semibold font-inter">Create New Blogs</h1>
+                <h1 class="text-3xl font-semibold font-inter ">Create New Blogs</h1>
             </div>
 
-            <!-- category -->
-            <div class="form-group">
+ 
+            {% comment %} category {% endcomment %}
+            <div class=" form-group" id="subcategory_wrapper">
                 <div class="input-wrapper">
-                    <select id="category_select" name="category" required value="" class="w-full">
-                        <option value="" disabled selected></option>
-                        <!-- Mock data -->
-                        {% for category in categories %}
-                        <option value="{{ category.pk }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
+                    <select id="category_select" name="category" required class="w-full">
+                        <option value="" disabled selected>Select Category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.pk }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
                     <label for="category_select">Select Category</label>
+                </div>
+            </div>
+            {% comment %} sub category {% endcomment %}
+            <div class=" form-group" id="subcategory_wrapper">
+                <div class="input-wrapper">
+                    <select id="subcategory_select" name="subcategory" class="w-full">
+                        <option value="" disabled selected>Select Sub-Category</option>
+                            {% for subcategory in subcategories %}
+                            <option value="{{ subcategory.pk }}">{{ subcategory.name }}</option>
+                            {% endfor %}
+                        </select>
+                    <label for="subcategory_select">Sub-Category</label>
                 </div>
             </div>
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.db.models import Count
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
-from .models import BlogPost, Category, Review
+from .models import BlogPost, Category, Review, SubCategory
 from .models import BlogPost, BlogAdditionalImage, Category, Tag
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -423,8 +423,10 @@ def update_blog_stat(request, slug, stat_type):
 
 def create_blog(request):
     categories = Category.objects.all()
+    subcategories = SubCategory.objects.all()
     context = {
         "categories": categories,
+        "subcategories":subcategories,
         "action" : 'post_create'
     }
 
@@ -432,6 +434,7 @@ def create_blog(request):
         title = request.POST.get('title')
         description = request.POST.get('description')
         category_id = request.POST.get('category')
+        subcategory_id = request.POST.get('subcategory')
         
         featured_image_file = request.FILES.get('featured_image')
         featured_image_url = request.POST.get('featured_image_url')
@@ -450,6 +453,10 @@ def create_blog(request):
 
         try:
             category = get_object_or_404(Category, pk=category_id)
+            subcategory = None
+            
+            if subcategory_id: 
+                subcategory = get_object_or_404(SubCategory, pk=subcategory_id, category=category)
         except:
             messages.error(request, "Invalid category selected.")
             return redirect(reverse('create_blog'))
@@ -460,6 +467,7 @@ def create_blog(request):
             new_blog = BlogPost.objects.create(
                 author=request.user,
                 category=category,
+                subcategory=subcategory,
                 title=title,
                 description=description,
                 
@@ -511,7 +519,7 @@ def create_blog(request):
             messages.error(request, "An internal error occurred while creating the post/images.")
             return redirect(reverse('create_blog'))
 
-  
+
 
     # Handle GET request (Form Display)
     if request.headers.get("HX-Request"):

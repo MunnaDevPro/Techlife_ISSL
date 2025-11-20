@@ -15,12 +15,12 @@
         <div class="flex flex-col md:flex-row gap-2 w-full h-auto md:h-3/5 border-b-[1px] border-gray-300">
 
             {% for latest_post in Only_latest_blogs|slice:"1" %}
-            <div class="h-60 md:h-full w-full md:w-3/5 overflow-hidden group rounded-md relative">
+            <div hx-get="{% url 'blog_details' latest_post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="h-60 md:h-full w-full md:w-3/5 overflow-hidden group rounded-md relative">
                 <img src="{{ latest_post.featured_image_url }}" alt="" class="object-cover w-full h-full hover:cursor-pointer rounded-md transform transition-transform duration-300 ease-out 
                                 group-hover:-translate-y-1 group-hover:scale-[1.02]" />
             </div>
             <div class="h-auto md:h-full w-full md:w-2/5 p-1 md:pl-2 bg-gray-100">
-                <h3 class="leading-normal font-bold text-md font-inter line-clamp-2 mb-2 pt-0 md:pt-2 hover:cursor-pointer hover:text-blue-500">
+                <h3 hx-get="{% url 'blog_details' latest_post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="leading-normal font-bold text-md font-inter line-clamp-2 mb-2 pt-0 md:pt-2 hover:cursor-pointer hover:text-blue-500">
                     {{ latest_post.title }}</h3>
                 <span class=" line-clamp-5 font-inter text-gray-500 text-sm">
                     {{ latest_post.description }}</span>
@@ -33,7 +33,7 @@
             <div class="w-full md:w-1/3 h-auto md:h-full  p-2 md:p-0 cursor-pointer" data-aos="fade-up"
                 data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 
-                <div class="flex flex-col h-full w-full group relative overflow-hidden">
+                <div hx-get="{% url 'blog_details' popular_blog.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex flex-col h-full w-full group relative overflow-hidden">
                     <div class="h-4/5 w-full rounded-t-md group relative overflow-hidden">
                         {% if popular_blog.featured_image %}
                         <img src="{{ popular_blog.featured_image.url }}" alt=""
@@ -64,7 +64,7 @@
         {% for popular_posts in popular_posts_flat_list|slice:"5" %}
         <div class="flex gap-4 flex-row w-full h-auto md:h-1/5 border-b-[1px] border-gray-300 pb-3 cursor-pointer "
             data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-            <div class="flex w-2/6 h-full group relative rounded-md overflow-hidden">
+            <div hx-get="{% url 'blog_details' popular_posts.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="flex w-2/6 h-full group relative rounded-md overflow-hidden">
                 {% if popular_posts.featured_image %}
                 <img src="{{ popular_posts.featured_image.url }}" alt=""
                     class="w-full h-full object-cover rounded-sm transform transition-transform duration-300 ease-out 
@@ -76,7 +76,7 @@
                 {% endif %}
             </div>
             <div class="w-4/6 h-full">
-                <h4 class="w-full font-inter font-bold line-clamp-2 hover:text-blue-400 duration-100 mb-[6px]">{{ popular_posts.title }}</h4>
+                <h4 hx-get="{% url 'blog_details' popular_posts.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="w-full font-inter font-bold line-clamp-2 hover:text-blue-400 duration-100 mb-[6px]">{{ popular_posts.title }}</h4>
                 <span
                 class="py-1 font-semibold text-[12px] text-gray-500 border border-gray-300 rounded-2xl px-3">{{ popular_posts.category_name }}</span>
                 <span
