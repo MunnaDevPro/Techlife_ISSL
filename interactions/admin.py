@@ -25,8 +25,8 @@ class FavoriteAdmin(ModelAdmin):
 
     def user_display(self, obj):
         return format_html(
-            '<span style="background:#e8f5e9;padding:3px 6px;border-radius:6px;">{}</span>',
-            obj.user.first_name or obj.user.email
+            '<span style="padding:3px 6px;border-radius:6px;">{}</span>',
+            f"{obj.user.first_name } {obj.user.last_name}" 
         )
     user_display.short_description = "User"
 
@@ -45,7 +45,7 @@ class ShareAdmin(ModelAdmin):
     search_fields = ("post__title", "user__email", "platform")
     ordering = ("-created_at",)
     readonly_fields = ("created_at",)
-    list_per_page = 25
+    list_per_page = 5
 
     fieldsets = (
         ("Share Info", {
@@ -67,8 +67,8 @@ class ShareAdmin(ModelAdmin):
     def user_display(self, obj):
         if obj.user:
             return format_html(
-                '<span style="background:#f3e5f5;padding:3px 6px;border-radius:6px;">{}</span>',
-                obj.user.first_name or obj.user.email
+                '<span style="padding:3px 6px;border-radius:6px;">{}</span>',
+                f"{obj.user.first_name } {obj.user.last_name}"
             )
         return format_html('<span style="color:#9e9e9e;">Anonymous</span>')
     user_display.short_description = "User"

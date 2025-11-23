@@ -1,94 +1,94 @@
-{% load static %} {% block content %}
+{% load static %}
+{% block content %}
+<footer class="bg-white text-gray-800 font-sans border-t border-gray-200">    
+    <div class="container flex flex-col lg:flex-row gap-12 px-6 mx-auto max-w-7xl">
+        <div class="w-full lg:w-2/5 flex flex-col gap-y-4">
+            
+            <div class="flex items-center">
+                <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd Logo" class="h-8 rounded-md" />
+            </div>
 
-<div class="container flex flex-col lg:flex-row gap-8 px-6 py-10 mx-auto">
-  <!-- Footer Left Section -->
-  <div class="w-full lg:w-1/2 flex flex-col gap-y-8 mx-auto">
-    <!-- Logo -->
-    <div class="flex items-center">
-      <img src="{% static 'image/logo-front.png' %}" alt="Techlife-bd" class="h-8" />
+            <p class="text-sm text-gray-600 max-w-lg leading-relaxed text-start">
+                Techlife is a curated newsletter that delivers the most engaging and important stories, connections, and summaries from the world of technology every day. We are dedicated to tech enthusiasts.
+            </p>
+
+            <div class="social_links">
+                <ul class="flex gap-4">
+                    <li>
+                        <a href="#" aria-label="LinkedIn" class="text-2xl text-gray-600 hover:text-blue-700 transition duration-300 rounded-full p-2 hover:bg-gray-100">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" aria-label="Twitter/X" class="text-2xl text-gray-600 hover:text-black transition duration-300 rounded-full p-2 hover:bg-gray-100">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" aria-label="Instagram" class="text-2xl text-gray-600 hover:text-pink-600 transition duration-300 rounded-full p-2 hover:bg-gray-100">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" aria-label="Facebook" class="text-2xl text-gray-600 hover:text-blue-600 transition duration-300 rounded-full p-2 hover:bg-gray-100">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-3/5 grid grid-cols-1 sm:grid-cols-3">
+
+            <div class="flex flex-col gap-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Quick Links</h3>
+                <ul class="flex flex-col gap-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:text-blue-600 transition">Tech News</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Career Guides</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Our Authors</a></li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Legal</h3>
+                <ul class="flex flex-col gap-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:text-blue-600 transition">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Company</h3>
+                <ul class="flex flex-col gap-2 text-gray-600 text-sm">
+                    <li><a href="#" class="hover:text-blue-600 transition">About Us</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Advertise</a></li>
+                    <li><a href="#" class="hover:text-blue-600 transition">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        
     </div>
 
-    <!-- About -->
-    <p class="text-sm text-gray-600 max-w-lg leading-relaxed text-start">
-      Techlife is an amazing curated newsletter that comes every day.
-      Incorporates connections and synopses of all the most intriguing stories
-      with regards to tech. Our site takes into account the tech lovers.
-    </p>
-
-    <!-- Social Links -->
-    <div class="social_links">
-      <ul class="flex gap-4">
-        <li>
-          <a href="#" class="text-[26px] sm:text-[30px] text-gray-700 hover:text-blue-700">
-            <i class="fa-brands fa-square-linkedin"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="text-[26px] sm:text-[30px] text-gray-700 hover:text-black">
-            <i class="fa-brands fa-square-x-twitter"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="text-[26px] sm:text-[30px] text-gray-700 hover:text-pink-600">
-            <i class="fa-brands fa-square-instagram"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="text-[26px] sm:text-[30px] text-gray-700 hover:text-blue-600">
-            <i class="fa-brands fa-square-facebook"></i>
-          </a>
-        </li>
-      </ul>
+    <div class="container flex justify-between items-center px-6 mx-auto max-w-7xl"> 
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});"
+                class="flex items-center gap-2 group text-sm font-medium text-gray-700 hover:text-blue-600 transition duration-300 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-arrow-up-circle group-hover:scale-110 transform transition">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m16 12-4-4-4 4" />
+                    <path d="M12 16V8" />
+                </svg>
+                Back to Top
+        </button>
+        </div>
+    
+    <div>
+        <div class="flex justify-center items-center bg-gray-50">
+            <p class="text-sm text-gray-500">&copy; {% now "Y" %} TechLife | All Rights Reserved</p>
+        </div>
     </div>
-
-    <!-- Back to top -->
-    <div class="border border-gray-400 w-[140px] flex items-center justify-center py-2 rounded-md">
-      <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" class="cursor-pointer">
-        <h3 class="flex items-center gap-1 group text-sm font-medium">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-arrow-big-up group-hover:scale-110 transform transition">
-            <path
-              d="M9 13a1 1 0 0 0-1-1H5.061a1 1 0 0 1-.75-1.811l6.836-6.835a1.207 1.207 0 0 1 1.707 0l6.835 6.835a1 1 0 0 1-.75 1.811H16a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z" />
-          </svg>
-          Back to top
-        </h3>
-      </a>
-    </div>
-  </div>
-
-  <!-- Footer Right Section -->
-  <div class="w-full lg:w-1/2 flex flex-col sm:flex-row gap-8 mx-auto">
-    <!-- Legal -->
-    <div class="w-full sm:w-1/2 flex flex-col gap-4">
-      <h3 class="text-md font-bold">Legal</h3>
-      <ul class="flex flex-col gap-2 text-gray-600 text-sm">
-        <li><a href="#" class="hover:underline"> Privacy Policy</a></li>
-        <li><a href="#" class="hover:underline"> Terms of Service</a></li>
-        <li><a href="#" class="hover:underline"> About Admin</a></li>
-      </ul>
-    </div>
-
-    <!-- Newsletter -->
-    <div class="w-full sm:w-1/2">
-      <form class="flex flex-col gap-4">
-        <h6 class="text-md font-bold">Newsletter</h6>
-        <fieldset class="flex flex-col gap-3">
-          <label class="text-sm">Enter your email address</label>
-          <div class="flex flex-col sm:flex-row w-full max-w-md mx-auto">
-            <input type="email" placeholder="username@site.com"
-              class="flex-1 px-3 py-2 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-t-md sm:rounded-l-md sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-blue-400 w-full" />
-
-            <button type="submit"
-              class="mt-2 sm:mt-0 sm:ml-0 sm:px-4 px-3 py-2 sm:py-2 bg-blue-400 text-white text-sm sm:text-base rounded-b-md sm:rounded-r-md sm:rounded-l-none hover:bg-blue-500 transition w-full sm:w-auto">
-              Subscribe
-            </button>
-          </div>
-
-        </fieldset>
-      </form>
-    </div>
-  </div>
-</div>
+</footer>
 
 {% endblock content %}

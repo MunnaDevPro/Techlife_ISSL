@@ -16,7 +16,8 @@ from .views import (
     
     blog_details_view,
     user_like_toggle,
-    redirect_search_results
+    redirect_search_results,
+    record_share
 )
 
 from interactions.views import share_post
@@ -46,6 +47,7 @@ urlpatterns = [
     
     path('share-post/',share_post, name='share_post'),
     
+    path('post/<slug:post_slug>/share/', record_share, name='record_share'),    
 
     
     # add commnets

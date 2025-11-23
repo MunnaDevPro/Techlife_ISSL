@@ -15,7 +15,7 @@ from accounts.models import CustomUserModel
 
 from comments.models import Comment
 # Create your views here.
-
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout 
@@ -25,7 +25,12 @@ from blog_post.models import BlogPost, compnay_logo
 from comments.models import Comment, Reply
 
 # from save_post.models import SavedPost
-
+# In your app's views.py
+from interactions.models import Share
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+# Assuming Share and BlogPost are imported from .models
 
 
 def blog_details_view(request, slug):
@@ -59,10 +64,21 @@ def blog_details_view(request, slug):
         .prefetch_related("replies__user")
         .order_by("-created_at")
     )
-    # total commnent count (reply+main commnet)
-    comment_count = all_comments.count()
+    
+    
+   # total comment count (reply+main commnet) - এটি গণনা ঠিক আছে
+    comment_count = all_comments.count() # এখন শুধু প্রধান কমেন্ট গণনা হবে
     reply_count = sum(comment.replies.count() for comment in all_comments)
     total_comments = comment_count + reply_count
+    
+    # --- Paginator Setup (এখন সঠিক কোয়েরির উপর চলবে) ---
+    paginator = Paginator(all_comments, 5) 
+    page_number = request.GET.get('page', 1) 
+    try:
+        page_obj = paginator.page(page_number)
+    except Exception:
+        # Invalid page number, deliver last page
+        page_obj = paginator.page(paginator.num_pages)
     
     
     # sort by comment
@@ -93,7 +109,7 @@ def blog_details_view(request, slug):
         "related_news":related_news,
         "word_count":word_count,
         "most_viewed_blogs":most_viewed_blogs,
-        "all_comments" : all_comments,
+        "all_comments" : page_obj,
         "total_comments":total_comments,
         "user_has_liked":user_has_liked,
         "sort_by":sort_by,
@@ -769,3 +785,49 @@ def user_like_toggle(request, like_slug):
 
 #     return redirect("blog_details", post_slug=save_slug)
 
+
+
+
+
+
+@require_POST
+def record_share(request, post_slug):
+    """
+    Records a share event. Uses get_or_create for logged-in users 
+    to prevent counting the same share multiple times.
+    """
+    platform = request.POST.get('platform')
+
+    if not platform:
+        return JsonResponse({"status": "error", "message": "Platform not provided"}, status=400)
+
+    try:
+        post = get_object_or_404(BlogPost, slug=post_slug)
+        
+        if request.user.is_authenticated:
+            # Share already exists if created is False
+            share_instance, created = Share.objects.get_or_create(
+                post=post,
+                user=request.user,
+                platform=platform,
+                defaults={'platform': platform} # Ensure platform is set if creating
+            )
+
+            if created:
+                return JsonResponse({"status": "success", "message": f"New share recorded on {platform}."})
+            else:
+                return JsonResponse({"status": "info", "message": f"Share already counted for this user on {platform}."})
+
+        else:
+            # Anonymous users will be counted every time, as we can't reliably track them
+            # without complex session/cookie management. 
+            Share.objects.create(
+                post=post,
+                user=None, # user=None for anonymous
+                platform=platform
+            )
+            return JsonResponse({"status": "success", "message": f"Share recorded (Anonymous) on {platform}."})
+
+    except Exception as e:
+        # It's better to log the exception, but for user feedback:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
