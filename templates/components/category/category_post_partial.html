@@ -181,7 +181,7 @@
         {% for featured_sub_cat, sub_blogs in subcategory_blogs_map.items|slice:"4" %}
 
             <div id="{{ featured_sub_cat.slug }}"
-                class="mt-8 mb-8 py-6 border-y border-gray-200 flex justify-center items-center relative">
+                class="mt-8 mb-3 py-6 border-y border-gray-200 flex justify-center items-center relative">
                 <h2 class="text-2xl font-bold">{{ featured_sub_cat.name }}</h2>
                 <span class="ml-3 text-2xl text-blue-500"> &gt; </span>
             </div>
