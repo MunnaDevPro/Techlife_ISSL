@@ -84,6 +84,113 @@
         --t: 0.3s;
         color: #fff;
     }
+
+
+
+/* for modal section  forum*/
+/* Custom Forum Modal Styles - Ultra Modern Design */
+
+/* Modal Overlay: Covers the entire screen and darkens the background */
+.custom-forum-modal-overlay {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.75); /* Darker, more prominent overlay */
+    backdrop-filter: blur(5px); /* Modern blur effect on background */
+}
+
+/* Modal Content Box: Sleek, rounded, and centered */
+.custom-forum-modal-content {
+    background: #ffffff; /* Clean white background */
+    color: #333333; /* Darker, modern text color */
+    
+    /* Centering logic */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    
+    padding: 30px;
+    width: 90%; 
+    max-width: 450px; 
+    border-radius: 16px; /* High radius for a modern feel */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    
+    /* Initial state for animation */
+    opacity: 0; 
+    transform: translate(-50%, -45%) scale(0.9); /* Slightly above center and scaled down */
+    
+    /* Animation transition for properties like opacity and transform */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+/* Modal Title */
+.custom-forum-modal-content h3 {
+    color: #007bff; /* Primary brand color for emphasis */
+    font-size: 1.6em;
+    margin-bottom: 15px;
+}
+
+/* Paragraph text */
+.custom-forum-modal-content p {
+    font-size: 1.1em;
+    margin-bottom: 25px;
+}
+
+/* Modal Buttons Container */
+.custom-forum-modal-buttons {
+    display: flex; /* Flexbox for button arrangement */
+    justify-content: space-around;
+    gap: 15px; /* Spacing between buttons */
+}
+
+/* Button Base Styles */
+.custom-forum-modal-buttons button {
+    flex-grow: 1;
+    padding: 12px 25px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.1s; /* Smooth transitions for hover */
+}
+
+/* Style for the Back button (Secondary/Ghost action) */
+.custom-forum-back-btn {
+    background-color: #f0f0f0; 
+    color: #666;
+}
+.custom-forum-back-btn:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+/* Style for the Agree button (Primary/Confirm action) */
+.custom-forum-agree-btn {
+    background-color: #007bff; /* Vibrant primary color */
+    color: white;
+}
+.custom-forum-agree-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-1px);
+}
+
+/* Keyframe to trigger the slow-motion opening animation */
+/* This class will be added by JavaScript when the modal is shown */
+.custom-forum-modal-content.is-active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1); /* Final state: fully visible and normal size */
+}
+
+
+
+
 </style>
 
 <header class="navbar_for_hidden bg-white shadow-md fixed top-0 w-full z-50 font-inter text-gray-300" >
@@ -109,7 +216,31 @@
         </div>
 
         <div class="flex items-center space-x-3 text-sm font-semibold w-1/3 justify-end lg:w-auto lg:flex-grow-0">
-            <a href="http://127.0.0.1:8000/forum/all_question/" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Forum</a>
+            <a href="#" onclick="showForumWarningModal()" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Forum</a>
+
+<div id="forum-warning-modal" class="custom-forum-modal-overlay">
+    <div class="custom-forum-modal-content">
+       <h3 class="custom-forum-heading">
+            <span class="icon-spacer"></span> Feature Update in Progress 
+        </h3>
+        
+        <div class="custom-forum-message-list">
+            <p>
+                The Forum and Question sections are currently undergoing active updates.
+            </p>
+            <ul>
+                <li>Features may be incomplete or temporarily unstable.</li>
+                <li>Content and design are subject to immediate changes.</li>
+            </ul>
+            <p>
+                Do you wish to proceed to this developing area?
+            </p>
+        </div>
+        <div class="custom-forum-modal-buttons">
+            <button onclick="hideForumWarningModal()" class="custom-forum-back-btn">Back</button>
+            <button onclick="goToForumPage()" class="custom-forum-agree-btn">Proceed</button> </div>
+    </div>
+</div>
             <!-- <a href="#"  class="hidden lg:block px-3 py-2 border border-blue-500 text-blue-500 hover:bg-blue-50 transition duration-150 rounded-sm">Login</a> -->
             <!-- <a href="{% url 'signup' %}" id="form-open" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Login</a> -->
             
@@ -138,7 +269,7 @@
                 <a href="{% url 'homepage' %}" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Home</a>
             </li>
             <li>
-                <a href="http://127.0.0.1:8000/forum/all_question/" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Question</a>
+                <a href="#" onclick="showForumWarningModal()" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Question</a>
             </li>
              <li>
                 <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 text-base font-medium hover:text-blue-600 transition duration-150 cursor-pointer">Create Blog</a>
@@ -307,4 +438,51 @@
         closeSidebar.addEventListener('click', closeSidebarHandler);
         sidebarOverlay.addEventListener('click', closeSidebarHandler);
     });
+</script>
+
+{% comment %} for modal section forum {% endcomment %}
+<script>
+
+// Define the target URL for the forum page
+const FORUM_TARGET_URL = "http://127.0.0.1:8000/forum/all_question/";
+// Get the unique modal element and content element from the DOM
+const forumWarningModal = document.getElementById("forum-warning-modal");
+const forumModalContent = document.querySelector(".custom-forum-modal-content"); // Select the content box for animation
+
+// Function to display the forum warning modal with slow-motion effect
+function showForumWarningModal() {
+    // 1. Make the overlay visible instantly
+    forumWarningModal.style.display = "flex"; // Changed to 'flex' for easier centering if needed, but 'block' also works
+
+    // 2. Add a small delay (setTimeout) before applying the 'is-active' class.
+    // This delay is necessary to allow the browser to register the 'opacity: 0' state 
+    // before applying the final 'opacity: 1' state, ensuring the transition plays.
+    setTimeout(() => {
+        forumModalContent.classList.add("is-active");
+    }, 10); 
+}
+
+// Function to hide the modal. It reverses the animation first.
+function hideForumWarningModal() {
+    // 1. Remove the active class to start the closing animation (if you want one)
+    forumModalContent.classList.remove("is-active");
+
+    // 2. Wait for the transition duration (0.5s in CSS) before setting display: none
+    setTimeout(() => {
+        forumWarningModal.style.display = "none";
+    }, 500); // Wait for 500ms (0.5 seconds)
+}
+
+// Function to navigate to the forum page (called by the 'Agree' button)
+function goToForumPage() {
+    window.location.href = FORUM_TARGET_URL;
+}
+
+// Event listener to close the modal if the user clicks anywhere outside the content box
+window.onclick = function(event) {
+    if (event.target === forumWarningModal) {
+        hideForumWarningModal();
+    }
+}
+
 </script>

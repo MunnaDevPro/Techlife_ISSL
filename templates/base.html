@@ -58,9 +58,6 @@
     {% comment %} emoji picker {% endcomment %}
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 
-
-
-
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
 
@@ -68,86 +65,98 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-e..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
     <!-- Custom cursor make -->
     <style>
-        body {
-            cursor: none;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+    body {
+        cursor: none;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    /* ------------------------------------- */
+    /* কাস্টম কার্সরের ব্লিঙ্কিং অ্যানিমেশন */
+    /* ------------------------------------- */
+    @keyframes pulse {
+        0% {
+            border-color: #facc15; 
+            opacity: 1;
         }
 
-        /* ------------------------------------- */
-        /* কাস্টম কার্সরের ব্লিঙ্কিং অ্যানিমেশন */
-        /* ------------------------------------- */
-        @keyframes pulse {
-            0% {
-                border-color: #3b82f6; /* নীল বর্ডার (Blue-500) */
-                opacity: 1;
-            }
-            50% {
-                border-color: #93c5fd; /* হালকা নীল (Blue-300, পালস এফেক্ট) */
-                opacity: 0.7;
-            }
-            100% {
-                border-color: #3b82f6;
-                opacity: 1;
-            }
+        50% {
+            border-color: #fde047; 
+            opacity: 0.2;
         }
 
-        /* মাউস স্থির থাকলে এই ক্লাসটি যোগ হবে */
-        .blinking {
-            animation: pulse 1.5s infinite alternate;
+        100% {
+            border-color: #facc15;
+            opacity: 1;
         }
+    }
 
-        /* কাস্টম কার্সরের স্টাইল */
-        #custom-cursor {
-            position: fixed;
-            width: 30px; /* কার্সরের আকার ইমেজ অনুযায়ী কিছুটা বড় করা হলো */
-            height: 30px;
-            border: 2px solid #3b82f6; /* নীল রঙের বর্ডার (Blue-500) */
-            border-radius: 50%; /* পুরোপুরি গোল করার জন্য */
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out, border-color 0.2s, opacity 0.2s;
-            mix-blend-mode: difference; /* এই প্রপার্টিটিই রঙের পরিবর্তন ঘটায় */
-            
-            /* --- ইমেজ যুক্ত করার জন্য নতুন প্রোপার্টি --- */
-            /* আপনার static image-এর URL এখানে সেট করা হয়েছে। */
-            background-image: url('{% static "image/logo-front.png" %}'); 
-            background-size: cover; /* ইমেজটিকে কার্সরের মধ্যে ফিট করার জন্য */
-            background-position: center; /* ইমেজটিকে কেন্দ্রে স্থাপন করার জন্য */
-            background-repeat: no-repeat; /* ইমেজ যাতে রিপিট না হয় */
-            /* ------------------------------------------- */
-        }
+    /* মাউস স্থির থাকলে এই ক্লাসটি যোগ হবে */
+    .blinking {
+        animation: pulse 1s infinite alternate;
+    }
 
-        /* যখন কোনো ইন্টারেক্টিভ এলিমেন্টের উপর মাউস যায়, তখন কার্সরের স্টাইল পরিবর্তন */
-        a:hover ~ #custom-cursor,
-        button:hover ~ #custom-cursor,
-        input[type="submit"]:hover ~ #custom-cursor {
-            transform: translate(-50%, -50%) scale(1.5); /* আকারে বড় হবে */
-            background-color: #3b82f6; /* ব্যাকগ্রাউন্ড কালার (Blue-500) */
-            border-color: transparent; /* বর্ডার অদৃশ্য হবে */
-            animation: none; /* হোভার করার সময় ব্লিঙ্কিং বন্ধ করে দেবে */
-            opacity: 1; /* অপাসিটি নিশ্চিত করবে */
-            
-            /* হোভারের সময় ইমেজ লুকিয়ে রাখা বা পরিবর্তন করা */
-            background-image: none; /* হোভারের সময় ইমেজ লুকানোর জন্য */
-        }
+    /* কাস্টম কার্সরের স্টাইল (বাইরের রিং) */
+    #custom-cursor {
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        border: 2px solid #facc15; 
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        /* এটি মুভমেন্টকে স্মুথ করবে: 0.1s থেকে 0.3s এ বাড়ানো হয়েছে */
+        transition: transform 0.3s ease-out, border-color 0.2s, opacity 0.2s; 
+        mix-blend-mode: difference;
         
-        /* মোবাইল বা ছোট স্ক্রিনের জন্য ডিফল্ট কার্সর ফিরিয়ে আনা */
-        @media (max-width: 768px) {
-            body {
-                cursor: default;
-            }
-            #custom-cursor {
-                display: none;
-            }
-        }
-    </style>
+        background-image: none;
 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* কেন্দ্রের বিন্দু স্টাইল */
+    .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background-color: #facc15; 
+        border-radius: 50%;
+        display: block;
+    }
+
+    /* যখন কোনো ইন্টারেক্টিভ এলিমেন্টের উপর মাউস যায়, তখন কার্সরের স্টাইল পরিবর্তন */
+    a:hover~#custom-cursor,
+    button:hover~#custom-cursor,
+    input[type="submit"]:hover~#custom-cursor {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #facc15; 
+        border-color: transparent;
+        animation: none;
+        opacity: 1;
+    }
+
+    /* হোভারের সময় কেন্দ্রের বিন্দু সাদা হবে */
+    a:hover~#custom-cursor .cursor-dot,
+    button:hover~#custom-cursor .cursor-dot,
+    input[type="submit"]:hover~#custom-cursor .cursor-dot {
+        background-color: white;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            cursor: default;
+        }
+
+        #custom-cursor {
+            display: none;
+        }
+    }
+</style>
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -165,15 +174,13 @@
     <!-- HTMX & Alpine.js -->
     {% comment %}
     <script src="https://unpkg.com/htmx.org@1.9.12"
-        xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd"
-        crossorigin="anonymous"></script> {% endcomment %}
+        xintegrity="sha384-qbtR4rS9adLkqseSremUcbR/vgFA2A6XPKYoHCi8S4EbMLjI/RJjVqEX+qtYLaqd" crossorigin="anonymous">
+    </script> {% endcomment %}
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-
 
     {% comment %} AOS animation {% endcomment %}
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
 
     <!-- Unicons -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
@@ -190,32 +197,29 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
     {% block extra_head %} {% endblock extra_head %}
 
     <style>
         .category-header-bg {
-        
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.05), rgba(255,255,255,.05) 10px, transparent 10px, transparent 20px);
+
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .05) 10px, transparent 10px, transparent 20px);
         }
     </style>
-
-
 
 </head>
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
-    
+
     <div id="custom-cursor">
+        <span class="cursor-dot"></span>
     </div>
 
- 
     {% include 'include/navbar.html' %}
-
 
     {% comment %}
     <div class="flex bg-white" x-data="{ sidebarOpen: false }" class="flex bg-white"> {% endcomment %}
-        {% comment %} <!-- Sidebar -->
+        {% comment %}
+        <!-- Sidebar -->
         <!-- <aside class="h-screen absolute md:sticky z-10 top-16">
             {% include 'include/sidebar.html' %}
         </aside> {% endcomment %} -->
@@ -223,7 +227,6 @@
         <!-- Main Content -->
         <main id="container" class="container mt-9 mx-auto flex-grow min-h-[calc(100vh-128px)] py-6 bg-white">
 
-            
             {% block content %}
             <!-- Page content here -->
             {% if action == 'post_create' %}
@@ -249,53 +252,48 @@
 
             {% endif %}
 
-
             {% endblock content %}
 
-
-
-
         </main>
-        
+
         {% include 'include/footer.html' %}
-
-
-
 
         <!-- =========== LUCIDE ICONS SCRIPT (এই দুটি লাইন যোগ করুন) =========== -->
 
-
         <!-- Custom cursor js -->
-            <script>
-   const customCursor = document.getElementById('custom-cursor');
-        let idleTimer;
-        const IDLE_DELAY = 500;
+        <script>
+    const customCursor = document.getElementById('custom-cursor');
+    let idleTimer;
+    const IDLE_DELAY = 500;
 
-        function startBlinking() {
-            customCursor.classList.add('blinking');
-        }
+    function startBlinking() {
+        customCursor.classList.add('blinking');
+    }
 
-        function stopBlinking() {
-            customCursor.classList.remove('blinking');
-        }
+    function stopBlinking() {
+        customCursor.classList.remove('blinking');
+    }
 
+    idleTimer = setTimeout(startBlinking, IDLE_DELAY);
+
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+        /*
+            এখানে কার্সরের অবস্থান সরাসরি সেট করা আছে,
+            কিন্তু transition: 0.3s থাকার কারণে মুভমেন্টটি মসৃণ লাগবে।
+        */
+        customCursor.style.transform = `translate(${x}px, ${y}px)`;
+
+        clearTimeout(idleTimer);
+        stopBlinking();
         idleTimer = setTimeout(startBlinking, IDLE_DELAY);
+    });
 
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX;
-            const y = e.clientY;
-            customCursor.style.transform = `translate(${x}px, ${y}px)`;
-
-            clearTimeout(idleTimer);
-            stopBlinking();
-            idleTimer = setTimeout(startBlinking, IDLE_DELAY);
-        });
-
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            customCursor.style.display = 'none';
-        }
-    </script>
-
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        customCursor.style.display = 'none';
+    }
+</script>
 
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
@@ -310,7 +308,7 @@
 
         <!-- HTMX -->
         <script src="https://unpkg.com/htmx.org@1.9.12"></script>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> 
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
         <script>
             document.body.addEventListener('htmx:afterSwap', (event) => {
@@ -322,47 +320,39 @@
 
         <script>
             document.body.addEventListener('htmx:afterSwap', (event) => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             });
         </script>
 
-
-        <script>                                                                                                                  
+        <script>
             // =================================================================================
-            // মূল ফাংশন: initializeDynamicContent() - এটি HTMX Swap-এর পর সব লজিক পুনরায় চালু করে
             // =================================================================================
             function initializeDynamicContent() {
-
                 // --------------------------------------------------------------------------------
-                // 📢 ১. Share Button and Modal Logic (Share Button Fix) 📢
                 // --------------------------------------------------------------------------------
-
-                // Modal Elements (এগুলো প্রায়শই base.html এ থাকে, তাই আগে ইনিশিয়ালাইজ করাই ভালো)
+                // Modal Elements 
                 const shareBtn = document.getElementById('shareBtn');
                 const shareModal = document.getElementById('shareModal');
                 const closeModal = document.getElementById('closeModal');
                 const shareLinks = document.querySelectorAll('.share-link');
-
-                // Data Container (এটি dynamic content-এর সাথে আসে)
+                // Data Container 
                 const dataContainer = document.getElementById('share-data-container');
-
-                // Modal Open/Close Logic (যদি বাটন থাকে, তবে এটি সর্বদা সক্রিয় থাকবে)
-
+                // Modal Open/Close Logic 
                 // Open modal
                 if (shareBtn && shareModal) {
-                    // পুরাতন ইভেন্ট লিসেনার মুছে নতুনটি যোগ করতে .onclick ব্যবহার করা হলো।
                     shareBtn.onclick = () => {
                         shareModal.classList.remove('hidden');
                     };
                 }
-
                 // Close modal on X button
                 if (closeModal && shareModal) {
                     closeModal.onclick = () => {
                         shareModal.classList.add('hidden');
                     };
                 }
-
                 // Close modal if click outside modal box
                 if (shareModal) {
                     shareModal.onclick = (e) => {
@@ -371,23 +361,19 @@
                         }
                     };
                 }
-
-                // Social Share & AJAX Recording Logic (যদি Data Container পাওয়া যায়)
+                // Social Share & AJAX Recording Logic 
                 if (dataContainer) {
                     const postId = dataContainer.dataset.postId;
                     const shareUrl = dataContainer.dataset.shareUrl;
                     const csrfToken = dataContainer.dataset.csrfToken;
                     const postUrl = encodeURIComponent(window.location.href);
-
                     shareLinks.forEach((link) => {
                         // পুরাতন onclick ইভেন্ট মুছতে হবে
                         link.onclick = null;
-
                         link.onclick = (e) => {
                             e.preventDefault();
                             const platform = link.dataset.platform;
                             let url = '';
-
                             // 1️⃣ Open social share popup 
                             switch (platform) {
                                 case 'facebook':
@@ -404,16 +390,15 @@
                                     break;
                             }
                             window.open(url, '_blank', 'width=600,height=400');
-
                             // 2️⃣ Record share in backend (AJAX)
                             fetch(shareUrl, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/x-www-form-urlencoded',
-                                    'X-CSRFToken': csrfToken
-                                },
-                                body: `post_id=${postId}&platform=${platform}`
-                            })
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                        'X-CSRFToken': csrfToken
+                                    },
+                                    body: `post_id=${postId}&platform=${platform}`
+                                })
                                 .then((res) => res.json())
                                 .then((data) => {
                                     if (data.status === 'success') {
@@ -426,11 +411,8 @@
                         };
                     });
                 }
-
                 // --------------------------------------------------------------------------------
-                // 📢 ২. Audio Button Logic (টেক্সট-টু-স্পিচ কন্ট্রোল) 📢
                 // --------------------------------------------------------------------------------
-
                 let speech = null;
                 const titleElement = document.getElementById('blog-title');
                 const descriptionElement = document.getElementById('blog-description');
@@ -438,7 +420,6 @@
                 const stopBtn = document.getElementById('stop-btn');
                 const iconDisplay = document.getElementById('icon-display');
                 const synth = window.speechSynthesis;
-
                 if (mainAudioBtn) {
                     if (synth.speaking || synth.paused) {
                         synth.cancel();
@@ -461,84 +442,61 @@
                             stopBtn.disabled = true;
                         }
                     }
-
                     mainAudioBtn.onclick = () => {
                         if (synth.paused) {
                             synth.resume();
                             updateUI(true, false);
                             return;
                         }
-
                         if (synth.speaking) {
                             synth.pause();
                             updateUI(true, true);
                             return;
                         }
-
                         const titleText = titleElement ? titleElement.textContent : '';
                         const descriptionText = descriptionElement ? descriptionElement.textContent : '';
                         const textToSpeak = titleText + '. ' + descriptionText;
-
                         if (!textToSpeak.trim()) {
                             console.warn('No text content found to speak.');
                             return;
                         }
-
                         speech = new SpeechSynthesisUtterance(textToSpeak);
                         speech.lang = 'bn-BD';
-
                         synth.speak(speech);
                         updateUI(true, false);
-
                         speech.onend = () => {
                             updateUI(false, false);
                         };
-
                         speech.onerror = (event) => {
                             console.error('Speech synthesis error:', event);
                             updateUI(false, false);
                         };
                     };
-
                     stopBtn.onclick = () => {
                         if (synth.speaking || synth.paused) {
                             synth.cancel();
                             updateUI(false, false);
                         }
                     };
-
                     updateUI(false, false);
                 }
-
                 // --------------------------------------------------------------------------------
-                // 📢 ৩. Comment Reply Toggle Logic (সকল রিপ্লাই বাটন পুনরায় সক্রিয় করা) 📢
                 // --------------------------------------------------------------------------------
-
                 document.querySelectorAll('.reply-btn').forEach((btn) => {
-                    // .onclick ব্যবহার করা, যা HTMX-এ ইভেন্ট লিসেনার রিপ্লেসমেন্ট নিশ্চিত করে।
-                    btn.onclick = function () {
+                    
+                    btn.onclick = function() {
                         const form = this.closest('div').parentNode.querySelector('.reply-form');
                         if (form) {
                             form.classList.toggle('hidden');
                         }
                     };
                 });
-
-            } // initializeDynamicContent ফাংশন শেষ
-
-            // =================================================================================
-            // ইভেন্ট লিসেনার: HTMX এবং DOM Ready
-            // =================================================================================
-
-            // A. প্রথমবার পেজ লোড হওয়ার পর ডাইনামিক কন্টেন্ট ইনিশিয়ালাইজ করা
+            } // initializeDynamicContent 
+            
             document.addEventListener('DOMContentLoaded', initializeDynamicContent);
-
-            // B. HTMX Swap সম্পন্ন হওয়ার পর প্রতিবার ডাইনামিক কন্টেন্ট ইনিশিয়ালাইজ করা
-            document.body.addEventListener('htmx:afterSwap', function (evt) {
+            document.body.addEventListener('htmx:afterSwap', function(evt) {
                 if (evt.detail.target && evt.detail.target.id === 'container') {
-                    initializeDynamicContent(); // ✅ সব লজিক পুনরায় চালু করা হলো।
-
-                    // অন্যান্য লাইব্রেরি রিফ্রেশ করা
+                    initializeDynamicContent(); // 
                     if (typeof lucide !== 'undefined') {
                         lucide.createIcons();
                     }
@@ -547,30 +505,25 @@
                     }
                 }
             });
-
             // --------------------------------------------------------------------
-            // 📢 অন্যান্য HTMX কন্ট্রোল লজিক (Loading Indicator, Error Handling, SEO) 📢
             // --------------------------------------------------------------------
-
             // HTMX Loading indicator (Request শুরুর আগে)
-            document.body.addEventListener('htmx:beforeRequest', function (evt) {
+            document.body.addEventListener('htmx:beforeRequest', function(evt) {
                 const content = document.getElementById('content');
                 if (content) {
                     content.style.opacity = '0.6';
                     content.style.transition = 'opacity 0.2s ease';
                 }
             });
-
             // HTMX Loading indicator (Request শেষ হওয়ার পর)
-            document.body.addEventListener('htmx:afterRequest', function (evt) {
+            document.body.addEventListener('htmx:afterRequest', function(evt) {
                 const content = document.getElementById('content');
                 if (content) {
                     content.style.opacity = '1';
                 }
             });
-
             // Handle errors gracefully
-            document.body.addEventListener('htmx:responseError', function (evt) {
+            document.body.addEventListener('htmx:responseError', function(evt) {
                 console.error('HTMX Error:', evt.detail);
                 const content = document.getElementById('content');
                 if (content) {
@@ -587,9 +540,8 @@
                     content.style.opacity = '1';
                 }
             });
-
             // SEO: Update page title for HTMX requests
-            document.body.addEventListener('htmx:afterSettle', function (evt) {
+            document.body.addEventListener('htmx:afterSettle', function(evt) {
                 const titleElement = evt.detail.target.querySelector('title, [data-title]');
                 if (titleElement) {
                     document.title = titleElement.textContent || titleElement.getAttribute('data-title');
@@ -597,15 +549,10 @@
             });
         </script>
 
-
              
-
-
 
         <!-- Script js -->
         <script src="{% static 'js/script.js' %}"></script>
-
-
 
         <script>
             AOS.init();

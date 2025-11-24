@@ -525,9 +525,6 @@
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
   }
-  .mt-58 {
-    margin-top: calc(var(--spacing) * 58);
-  }
   .mt-auto {
     margin-top: auto;
   }
@@ -802,9 +799,6 @@
   .h-\[320px\] {
     height: 320px;
   }
-  .h-\[400px\] {
-    height: 400px;
-  }
   .h-\[450px\] {
     height: 450px;
   }
@@ -1031,9 +1025,6 @@
     flex-shrink: 0;
   }
   .flex-grow {
-    flex-grow: 1;
-  }
-  .grow {
     flex-grow: 1;
   }
   .border-collapse {
@@ -1582,9 +1573,6 @@
   }
   .bg-gray-400 {
     background-color: var(--color-gray-400);
-  }
-  .bg-gray-500 {
-    background-color: var(--color-gray-500);
   }
   .bg-gray-800 {
     background-color: var(--color-gray-800);
@@ -2662,13 +2650,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-green-700);
-      }
-    }
-  }
-  .hover\:bg-red-50 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-red-50);
       }
     }
   }
