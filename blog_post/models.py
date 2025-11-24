@@ -102,7 +102,7 @@ class BlogPost(models.Model):
         verbose_name="Sub Category" 
     )
     
-    author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUserModel, on_delete=models.CASCADE, related_name='authored_posts')
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
 

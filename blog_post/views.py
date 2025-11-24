@@ -141,9 +141,9 @@ def home(request):
         "-created_at"
     )[:5]
 
-    top_users = CustomUserModel.objects.filter(is_verified=True).order_by(
-        "-created_at"
-    )[:4]
+    top_users = CustomUserModel.objects.filter(is_verified=True) \
+    .annotate(post_count=Count('authored_posts')) \
+    .order_by('-post_count')[:4]
 
     # category wise 4 ta kore blogs nibo
     technology_posts = BlogPost.objects.filter(

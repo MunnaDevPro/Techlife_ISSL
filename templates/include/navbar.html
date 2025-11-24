@@ -252,7 +252,7 @@
                     class="w-full h-full rounded-full border-2 border-blue-500 object-cover flex items-center justify-center text-3xl">
             </a>
         {% else %}
-            <a href="{% url 'login' %}" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Login</a>
+            <a href="{% url 'login' %}" onclick="uniOpenModal('modalLogin')" class="btn liquid hidden lg:block px-3 py-2 pb-2 border border-blue-500 text-blue-500 hover:bg-gray-100 transition duration-150">Login</a>
         {% endif %}
 
                     <!-- <a href="#" class="btn1 liquid1 hidden lg:block px-3 py-2 border border-gray-600 text-gray-700 hover:bg-blue-50 transition duration-150 rounded-sm">Today's News</a> -->
