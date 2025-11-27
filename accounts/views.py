@@ -306,13 +306,11 @@ def profile_update_view(request):
             user.profile_picture = profile_picture_file
     
             
-        try:
-            user.save()
-            # messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('user_dashboard') 
-        except Exception as e:
-            messages.error(request, f'An error occurred: {e}')
-            
+        
+        user.save()
+        # messages.success(request, 'Your profile has been updated successfully!')
+        return redirect('user_dashboard') 
+
     context = {
         'user_data': user, 
         "action": "profile_update"

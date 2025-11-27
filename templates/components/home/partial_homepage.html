@@ -1,9 +1,8 @@
 {% load static %}
 
-
 <!-- Main Content -->
 <div
-    class="hero_section mt-11 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6 w-full px-3 pt-5 lg:pt-4 mx-auto">
+    class="hero_section lg:mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 lg:gap-6 w-full px-3 pt-5 lg:pt-4 mx-auto">
     <!-- Left Section Carousel and Blogs and Add -->
     <div class="w-full md:col-span-3 flex flex-col gap-y-4 lg:gap-y-6" data-aos="fade-up"
         data-aos-anchor-placement="top-bottom" data-aos-duration="500">
@@ -39,24 +38,26 @@
                             {% if blog.category %}
                             <div class="inline-block">
                                 <span
-                                    class="px-2 py-1 bg-blue-500/80 rounded-full text-xs sm:text-sm font-medium backdrop-blur-sm">{{
-                                    blog.category.name }}</span>
+                                    class="px-2 py-1 bg-blue-500/80 rounded-full text-xs sm:text-sm font-medium backdrop-blur-sm">{{ blog.category.name }}</span>
                             </div>
                             {% endif %}
 
                             <!-- Title -->
                             <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight line-clamp-2">
-                                {{ blog.title }}</h2>
+                                {{ blog.title }}
+                            </h2>
 
                             <!-- Description -->
                             <p
                                 class="text-sm sm:text-sm md:text-md text-gray-100 line-clamp-2 sm:line-clamp-3 max-w-2xl">
-                                {{ blog.description|truncatewords:20 }}</p>
+                                {{ blog.description|truncatewords:20 }}
+                            </p>
 
                             <!-- Author and Date -->
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                                 <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-300">
-                                    <span>By {{ blog.author.first_name }} {{ blog.author.last_name }}</span>
+                                    <span>By {{ blog.author.first_name }} {{ blog.author.last_name
+                    }}</span>
                                     <span>•</span>
                                     <span>{{ blog.created_at|date:"M d, Y" }}</span>
                                 </div>
@@ -85,7 +86,9 @@
                     </div>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="text-center text-white">
-                            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Welcome to Our Blog</h2>
+                            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
+                                Welcome to Our Blog
+                            </h2>
                             <p class="text-gray-200">Stay tuned for amazing content!</p>
                         </div>
                     </div>
@@ -121,28 +124,22 @@
             {% for blog in blogs|slice:"4" %}
             <a hx-get="{% url 'blog_details' blog.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
                 class="cursor-pointer">
-
                 <li class="flex flex-col w-full group gap-y-1 mb-3" data-aos="fade-up"
                     data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-full h-[160px] sm:h-32 relative overflow-hidden rounded-md">
                         {% if blog.featured_image %}
-                        <img class="w-full h-full object-cover rounded-md shadow 
-                                transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                        <img class="w-full h-full object-cover rounded-md shadow transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                             src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" />
                         {% elif blog.featured_image_url %}
-                        <img class="w-full h-full object-cover rounded-md shadow 
-                                transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                        <img class="w-full h-full object-cover rounded-md shadow transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                             src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" />
                         {% else %}
-                        <img class="w-full h-full object-cover rounded-md shadow 
-                                transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                        <img class="w-full h-full object-cover rounded-md shadow transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                             src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" />
                         {% endif %}
                     </div>
-                    <h1 class="text-sm font-semibold text-gray-700 line-clamp-2 hover:text-blue-500">{{ blog.title }}
+                    <h1 class="text-sm font-semibold text-gray-700 line-clamp-2 hover:text-blue-500">
+                        {{ blog.title }}
                     </h1>
                 </li>
             </a>
@@ -158,24 +155,22 @@
             hx-swap="innerHTML" class="flex flex-col cursor-pointer">
             <div class="flex w-full mb-6 rounded-md flex-col gap-1 group relative overflow-hidden">
                 {% if latest_blog.featured_image %}
-                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                     src="{{ latest_blog.featured_image.url }}" alt="{{ latest_blog.title }}" />
                 {% elif latest_blog.featured_image_url %}
-                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                <img class="rounded-md w-full h-full transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                     src="{{ latest_blog.featured_image_url }}" alt="{{ latest_blog.title }}" />
                 {% else %}
-                <img class="rounded-md w-full transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]"
+                <img class="rounded-md w-full transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]"
                     src="{% static 'image/placeholder-5.png' %}" alt="{{ latest_blog.title }}" />
                 {% endif %}
-                <h1 class="text-sm md:text-base font-semibold pl-1 pb-6 group-hover:text-blue-600 line-clamp-2">{{
-                    latest_blog.title|truncatewords:9 }}</h1>
+                <h1 class="text-sm md:text-base font-semibold pl-1 pb-6 group-hover:text-blue-600 line-clamp-2">
+                    {{ latest_blog.title|truncatewords:9 }}
+                </h1>
             </div>
         </a>
         {% endif %} {% comment %}
-        <hr class="text-gray-200 mb-2 " />
+        <hr class="text-gray-200 mb-2" />
         {% endcomment %}
 
         <!-- Small blogs list -->
@@ -193,19 +188,23 @@
                     data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     <div class="w-12 h-12 rounded-md sm:w-14 sm:h-14 flex-shrink-0 group relative overflow-hidden">
                         {% if blog.featured_image %}
-                        <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]" />
+                        <img src="{{ blog.featured_image.url }}" alt="{{ blog.title }}"
+                            class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]" />
                         {% elif blog.featured_image_url %}
-                        <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}" class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]" />
+                        <img src="{{ blog.featured_image_url }}" alt="{{ blog.title }}"
+                            class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]" />
                         {% else %}
-                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}" class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out 
-                                group-hover:-translate-y-1 group-hover:scale-[1.03]" />
+                        <img src="{% static 'image/placeholder-5.png' %}" alt="{{ blog.title }}"
+                            class="w-full h-full object-cover rounded-md transform transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03]" />
                         {% endif %}
                     </div>
                     <div class="flex flex-col gap-y-1">
-                        <h1 class="text-[12px] font-bold group-hover:text-blue-600 line-clamp-1">{{ blog.title }}</h1>
-                        <p class="text-xs text-gray-600 line-clamp-2">{{ blog.description|truncatewords:10 }}</p>
+                        <h1 class="text-[12px] font-bold group-hover:text-blue-600 line-clamp-1">
+                            {{ blog.title }}
+                        </h1>
+                        <p class="text-xs text-gray-600 line-clamp-2">
+                            {{ blog.description|truncatewords:10 }}
+                        </p>
                     </div>
                 </li>
             </a>
@@ -229,57 +228,31 @@
         data-aos-anchor-placement="top-bottom" data-aos-duration="500">
         <!-- Top question -->
 
-        <div class=" mb-2" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+        <div class="mb-1 lg:mb-2 ml-3 lg:ml-0" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
+            data-aos-duration="500">
             <i class="fa-solid fa-trophy"></i>
             <span class="text-lg font-bold text-center text-gray-950">Top Questions</span>
         </div>
         <hr class="text-gray-200 mb-1" />
 
-        <ul class="space-y-1" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-            {% for user in top_users|slice:"4" %}
-            <li class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer"
-                data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                {% if not user.profile_picture %}
-                <div
-                    class="size-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-800 font-semibold">
-                    {{ user.first_name|slice:":1" }}</div>
-                {% else %}
-                <img src="{{ user.profile_picture.url }}"
-                    class="w-10 h-10 rounded-full object-cover border border-blue-400" />
-                {% endif %}
-                <div class="flex-1 px-2">
-                    <h3 class="font-semibold text-gray-700 group-hover:text-blue-600 text-sm">{{ user.first_name }} {{
-                        user.last_name }}</h3>
-                    <p class="text-xs text-gray-600 truncate">{{ user.email }}</p>
-                </div>
-            </li>
-            <hr class="text-gray-200" />
-
-            {% endfor %}
-        </ul>
-        <!-- Top Authors -->
-        <div class="mt-5" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-            <div class="p-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                <i class="fa-solid fa-trophy"></i>
-                <span class="text-lg font-bold text-center text-gray-950">Top Authors</span>
-            </div>
-            <hr class="text-gray-200 mb-2" />
-
+        <div class="ml-3 lg:ml-0">
             <ul class="space-y-1" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
-                {% for user in top_users|slice:"3" %}
+                {% for user in top_users|slice:"4" %}
                 <li class="flex items-center justify-between rounded-xl px-1 hover: transition duration-300 hover:scale-102 group cursor-pointer"
                     data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                     {% if not user.profile_picture %}
                     <div
                         class="size-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-800 font-semibold">
-                        {{ user.first_name|slice:":1" }}</div>
+                        {{ user.first_name|slice:":1" }}
+                    </div>
                     {% else %}
                     <img src="{{ user.profile_picture.url }}"
                         class="w-10 h-10 rounded-full object-cover border border-blue-400" />
                     {% endif %}
                     <div class="flex-1 px-2">
-                        <h3 class="font-semibold text-gray-700 group-hover:text-blue-600 text-sm">{{ user.first_name }}
-                            {{ user.last_name }}</h3>
+                        <h3 class="font-semibold text-gray-700 group-hover:text-blue-600 text-sm">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h3>
                         <p class="text-xs text-gray-600 truncate">{{ user.email }}</p>
                     </div>
                 </li>
@@ -288,17 +261,52 @@
                 {% endfor %}
             </ul>
         </div>
+        <!-- Top Authors -->
+        <div class="mt-5 ml-3 lg:ml-0 lg:mt-5" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
+            data-aos-duration="500">
+            <div class="p-3 sm:p-5" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                <i class="fa-solid fa-trophy"></i>
+                <span class="text-lg font-bold text-center text-gray-950">Top Authors</span>
+            </div>
+            <hr class="text-gray-200 mb-2" />
 
-        <!-- Tags Filter -->
-        <div class="tag-filter w-full rounded-2xl mt-3" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <ul class="space-y-1" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                {% for user in top_users|slice:"3" %}
+                <li class="flex items-center justify-between rounded-xl px-1 hover:transition duration-300 hover:scale-102 group cursor-pointer"
+                    data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
+                    {% if not user.profile_picture %}
+                    <div
+                        class="size-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-800 font-semibold">
+                        {{ user.first_name|slice:":1" }}
+                    </div>
+                    {% else %}
+                    <img src="{{ user.profile_picture.url }}"
+                        class="w-10 h-10 rounded-full object-cover border border-blue-400" />
+                    {% endif %}
+                    <div class="flex-1 px-2">
+                        <h3 class="font-semibold text-gray-700 group-hover:text-blue-600 text-sm">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h3>
+                        <p class="text-xs text-gray-600 truncate">{{ user.email }}</p>
+                    </div>
+                </li>
+                <hr class="text-gray-200" />
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- popular Tags Filter -->
+        <div class="container ml-3 lg:ml-0 tag-filter w-full rounded-2xl mt-3" data-aos="fade-up"
+            data-aos-anchor-placement="top-bottom">
             <div class="p-1 mt-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-duration="500">
                 <i class="fa-solid fa-tag"></i>
                 <span class="text-lg font-bold mb-2 text-gray-950">Popular Tags</span>
             </div>
             <hr class="text-gray-200 mb-2" />
             {% comment %}
-            <h1 class="text-lg sm:text-xl font-bold mb-4 text-gray-800 flex items-center justify-center gap-2">Popular
-                Tags</h1>
+            <h1 class="text-lg sm:text-xl font-bold mb-4 text-gray-800 flex items-center justify-center gap-2">
+                Popular Tags
+            </h1>
             {% endcomment %}
 
             <ul class="flex flex-wrap gap-1" data-aos="fade-up" data-aos-anchor-placement="top-bottom"
@@ -306,8 +314,7 @@
                 {% for tag in tags|slice:"12" %}
                 <li>
                     <span
-                        class="text-[10px] badge badge-md border border-blue-200 bg-blue-50 text-blue-500 font-medium rounded-full hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer px-3 py-1">{{
-                        tag.name|slice:'20' }}</span>
+                        class="text-[10px] badge badge-md border border-blue-200 bg-blue-50 text-blue-500 font-medium rounded-full hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all duration-200 cursor-pointer px-3 py-1">{{ tag.name|slice:'20' }}</span>
                 </li>
                 {% endfor %}
 
@@ -332,15 +339,8 @@
     </div>
 </div>
 
-
-
-
 {% include 'components/home/blog_grid.html' %}
-
-
-
 {% include 'components/home/latest_news.html' %}
-
 
 <!-- Add Section -->
 <div class="w-full flex justify-center items-center rounded-xl mt-20 mb-4 mx-auto">
@@ -348,17 +348,9 @@
         src="#" alt="Google add fixed size (980 * 120) px" />
 </div>
 
-
-
 {% include 'components/home/particular_three_category_1.html' %}
-
-
 {% include 'components/home/most_view.html' %}
-
-
-
 {% include 'components/home/marque.html' %}
-
 
 <!-- Alpine.js Carousel Script for homepage -->
 <script>
@@ -366,9 +358,9 @@
         return {
             // The template tag was missing a closing brace (}) and should be enclosed in quotes
             currentSlide: 0,
-            totalSlides: parseInt("{{ carousel_blogs|length|default:'0' }}", 10), // Corrected: Using default:'0' and parseInt for safety
+            totalSlides: parseInt("{{ carousel_blogs|length|default:'0' }}",
+                10), // Corrected: Using default:'0' and parseInt for safety
             autoSlideInterval: null,
-
             init() {
                 // Only start auto-slide if there's more than one slide
                 if (this.totalSlides > 1) {
@@ -377,22 +369,20 @@
                     this.$el.addEventListener("mouseleave", () => this.startAutoSlide());
                 }
             },
-
             nextSlide() {
                 this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
             },
-
             prevSlide() {
                 this.currentSlide =
-                    this.currentSlide === 0 ? this.totalSlides - 1 : this.currentSlide - 1;
+                    this.currentSlide === 0 ?
+                    this.totalSlides - 1 :
+                    this.currentSlide - 1;
             },
-
             startAutoSlide() {
                 if (this.totalSlides > 1) {
                     this.autoSlideInterval = setInterval(() => this.nextSlide(), 4000);
                 }
             },
-
             stopAutoSlide() {
                 clearInterval(this.autoSlideInterval);
                 this.autoSlideInterval = null;

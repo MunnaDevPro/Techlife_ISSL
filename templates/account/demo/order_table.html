@@ -3,103 +3,89 @@
 {% load custom_filters %}
 
 
-<section class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 mb-6">
+<section class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100 mb-6">
     <h3 class="text-lg font-semibold mb-4 text-gray-800">Blog Post Performance</h3>
 
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
-            <thead>
+            <thead class="hidden sm:table-header-group">
                 <tr class="text-xs text-gray-500 uppercase tracking-wider bg-gray-50">
-                    <th class="py-3 px-2 text-left">
-                        Type
-                    </th>
+                    <th class="py-3 px-2 text-left">Type</th>
                     <th class="py-3 px-2 text-left">Blog Title</th>
                     <th class="py-3 px-2 text-left">Published</th>
                     <th class="py-3 px-2 text-left">Category</th>
-                    <th class="py-3 px-2 text-left">Blog Views</th>
-                    <th class="py-3 px-2 text-left">Reactions</th>
+                    <th class="py-3 px-2 text-left">Views</th>
+                    <th class="py-3 px-2 text-left">Likes</th>
                     <th class="py-3 px-2 text-left">Status</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
                 {% for post in user_blog_posts %}
-
-                    <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="py-4 px-2 text-center">
-                            <i class="fas fa-file-alt text-gray-400 text-lg"></i>
-                        </td>
-                        <td class="py-4 px-2">
+                <!-- Mobile Card View -->
+                <tr class="sm:hover:bg-gray-50 transition duration-150 block sm:table-row border-b border-gray-200 sm:border-none">
+                    <!-- Mobile Header -->
+                    <td class="sm:hidden block p-4 bg-gray-50 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-3">
-                                <img src="{% if post.featured_image %} {{ post.featured_image.url }}
-
-                                            {% elif post.featured_image_url %}
-
-                                                {{ post.featured_image_url }}
-
-                                            {% else %}
-
-                                                {% static 'path/to/default/image.png' %} 
-
-                                            {% endif %}"
-
-                                        alt="{{ post.title }} Post Thumbnail" 
-
-                                        class="w-8 h-8 rounded object-cover border border-gray-300"> 
-                                <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true"
-                    hx-swap="innerHTML" class="text-sm font-medium text-gray-800 cursor-pointer">{{ post.title|truncatechars:"40" }}</span>
+                                <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" 
+                                     alt="{{ post.title }} Post Thumbnail" 
+                                     class="w-10 h-10 rounded object-cover border border-gray-300">
+                                <div>
+                                    <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" 
+                                          class="text-sm font-medium text-gray-800 cursor-pointer block">{{ post.title|truncatechars:"30" }}</span>
+                                    <span class="text-xs text-gray-500">{{ post.created_at|date }}</span>
+                                </div>
                             </div>
-                        </td>
-                        <td class="py-4 px-2 text-sm text-gray-600">{{ post.created_at|date }}</td>
-                        <td class="py-4 px-2 text-sm text-green-600 font-semibold">{{ post.category.name }}</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">{{ post.views|humanize_number }}</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">{{ post.likes.count|humanize_number }}</td>
-                        <td class="py-4 px-2">
-                            <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-green-600">{{ post.status.title }}</span>
-                        </td>
-                    </tr>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full text-white bg-green-600">{{ post.status.title }}</span>
+                        </div>
+                    </td>
 
-                    {% comment %} <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="py-4 px-2 text-center">
-                            <i class="fas fa-file-alt text-gray-400 text-lg"></i>
-                        </td>
-                        <td class="py-4 px-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="https://tds-images.thedailystar.net/sites/default/files/styles/big_202/public/images/2025/10/25/steven_fagin.jpg" alt="Marketing Post Thumbnail" class="w-8 h-8 rounded object-cover border border-gray-300">
-                                <span class="text-sm font-medium text-gray-800">Deep Dive into Q3 Marketing Metrics</span>
+                    <!-- Desktop Table Cells -->
+                    <td class="hidden sm:table-cell py-4 px-2 text-center">
+                        <i class="fas fa-file-alt text-gray-400 text-lg"></i>
+                    </td>
+                    
+                    <td class="hidden sm:table-cell py-4 px-2">
+                        <div class="flex items-center space-x-3">
+                            <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" 
+                                 alt="{{ post.title }} Post Thumbnail" 
+                                 class="w-8 h-8 rounded object-cover border border-gray-300">
+                            <span hx-get="{% url 'blog_details' post.slug %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" 
+                                  class="text-sm font-medium text-gray-800 cursor-pointer">{{ post.title|truncatechars:"40" }}</span>
+                        </div>
+                    </td>
+
+                    <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.created_at|date }}</td>
+                    
+                    <td class="hidden sm:table-cell py-4 px-2 text-sm text-green-600 font-semibold">{{ post.category.name }}</td>
+
+                    <!-- Mobile Stats Row -->
+                    <td class="sm:hidden block p-4">
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Category</div>
+                                <div class="text-sm font-semibold text-green-600">{{ post.category.name }}</div>
                             </div>
-                        </td>
-                        <td class="py-4 px-2 text-sm text-gray-600">Sep 30, 2024</td>
-                        <td class="py-4 px-2 text-sm text-yellow-600 font-semibold">Medium</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">8,120</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">190</td>
-                        <td class="py-4 px-2">
-                            <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-red-600">Needs
-                                Update</span>
-                        </td>
-                    </tr>
-
-                    <tr class="hover:bg-gray-50 transition duration-150">
-                        <td class="py-4 px-2 text-center">
-                            <i class="fas fa-file-alt text-gray-400 text-lg"></i>
-                        </td>
-                        <td class="py-4 px-2">
-                            <div class="flex items-center space-x-3">
-                                <img src="https://tds-images.thedailystar.net/sites/default/files/styles/big_202/public/images/2022/11/10/315157445_492082706288447_1477162527218468857_n.jpg" alt="Tailwind CSS Post Thumbnail" class="w-8 h-8 rounded object-cover border border-gray-300">
-                                <span class="text-sm font-medium text-gray-800">Getting Started with Tailwind CSS</span>
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Views</div>
+                                <div class="text-sm font-semibold text-gray-700">{{ post.views|humanize_number }}</div>
                             </div>
-                        </td>
-                        <td class="py-4 px-2 text-sm text-gray-600">Nov 08, 2024</td>
-                        <td class="py-4 px-2 text-sm text-gray-600 font-semibold">N/A</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">550</td>
-                        <td class="py-4 px-2 text-sm text-gray-600">15</td>
-                        <td class="py-4 px-2">
-                            <span
-                                class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-yellow-600">Drafting</span>
-                        </td>
-                    </tr> {% endcomment %}
+                            <div>
+                                <div class="text-xs text-gray-500 mb-1">Likes</div>
+                                <div class="text-sm font-semibold text-gray-700">{{ post.likes.count|humanize_number }}</div>
+                            </div>
+                        </div>
+                    </td>
 
+                    <!-- Desktop Stats Cells -->
+                    <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.views|humanize_number }}</td>
+                    <td class="hidden sm:table-cell py-4 px-2 text-sm text-gray-600">{{ post.likes.count|humanize_number }}</td>
+                    
+                    <td class="hidden sm:table-cell py-4 px-2">
+                        <span class="text-xs font-semibold px-3 py-1 rounded-full text-white bg-green-600">{{ post.status.title }}</span>
+                    </td>
+                </tr>
                 {% endfor %}
-
             </tbody>
         </table>
     </div>
