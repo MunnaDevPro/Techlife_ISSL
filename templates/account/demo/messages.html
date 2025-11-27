@@ -1,64 +1,227 @@
-<div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-    <h3 class="text-lg font-semibold mb-4 text-gray-800">Featured Article / Trending Post</h3>
+<!-- Blog Post Style Profile Dashboard -->
+<div class="max-w-4xl mx-auto px-4 py-6">
 
-    <div class="relative rounded-lg overflow-hidden h-40 shadow-md">
-        <div class="h-full bg-cover bg-center" style="background-image: url('http://googleusercontent.com/image_collection/image_retrieval/some_id_string')">
-            <div class="absolute inset-0 flex justify-between items-center p-2">
-                <button class="text-white text-xl opacity-75 hover:opacity-100"><i class="fas fa-chevron-left"></i></button>
-                <button class="text-white text-xl opacity-75 hover:opacity-100"><i class="fas fa-chevron-right"></i></button>
+    <!-- Profile Header Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div class="flex flex-col md:flex-row items-center gap-6">
+            <!-- Profile Picture -->
+            <div class="relative">
+                <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg">
+                    <img class="w-full h-full object-cover" 
+                         src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'user_profile/default_user_profile.png' %}{% endif %}" 
+                         alt="{{ user.get_full_name }}">
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center border-2 border-white">
+                    <i class="fas fa-check text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Profile Info -->
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{{ user.get_full_name|default:"MD Munna" }}</h1>
+                <p class="text-gray-600 text-lg mb-4">{{ user.role|default:"Software Developer (Django)" }}</p>
+                
+                <!-- Stats -->
+                <div class="flex justify-center md:justify-start gap-6 text-center">
+                    <div>
+                        <div class="text-xl font-bold text-blue-600">{{ user.profile.followers_count|default:"1.2K" }}</div>
+                        <div class="text-sm text-gray-500">Followers</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold text-green-600">{{ user.profile.following_count|default:"350" }}</div>
+                        <div class="text-sm text-gray-500">Following</div>
+                    </div>
+                    <div>
+                        <div class="text-xl font-bold text-purple-600">{{ total_views|humanize_number }}</div>
+                        <div class="text-sm text-gray-500">Total Views</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-3">
+                <a href="{% url 'profile_update' %}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2">
+                    <i class="fas fa-edit"></i>
+                    Edit Profile
+                </a>
+                <a href="{% url 'logout' %}" 
+                   class="border border-gray-300 hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
             </div>
         </div>
-        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
-            <p class="font-bold text-white">Top Post: Deep Learning for News Curation</p>
-            <p class="text-xs text-gray-300">Total Views: 15.3K | Earning: $25.50</p>
+
+        <!-- Contact Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200">
+            <div class="flex items-center gap-3 text-gray-700">
+                <i class="fas fa-envelope text-blue-500 w-5"></i>
+                <span class="text-sm">{{ user.email|default:"user.email@example.com" }}</span>
+            </div>
+            <div class="flex items-center gap-3 text-gray-700">
+                <i class="fas fa-phone text-green-500 w-5"></i>
+                <span class="text-sm">{{ user.mobile|default:"+880 1XXXXXXXXX" }}</span>
+            </div>
+            <div class="flex items-center gap-3 text-gray-700">
+                <i class="fas fa-map-marker-alt text-red-500 w-5"></i>
+                <span class="text-sm">{% if user.city and user.country %} {{ user.city }}, {{ user.country }} {% elif user.address_line_1 %} {{ user.address_line_1 }} {% else %} Dhaka, Bangladesh {% endif %}</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left Column - Performance & Analytics -->
+        <div class="lg:col-span-2 space-y-6">
+
+            <!-- Blog Performance Section -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-gray-900">Blog Performance</h2>
+                    <span class="text-sm text-blue-600 font-medium cursor-pointer">View Analytics</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr class="text-xs text-gray-500 uppercase">
+                                <th class="py-3 px-4 text-left">Post Title</th>
+                                <th class="py-3 px-4 text-left">Views</th>
+                                <th class="py-3 px-4 text-left">Likes</th>
+                                <th class="py-3 px-4 text-left">Status</th>
+                                <th class="py-3 px-4 text-left">Earnings</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            {% for post in user_blog_posts|slice:":5" %}
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-4 px-4">
+                                    <div class="flex items-center gap-3">
+                                        <img src="{% if post.featured_image %}{{ post.featured_image.url }}{% elif post.featured_image_url %}{{ post.featured_image_url }}{% else %}{% static 'path/to/default/image.png' %}{% endif %}" 
+                                             alt="{{ post.title }}" 
+                                             class="w-10 h-10 rounded-lg object-cover">
+                                        <span class="text-sm font-medium text-gray-800 line-clamp-1">{{ post.title|truncatechars:40 }}</span>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-4 text-sm text-gray-600">{{ post.views|humanize_number }}</td>
+                                <td class="py-4 px-4 text-sm text-gray-600">{{ post.likes.count|humanize_number }}</td>
+                                <td class="py-4 px-4">
+                                    <span class="text-xs font-semibold px-2 py-1 rounded-full 
+                                        {% if post.status.title == 'Published' %}bg-green-100 text-green-800
+                                        {% elif post.status.title == 'Draft' %}bg-yellow-100 text-yellow-800
+                                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                        {{ post.status.title }}
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-sm font-semibold text-green-600">${{ post.earnings|default:"0.00" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Recent Activity Section -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-6">Recent Activity</h2>
+                
+                <div class="space-y-4">
+                    {% for activity in recent_activities|slice:":3" %}
+                    <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center 
+                            {% if activity.type == 'comment' %}bg-blue-100 text-blue-600
+                            {% elif activity.type == 'like' %}bg-red-100 text-red-600
+                            {% else %}bg-green-100 text-green-600{% endif %}">
+                            <i class="fas 
+                                {% if activity.type == 'comment' %}fa-comment
+                                {% elif activity.type == 'like' %}fa-heart
+                                {% else %}fa-bell{% endif %}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-800 font-medium">{{ activity.message }}</p>
+                            <p class="text-sm text-gray-500 mt-1">{{ activity.timestamp|timesince }} ago</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+
+        <!-- Right Column - Quick Stats & Featured -->
+        <div class="space-y-6">
+
+            <!-- Quick Stats -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Quick Stats</h2>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <div class="text-2xl font-bold text-blue-600">{{ total_posts|default:"24" }}</div>
+                        <div class="text-sm text-gray-600">Total Posts</div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                        <div class="text-2xl font-bold text-green-600">{{ total_comments|default:"156" }}</div>
+                        <div class="text-sm text-gray-600">Comments</div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                        <div class="text-2xl font-bold text-purple-600">${{ total_earnings|default:"245.50" }}</div>
+                        <div class="text-sm text-gray-600">Total Earnings</div>
+                    </div>
+                    <div class="bg-orange-50 p-4 rounded-xl border border-orange-100">
+                        <div class="text-2xl font-bold text-orange-600">{{ avg_views|default:"1.2K" }}</div>
+                        <div class="text-sm text-gray-600">Avg. Views</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Post -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <h2 class="text-xl font-bold text-gray-900 mb-4">Featured Post</h2>
+                
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                    <div class="text-sm font-semibold opacity-90 mb-2">TRENDING</div>
+                    <h3 class="text-lg font-bold mb-2">Deep Learning for News Curation</h3>
+                    <div class="flex items-center justify-between text-sm opacity-90">
+                        <span> 15.3K views</span>
+                        <span>$25.50</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Notifications -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-bold text-gray-900">Notifications</h2>
+                    <span class="text-sm text-blue-600 font-medium cursor-pointer">See all</span>
+                </div>
+                
+                <div class="space-y-3">
+                    {% for notification in recent_notifications|slice:":3" %}
+                    <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-bell text-blue-600 text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-800 line-clamp-2">{{ notification.message }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ notification.time|timesince }} ago</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
         </div>
     </div>
-</div>
 
-<div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 mt-6">
-    <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-semibold text-gray-800">Post & Forum Alerts</h3>
-        <span class="text-sm text-indigo-600 hover:text-indigo-700 cursor-pointer">View All</span>
-    </div>
-
-    <div class="space-y-4">
-
-        <div class="flex items-start space-x-4 border-b border-gray-200 pb-3">
-            <img class="h-10 w-10 rounded-full object-cover flex-shrink-0" src="[User Avatar URL]" alt="Leonord">
-            <div class="flex-1">
-                <div class="flex justify-between items-center">
-                    <span class="font-medium text-gray-800">New Comment on your post</span>
-                    <span class="text-xs text-gray-500">2 minutes ago</span>
-                </div>
-                <p class="text-sm text-gray-600 mt-0.5">"Great article! I agree with point 3..."</p>
-                <span class="text-xs text-indigo-600 cursor-pointer hover:underline">Reply</span>
-            </div>
-        </div>
-
-        <div class="flex items-start space-x-4 border-b border-gray-200 pb-3">
-            <img class="h-10 w-10 rounded-full object-cover flex-shrink-0" src="[User Avatar URL]" alt="Luella Mills">
-            <div class="flex-1">
-                <div class="flex justify-between items-center">
-                    <span class="font-medium text-gray-800">Answer on Forum Question</span>
-                    <span class="text-xs text-gray-500">1 hour ago</span>
-                </div>
-                <p class="text-sm text-gray-600 mt-0.5">User Luella replied to "Django Deployment Tips"</p>
-                <span class="text-xs text-indigo-600 cursor-pointer hover:underline">View Answer</span>
-            </div>
-        </div>
-
-        <div class="flex items-start space-x-4 border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center bg-green-600 text-white flex-shrink-0">
-                <i class="fas fa-dollar-sign"></i>
-            </div>
-            <div class="flex-1">
-                <div class="flex justify-between items-center">
-                    <span class="font-medium text-green-700">Payout/Bonus Alert</span>
-                    <span class="text-xs text-gray-500">5 hours ago</span>
-                </div>
-                <p class="text-sm text-gray-600 mt-0.5">You earned $15.00 bonus from post engagement.</p>
-                <span class="text-xs text-indigo-600 cursor-pointer hover:underline">View Wallet</span>
-            </div>
-        </div>
-    </div>
+    <!-- Call to Action -->
+    <section class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white mt-6">
+        <h2 class="text-2xl font-bold mb-3">Ready to Create Your Next Masterpiece?</h2>
+        <p class="text-blue-100 mb-6">Start writing and share your knowledge with the world</p>
+        <a href="{% url 'create_blog' %}" 
+           class="bg-white text-blue-600 px-8 py-3 rounded-lg font-bold hover:bg-blue-50 transition-colors inline-flex items-center gap-2">
+            <i class="fas fa-plus"></i>
+            Create New Post
+        </a>
+    </section>
 </div>

@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
-<div class="-mt-[40px]  bg-gray-300 login flex items-center justify-center px-4 ">
+
+
+
+<div class="-mt-[40px] bg-with-image-overlay login flex items-center justify-center px-4 " style="background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('{% static 'image/bg_image.avif' %}'); background-size: cover; background-position: center;">
   <form class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8" method="post" action="{% url 'login' %}">
     {% csrf_token %}
 
@@ -34,11 +37,11 @@
     <!-- Footer Links -->
     <div class="flex items-center justify-between text-sm text-gray-600">
       <p>Sign up with <span class="text-red-500 font-semibold">Google</span></p>
-      <a href="{% url 'forget-password' %}" class="text-blue-500 hover:underline">Forgot Password?</a>
+      <a href="{% url 'forget-password' %}" class="text-blue-500 hover:underline cursor-pointer">Forgot Password?</a>
     </div>
     <div class="flex justify-center items-center text-sm text-gray-600 mt-4">
       <p>Don't have an account?
-        <a href="{% url 'signup' %}" class="text-blue-500 font-semibold hover:underline">Sign Up</a>
+        <a href="{% url 'signup' %}" class="text-blue-500 font-semibold cursor-pointer hover:underline">Sign Up</a>
       </p>
     </div>
   </form>

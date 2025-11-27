@@ -66,30 +66,77 @@
         integrity="sha512-e..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom cursor make -->
-    <style>
-    body {
-        cursor: none;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-    }
-
-    /* ------------------------------------- */
-    /* কাস্টম কার্সরের ব্লিঙ্কিং অ্যানিমেশন */
-    /* ------------------------------------- */
-    @keyframes pulse {
-        0% {
-            border-color: #facc15; 
-            opacity: 1;
+    {% comment %} <style>
+        body {
+            cursor: none;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
 
-        50% {
-            border-color: #fde047; 
-            opacity: 0.2;
+        /* ------------------------------------- */
+        /* কাস্টম কার্সরের ব্লিঙ্কিং অ্যানিমেশন */
+        /* ------------------------------------- */
+        @keyframes pulse {
+            0% {
+                border-color: #facc15;
+                opacity: 1;
+            }
+
+            50% {
+                border-color: #fde047;
+                opacity: 0.2;
+            }
+
+            100% {
+                border-color: #facc15;
+                opacity: 1;
+            }
         }
 
-        100% {
-            border-color: #facc15;
+        /* মাউস স্থির থাকলে এই ক্লাসটি যোগ হবে */
+        .blinking {
+            animation: pulse 1s infinite alternate;
+        }
+
+        /* কাস্টম কার্সরের স্টাইল (বাইরের রিং) */
+        #custom-cursor {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #facc15;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            /* এটি মুভমেন্টকে স্মুথ করবে: 0.1s থেকে 0.3s এ বাড়ানো হয়েছে */
+            transition: transform 0.3s ease-out, border-color 0.2s, opacity 0.2s;
+            mix-blend-mode: difference;
+
+            background-image: none;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* কেন্দ্রের বিন্দু স্টাইল */
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #facc15;
+            border-radius: 50%;
+            display: block;
+        }
+
+        /* যখন কোনো ইন্টারেক্টিভ এলিমেন্টের উপর মাউস যায়, তখন কার্সরের স্টাইল পরিবর্তন */
+        a:hover~#custom-cursor,
+        button:hover~#custom-cursor,
+        input[type="submit"]:hover~#custom-cursor {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: #facc15;
+            border-color: transparent;
+            animation: none;
             opacity: 1;
         }
     }
@@ -152,11 +199,16 @@
             cursor: default;
         }
 
-        #custom-cursor {
-            display: none;
+        @media (max-width: 768px) {
+            body {
+                cursor: default;
+            }
+
+            #custom-cursor {
+                display: none;
+            }
         }
-    }
-</style>
+    </style> {% endcomment %}
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -185,6 +237,8 @@
     <!-- Unicons -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 
+    {% comment %} icon {% endcomment %}
+
     <!-- DaisyUI Play CDN -->
 
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
@@ -199,20 +253,26 @@
 
     {% block extra_head %} {% endblock extra_head %}
 
+
     <style>
         .category-header-bg {
 
             background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .05) 10px, transparent 10px, transparent 20px);
         }
+
+
+
+
+        
     </style>
 
 </head>
 
 <body id="user_dashboard" class="font-inter leading-normal tracking-normal bg-white">
 
-    <div id="custom-cursor">
+    {% comment %} <div id="custom-cursor">
         <span class="cursor-dot"></span>
-    </div>
+    </div> {% endcomment %}
 
     {% include 'include/navbar.html' %}
 
@@ -261,39 +321,35 @@
         <!-- =========== LUCIDE ICONS SCRIPT (এই দুটি লাইন যোগ করুন) =========== -->
 
         <!-- Custom cursor js -->
-        <script>
-    const customCursor = document.getElementById('custom-cursor');
-    let idleTimer;
-    const IDLE_DELAY = 500;
+        {% comment %} <script>
+            const customCursor = document.getElementById('custom-cursor');
+            let idleTimer;
+            const IDLE_DELAY = 500;
 
-    function startBlinking() {
-        customCursor.classList.add('blinking');
-    }
+            function startBlinking() {
+                customCursor.classList.add('blinking');
+            }
 
-    function stopBlinking() {
-        customCursor.classList.remove('blinking');
-    }
-
-    idleTimer = setTimeout(startBlinking, IDLE_DELAY);
-
-    document.addEventListener('mousemove', (e) => {
-        const x = e.clientX;
-        const y = e.clientY;
-        /*
-            এখানে কার্সরের অবস্থান সরাসরি সেট করা আছে,
-            কিন্তু transition: 0.3s থাকার কারণে মুভমেন্টটি মসৃণ লাগবে।
-        */
-        customCursor.style.transform = `translate(${x}px, ${y}px)`;
-
-        clearTimeout(idleTimer);
-        stopBlinking();
-        idleTimer = setTimeout(startBlinking, IDLE_DELAY);
-    });
-
-    if (window.matchMedia("(max-width: 768px)").matches) {
-        customCursor.style.display = 'none';
-    }
-</script>
+            function stopBlinking() {
+                customCursor.classList.remove('blinking');
+            }
+            idleTimer = setTimeout(startBlinking, IDLE_DELAY);
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                /*
+                    এখানে কার্সরের অবস্থান সরাসরি সেট করা আছে,
+                    কিন্তু transition: 0.3s থাকার কারণে মুভমেন্টটি মসৃণ লাগবে।
+                */
+                customCursor.style.transform = `translate(${x}px, ${y}px)`;
+                clearTimeout(idleTimer);
+                stopBlinking();
+                idleTimer = setTimeout(startBlinking, IDLE_DELAY);
+            });
+            if (window.matchMedia("(max-width: 768px)").matches) {
+                customCursor.style.display = 'none';
+            }
+        </script> {% endcomment %}
 
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
@@ -483,7 +539,6 @@
                 // --------------------------------------------------------------------------------
                 // --------------------------------------------------------------------------------
                 document.querySelectorAll('.reply-btn').forEach((btn) => {
-                    
                     btn.onclick = function() {
                         const form = this.closest('div').parentNode.querySelector('.reply-form');
                         if (form) {
@@ -492,7 +547,6 @@
                     };
                 });
             } // initializeDynamicContent 
-            
             document.addEventListener('DOMContentLoaded', initializeDynamicContent);
             document.body.addEventListener('htmx:afterSwap', function(evt) {
                 if (evt.detail.target && evt.detail.target.id === 'container') {
@@ -550,6 +604,8 @@
         </script>
 
              
+
+
 
         <!-- Script js -->
         <script src="{% static 'js/script.js' %}"></script>
