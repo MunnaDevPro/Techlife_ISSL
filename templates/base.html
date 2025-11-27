@@ -139,12 +139,64 @@
             animation: none;
             opacity: 1;
         }
+    }
 
-        /* হোভারের সময় কেন্দ্রের বিন্দু সাদা হবে */
-        a:hover~#custom-cursor .cursor-dot,
-        button:hover~#custom-cursor .cursor-dot,
-        input[type="submit"]:hover~#custom-cursor .cursor-dot {
-            background-color: white;
+    /* মাউস স্থির থাকলে এই ক্লাসটি যোগ হবে */
+    .blinking {
+        animation: pulse 1s infinite alternate;
+    }
+
+    /* কাস্টম কার্সরের স্টাইল (বাইরের রিং) */
+    #custom-cursor {
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        border: 2px solid #facc15; 
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        /* এটি মুভমেন্টকে স্মুথ করবে: 0.1s থেকে 0.3s এ বাড়ানো হয়েছে */
+        transition: transform 0.2s ease-out, border-color 0.2s, opacity 0.2s; 
+        mix-blend-mode: difference;
+        
+        background-image: none;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* কেন্দ্রের বিন্দু স্টাইল */
+    .cursor-dot {
+        width: 6px;
+        height: 6px;
+        background-color: #facc15; 
+        border-radius: 50%;
+        display: block;
+    }
+
+    /* যখন কোনো ইন্টারেক্টিভ এলিমেন্টের উপর মাউস যায়, তখন কার্সরের স্টাইল পরিবর্তন */
+    a:hover~#custom-cursor,
+    button:hover~#custom-cursor,
+    input[type="submit"]:hover~#custom-cursor {
+        transform: translate(-50%, -50%) scale(1.5);
+        background-color: #facc15; 
+        border-color: transparent;
+        animation: none;
+        opacity: 1;
+    }
+
+    /* হোভারের সময় কেন্দ্রের বিন্দু সাদা হবে */
+    a:hover~#custom-cursor .cursor-dot,
+    button:hover~#custom-cursor .cursor-dot,
+    input[type="submit"]:hover~#custom-cursor .cursor-dot {
+        background-color: white;
+    }
+
+    @media (max-width: 768px) {
+        body {
+            cursor: default;
         }
 
         @media (max-width: 768px) {
