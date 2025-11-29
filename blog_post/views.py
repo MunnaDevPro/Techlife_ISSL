@@ -14,7 +14,6 @@ from .models import BlogPost, Like
 from accounts.models import CustomUserModel
 
 from comments.models import Comment
-# Create your views here.
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -24,13 +23,21 @@ from django.contrib import messages
 from blog_post.models import BlogPost, compnay_logo
 from comments.models import Comment, Reply
 
-# from save_post.models import SavedPost
-# In your app's views.py
+
 from interactions.models import Share
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404
-# Assuming Share and BlogPost are imported from .models
+from blog_post.models import Post_view_ip
+
+
+# Ip Tracking system for views section
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
 
 
 def blog_details_view(request, slug):
@@ -66,18 +73,15 @@ def blog_details_view(request, slug):
     )
     
     
-   # total comment count (reply+main commnet) - এটি গণনা ঠিক আছে
-    comment_count = all_comments.count() # এখন শুধু প্রধান কমেন্ট গণনা হবে
+    comment_count = all_comments.count() 
     reply_count = sum(comment.replies.count() for comment in all_comments)
     total_comments = comment_count + reply_count
     
-    # --- Paginator Setup (এখন সঠিক কোয়েরির উপর চলবে) ---
     paginator = Paginator(all_comments, 5) 
     page_number = request.GET.get('page', 1) 
     try:
         page_obj = paginator.page(page_number)
     except Exception:
-        # Invalid page number, deliver last page
         page_obj = paginator.page(paginator.num_pages)
     
     
@@ -103,6 +107,23 @@ def blog_details_view(request, slug):
         except Like.DoesNotExist:
             user_has_liked = False
             
+            
+    #  ip checking for views section count
+    ip = get_client_ip(request)
+    if request.user.is_authenticated:
+        viewed = Post_view_ip.objects.filter(post=blog_detail, user=request.user).exists()
+        if not viewed:
+            Post_view_ip.objects.create(post=blog_detail, user=request.user)
+            blog_detail.views += 1
+            blog_detail.save()
+    else:
+        viewed = Post_view_ip.objects.filter(post=blog_detail, ip_address=ip).exists()
+        if not viewed:
+            Post_view_ip.objects.create(post=blog_detail, ip_address=ip)
+            blog_detail.views += 1
+            blog_detail.save()
+        
+                
 
     context = {
         "blog_detail": blog_detail,
@@ -113,7 +134,6 @@ def blog_details_view(request, slug):
         "total_comments":total_comments,
         "user_has_liked":user_has_liked,
         "sort_by":sort_by,
-        # "is_saved" : is_saved,
         "action":"blog_details",
     }
     
@@ -121,7 +141,6 @@ def blog_details_view(request, slug):
         return render(request, "components/blog_details/partial_blog_details_page.html", context)
     return render(request, "components/blog_details/blog_details_page.html", context)
 
-    # return render(request, "components/blog_details/demo_blog_detail.html", context)
 
 
 
@@ -136,7 +155,7 @@ def home(request):
     
     all_category = Category.objects.all()
 
-    # Get top 5 published blogs for carousel
+    # top 5 published blogs for carousel
     carousel_blogs = BlogPost.objects.filter(status="published").order_by(
         "-created_at"
     )[:5]
@@ -178,7 +197,6 @@ def home(request):
     
     
     # popular category er popular blog gulo nibo, (popular category bolte, jei category er post beshi)
-    # 1. Retrieve the top 6 categories based on the count of published posts.
     popular_categories = (
         Category.objects
         .annotate(
@@ -191,7 +209,7 @@ def home(request):
         .order_by('-published_post_count')[:7]
     )
 
-    # 2. Prepare a single, flat list of the top blog posts (Latest by Category).
+    # latest category 
     popular_posts_flat_list = []
 
     for category in popular_categories:
@@ -205,7 +223,7 @@ def home(request):
         if latest_post:
             post = latest_post[0]
             
-            # Add the post entry directly to the flat list
+            # Add the post in flat list
             popular_posts_flat_list.append({
                 'title': post.title,
                 'created_at':post.created_at,
@@ -276,19 +294,15 @@ def home(request):
         "action" : "home_page",
     }
 
-    # If HTMX request, return only content
     if request.headers.get("HX-Request"):
         return render(request, "components/home/partial_homepage.html", context)
 
-    # Regular request, return full page
     return render(request, "home.html", context)
 
 
 
 def redirect_search_results(request):
-    """
-    Handles search queries and redirects to the relevant category page.
-    """
+
     query = request.GET.get('q', '').strip()
     
     if not query:
@@ -300,7 +314,7 @@ def redirect_search_results(request):
     except Category.DoesNotExist:
         pass
     
-    # 2. Search for SubCategory Match (Exact, case-insensitive)
+    # Search SubCategory Match 
     try:
         subcategory_match = SubCategory.objects.select_related('category').get(name__iexact=query)
         return redirect('category_post', slug=subcategory_match.category.slug)
@@ -321,9 +335,7 @@ def redirect_search_results(request):
 
 
 def blog_post_view(request):
-    """
-    All blogs page view - handles both regular and HTMX requests
-    """
+
     blogs = BlogPost.objects.filter(status="published").select_related(
         "category", "author"
     )
@@ -350,15 +362,12 @@ def blog_post_view(request):
         "category": categories,
         "sidebar_blogs": sidebar_blogs,
         "popular_blogs": popular_blogs,
-        "latest_popular_blogs":latest_popular_blogs,
         'action':'all_blogs',
     }
 
 
-    # If HTMX request, return only content
     if request.headers.get("HX-Request"):
         return render(request, "components/blogs/partial_all_blog_page.html", context)
-    # Regular request, return full page
     return render(request, "components/blogs/all_blog_page.html", context)
 
 
@@ -391,10 +400,8 @@ def popular_blog_post(request):
     }
 
 
-    # If HTMX request, return only content
     if request.headers.get("HX-Request"):
         return render(request, "components/popular/popular_post_partial.html", context)
-    # Regular request, return full page
     return render(request, "components/popular/popular_post.html", context)
 
 def all_article(request):
@@ -425,10 +432,8 @@ def all_article(request):
     }
 
 
-    # If HTMX request, return only content
     if request.headers.get("HX-Request"):
         return render(request, "components/category/all_article_partial.html", context)
-    # Regular request, return full page
     return render(request, "components/category/all_article.html", context)
 
 
@@ -470,7 +475,7 @@ def update_blog_stat(request, slug, stat_type):
 
     blog.save()
 
-    # return only the new number
+    
     return HttpResponse(
         blog.likes
         if stat_type == "like"
@@ -503,7 +508,7 @@ def create_blog(request):
 
         # Basic validation
         if not (title and description and category_id):
-            messages.error(request, "Please fill in all required fields.")
+            # messages.error(request, "Please fill in all required fields.")
             if request.headers.get("HX-Request"):
                 return render(request, "components/blogs/partial_create_blog_content.html", context)
             return redirect(reverse('create_blog'))
@@ -515,12 +520,12 @@ def create_blog(request):
             if subcategory_id: 
                 subcategory = get_object_or_404(SubCategory, pk=subcategory_id, category=category)
         except:
-            messages.error(request, "Invalid category selected.")
+            # messages.error(request, "Invalid category selected.")
             return redirect(reverse('create_blog'))
 
-        # --- Database Save Operations ---
+        # database save operations
         try:
-            # 1. Create the BlogPost object
+            # Create the BlogPost object
             new_blog = BlogPost.objects.create(
                 author=request.user,
                 category=category,
@@ -533,7 +538,7 @@ def create_blog(request):
                 featured_image_url=featured_image_url if featured_image_url and not featured_image_file else None
             )
 
-            # --- 2. Handle Tags (New Logic) ---
+            #  tag section
             if tags_list_input:
                 # Split the comma-separated string, strip whitespace, and filter out empty strings
                 tag_names = [tag.strip().lower() for tag in tags_list_input.split(',') if tag.strip()]
@@ -543,27 +548,26 @@ def create_blog(request):
                 
                 for name in tag_names:
                     # Use get_or_create to find an existing tag or create a new one
-                    # This is efficient and respects the 'unique=True' constraint on the Tag name.
                     tag, created = Tag.objects.get_or_create(name=name)
                     tag_objects.append(tag)
                 
                 # Add all collected Tag objects to the blog post's many-to-many field
                 new_blog.tags.set(tag_objects)
 
-            # 2. Handle Additional Image Files (using BlogAdditionalImage model)
+            # handle Additional Image Files
             for file in additional_image_files:
                 BlogAdditionalImage.objects.create(
                     blog=new_blog, 
-                    additional_image=file # Matches model field name
+                    additional_image=file  # model field er shathe match korbe
                 )
             
-            # 3. Handle Additional Image URLs (using BlogAdditionalImage model)
+            # handle Additional Image URLs
             if additional_image_url_list:
                 urls = [url.strip() for url in additional_image_url_list.split(',') if url.strip()]
                 for url in urls:
                     BlogAdditionalImage.objects.create(
                         blog=new_blog, 
-                        additional_image_url=url # Matches model field name
+                        additional_image_url=url # model field er shathe match korbe
                     )
 
       
@@ -578,7 +582,6 @@ def create_blog(request):
 
 
 
-    # Handle GET request (Form Display)
     if request.headers.get("HX-Request"):
         return render(request, "components/blogs/partial_create_blog_content.html", context)
 
@@ -612,7 +615,6 @@ def category_post(request, slug):
         if sub_blogs.exists():
             subcategory_blogs_map[subcategory] = sub_blogs
 
-    # Get sidebar content for HTMX requests
     sidebar_blogs = (
         BlogPost.objects.filter(status="published")
         .select_related("category", "author")
@@ -645,7 +647,7 @@ def popular_category_post(request, slug):
     popular_category = get_object_or_404(Category, slug=slug)
     categories = Category.objects.all()
 
-    # Filter popular blogs globally
+    # Filter popular blogs 
     all_popular_blogs = BlogPost.objects.filter(
         status="published",
         views__gte=1000,
@@ -686,9 +688,7 @@ def contact_page(request):
 
 
 
-# comment section
 @login_required
-# requires POST method use kora valo, karon aita save
 @require_POST 
 def add_comment(request, post_slug):
 
@@ -698,7 +698,6 @@ def add_comment(request, post_slug):
     content = request.POST.get('content', '').strip()
 
     if not content:
-        # messages.error(request, "Comment content cannot be empty.")
         return redirect('post_detail', slug=post_slug)
 
 
@@ -708,7 +707,6 @@ def add_comment(request, post_slug):
         content=content
     )
     
-    # messages.success(request, "Your comment has been posted successfully.")
     
     
     return redirect('blog_details', slug=post_slug)
@@ -758,48 +756,19 @@ def user_like_toggle(request, like_slug):
                
             except IntegrityError:
             
-                # messages.error(request, "An error occurred while liking the post.")
                 logout(request)
                 return redirect('login')
-                # return redirect('blog_details', slug=like_slug)
     
     return redirect('blog_details', slug=like_slug)
 
 
 
 
-# @login_required
-# def save_post(request, save_slug):
-#     post = get_object_or_404(BlogPost, slug=save_slug)
-
-#     if request.method == "POST":
-#         already_saved = SavedPost.objects.filter(post=post, user=request.user).exists()
-
-#         if not already_saved:
-#             SavedPost.objects.create(post=post, user=request.user)
-#         else:
-#             # Optional: Unsave if already saved
-#             SavedPost.objects.filter(post=post, user=request.user).delete()
-
-#         return redirect("blog_details", post_slug=save_slug)
-
-#     return redirect("blog_details", post_slug=save_slug)
-
-
-
-
-
-
 @require_POST
 def record_share(request, post_slug):
-    """
-    Records a share event. Uses get_or_create for logged-in users 
-    to prevent counting the same share multiple times.
-    """
+
     platform = request.POST.get('platform')
 
-    if not platform:
-        return JsonResponse({"status": "error", "message": "Platform not provided"}, status=400)
 
     try:
         post = get_object_or_404(BlogPost, slug=post_slug)
@@ -810,7 +779,7 @@ def record_share(request, post_slug):
                 post=post,
                 user=request.user,
                 platform=platform,
-                defaults={'platform': platform} # Ensure platform is set if creating
+                defaults={'platform': platform} 
             )
 
             if created:
@@ -819,15 +788,13 @@ def record_share(request, post_slug):
                 return JsonResponse({"status": "info", "message": f"Share already counted for this user on {platform}."})
 
         else:
-            # Anonymous users will be counted every time, as we can't reliably track them
-            # without complex session/cookie management. 
+
             Share.objects.create(
                 post=post,
-                user=None, # user=None for anonymous
+                user=None, 
                 platform=platform
             )
             return JsonResponse({"status": "success", "message": f"Share recorded (Anonymous) on {platform}."})
 
     except Exception as e:
-        # It's better to log the exception, but for user feedback:
         return JsonResponse({"status": "error", "message": str(e)}, status=500)

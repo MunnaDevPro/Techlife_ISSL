@@ -1,15 +1,21 @@
 {% load static %}
 
-<header class="bg-white shadow-md fixed top-0 w-full z-50 font-inter">
+<header class="bg-white shadow-md top-0 w-full z-50 font-inter">
     <!-- Mobile Search Container -->
-    <div id="mobile-search-container" class="lg:hidden fixed top-0 left-0 right-0 bg-white p-4 shadow-lg hidden transition-all duration-300 z-[60]">
+    <div id="mobile-search-container"
+        class="lg:hidden fixed top-0 left-0 right-0 bg-white p-4 shadow-lg hidden transition-all duration-300 z-[60]">
         <div class="flex items-center space-x-2">
-            <button onclick="toggleMobileSearch()" class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <button onclick="toggleMobileSearch()"
+                class="text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors">
                 <i class="fas fa-arrow-left text-lg"></i>
             </button>
-            <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" method="GET" class="flex-1 flex">
-                <input type="search" name="q" placeholder="Search News..." class="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" autofocus />
-                <button type="submit" class="px-4 py-3 bg-blue-500 text-white rounded-r-full hover:bg-blue-600 transition-colors">
+            <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML"
+                hx-push-url="true" method="GET" class="flex-1 flex">
+                <input type="search" name="q" placeholder="Search News..."
+                    class="flex-1 px-4 py-3 text-sm border border-gray-300 rounded-l-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    autofocus />
+                <button type="submit"
+                    class="px-4 py-3 bg-blue-500 text-white rounded-r-full hover:bg-blue-600 transition-colors">
                     <i class="fa fa-search"></i>
                 </button>
             </form>
@@ -30,8 +36,12 @@
             <span class="hidden sm:flex items-center text-sm text-gray-600 font-medium space-x-1">
                 <i class="fa-solid fa-calendar text-gray-500"></i>
                 <span>{{ current_date }}</span>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-500">
-                    <path d="M8.75008 1.25V2.58333M3.00008 8.33333H1.66675M4.54275 4.12614L3.59993 3.18333M12.9583 4.12614L13.9011 3.18333M15.8334 8.33333H14.5001M5.41681 8.3334C5.41681 6.49245 6.90919 5.00006 8.75014 5.00006C10.0052 5.00006 11.0982 5.69363 11.6668 6.71838M5.00008 18.3333C3.15913 18.3333 1.66675 16.8409 1.66675 15C1.66675 13.1591 3.15913 11.6667 5.00008 11.6667C5.3869 11.6667 5.75834 11.7326 6.10377 11.8537C6.70059 10.283 8.21997 9.16667 10.0001 9.16667C11.7802 9.16667 13.2996 10.283 13.8964 11.8537C14.2418 11.7326 14.6133 11.6667 15.0001 11.6667C16.841 11.6667 18.3334 13.1591 18.3334 15C18.3334 16.8409 16.841 18.3333 15.0001 18.3333C11.1332 18.3333 8.23275 18.3333 5.00008 18.3333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    class="text-gray-500">
+                    <path
+                        d="M8.75008 1.25V2.58333M3.00008 8.33333H1.66675M4.54275 4.12614L3.59993 3.18333M12.9583 4.12614L13.9011 3.18333M15.8334 8.33333H14.5001M5.41681 8.3334C5.41681 6.49245 6.90919 5.00006 8.75014 5.00006C10.0052 5.00006 11.0982 5.69363 11.6668 6.71838M5.00008 18.3333C3.15913 18.3333 1.66675 16.8409 1.66675 15C1.66675 13.1591 3.15913 11.6667 5.00008 11.6667C5.3869 11.6667 5.75834 11.7326 6.10377 11.8537C6.70059 10.283 8.21997 9.16667 10.0001 9.16667C11.7802 9.16667 13.2996 10.283 13.8964 11.8537C14.2418 11.7326 14.6133 11.6667 15.0001 11.6667C16.841 11.6667 18.3334 13.1591 18.3334 15C18.3334 16.8409 16.841 18.3333 15.0001 18.3333C11.1332 18.3333 8.23275 18.3333 5.00008 18.3333Z"
+                        stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
                 </svg>
             </span>
         </div>
@@ -43,24 +53,29 @@
         <!-- Right: Actions -->
         <div class="flex items-center space-x-3 w-1/3 justify-end lg:w-auto">
             <!-- Forum Button - Desktop -->
-            <button onclick="showForumWarningModal()" class="hidden lg:flex items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-all duration-300 hover:shadow-md font-semibold">Forum</button>
+            <button onclick="showForumWarningModal()"
+                class="hidden lg:flex items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-all duration-300 hover:shadow-md font-semibold">Forum</button>
 
             <!-- User Auth - Hide on Mobile -->
-{% if request.user.is_authenticated and request.user.is_verified %}
-<a class="lg:flex hidden w-10 h-10 sm:w-12 sm:h-12 cursor-pointer transition-transform  " href="{% url 'user_dashboard' %}">
-    <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-full h-full rounded-full border-2 border-blue-500 object-cover" />
-</a>
-{% else %}
-<a href="{% url 'login' %}" class="lg:flex hidden items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-all duration-300 hover:shadow-md font-semibold">Login</a>
-{% endif %}
+            {% if request.user.is_authenticated and request.user.is_verified %}
+            <a class="lg:flex hidden w-10 h-10 sm:w-12 sm:h-12 cursor-pointer transition-transform  "
+                href="{% url 'user_dashboard' %}">
+                <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}"
+                    alt="{{ user.first_name|slice:'1' }}"
+                    class="w-full h-full rounded-full border-2 border-blue-500 object-cover" />
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}"
+                class="lg:flex hidden items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition-all duration-300 hover:shadow-md font-semibold">Login</a>
+            {% endif %}
             <!-- Mobile Search Icon -->
-            <button onclick="toggleMobileSearch()" class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
+            <button onclick="toggleMobileSearch()"
+                class="lg:hidden text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
                 <i class="fa fa-search text-lg"></i>
             </button>
         </div>
     </div>
 
-    <!-- Desktop Navigation -->
     <!-- Desktop Navigation -->
     <nav class="max-w-7xl mx-auto px-4 py-3 hidden lg:block">
         <div class="flex items-center justify-between">
@@ -68,24 +83,34 @@
             <div class="flex items-center space-x-1 flex-1 min-w-0">
                 <!-- Core Navigation Items -->
                 <div class="flex items-center space-x-1 flex-shrink-0">
-                    <a href="{% url 'homepage' %}" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Home</a>
+                    <a href="{% url 'homepage' %}"
+                        class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Home</a>
 
-                    <button onclick="showForumWarningModal()" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Question</button>
+                    <button onclick="showForumWarningModal()"
+                        class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Question</button>
 
-                    <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Create Blog</a>
+                    <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                        class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">Create
+                        Blog</a>
                 </div>
 
                 <!-- Country Dropdown -->
                 <div class="relative group flex-shrink-0">
-                    <button class="text-gray-700 font-medium hover:text-blue-600 transition-colors flex items-center cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
+                    <button
+                        class="text-gray-700 font-medium hover:text-blue-600 transition-colors flex items-center cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
                         Country
-                        <i class="fas fa-chevron-down text-xs ml-1 text-gray-600 group-hover:text-blue-600 transition-colors"></i>
+                        <i
+                            class="fas fa-chevron-down text-xs ml-1 text-gray-600 group-hover:text-blue-600 transition-colors"></i>
                     </button>
-                    <div class="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div
+                        class="absolute left-0 top-full mt-1 w-48 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                         <div class="py-2">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Bangladesh</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Asia</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">World</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Bangladesh</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">Asia</a>
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors">World</a>
                         </div>
                     </div>
                 </div>
@@ -94,20 +119,27 @@
                 <div class="flex items-center space-x-1 flex-1 min-w-0">
                     <div class="flex items-center space-x-1 overflow-hidden">
                         {% for category in popular_categories|slice:"3" %}
-                        <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap flex-shrink-0">{{ category.name }}</a>
+                        <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML"
+                            hx-push-url="true"
+                            class="text-gray-600 font-medium hover:text-blue-600 transition-colors cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap flex-shrink-0">{{ category.name }}</a>
                         {% endfor %}
                     </div>
 
                     <!-- More Categories Dropdown -->
                     <div class="relative group flex-shrink-0">
-                        <button class="text-gray-600 font-medium hover:text-blue-600 transition-colors flex items-center cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
+                        <button
+                            class="text-gray-600 font-medium hover:text-blue-600 transition-colors flex items-center cursor-pointer px-3 py-2 rounded-md hover:bg-blue-50 whitespace-nowrap">
                             More
-                            <i class="fas fa-chevron-down text-xs ml-1 text-gray-500 group-hover:text-blue-600 transition-colors"></i>
+                            <i
+                                class="fas fa-chevron-down text-xs ml-1 text-gray-500 group-hover:text-blue-600 transition-colors"></i>
                         </button>
-                        <div class="absolute right-0 top-full mt-1 w-80 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <div
+                            class="absolute right-0 top-full mt-1 w-80 bg-white border border-gray-200 shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <div class="p-4 grid grid-cols-2 gap-2">
                                 {% for category in popular_categories|slice:"3:" %}
-                                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="cursor-pointer block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>
+                                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container"
+                                    hx-swap="innerHTML" hx-push-url="true"
+                                    class="cursor-pointer block px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 rounded-md transition-colors whitespace-nowrap">{{ category.name }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -117,9 +149,12 @@
 
             <!-- Desktop Search - Fixed width to prevent pushing -->
             <div class="flex-shrink-0 ml-4">
-                <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" method="GET" class="relative">
-                    <input type="search" name="q" placeholder="Search News..." class="w-64 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-                    <button type="submit" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-blue-600 transition-colors">
+                <form hx-get="{% url 'redirect_search_results' %}" hx-target="#container" hx-swap="innerHTML"
+                    hx-push-url="true" method="GET" class="relative">
+                    <input type="search" name="q" placeholder="Search News..."
+                        class="w-64 px-4 py-2 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
+                    <button type="submit"
+                        class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-blue-600 transition-colors">
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
@@ -128,9 +163,11 @@
     </nav>
 
     <!-- Forum Modal -->
-    <div id="forum-warning-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm z-[1000] transition-opacity duration-300">
+    <div id="forum-warning-modal"
+        class="hidden fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm z-[1000] transition-opacity duration-300">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="bg-white rounded-2xl shadow-xl max-w-md w-full transform transition-all duration-500 scale-95 opacity-0" id="forum-modal-content">
+            <div class="bg-white rounded-2xl shadow-xl max-w-md w-full transform transition-all duration-500 scale-95 opacity-0"
+                id="forum-modal-content">
                 <div class="p-6 text-center">
                     <h3 class="text-xl font-bold text-blue-600 mb-4">Feature Update in Progress</h3>
                     <div class="text-gray-600 mb-6">
@@ -142,8 +179,10 @@
                         <p class="text-sm">Do you wish to proceed to this developing area?</p>
                     </div>
                     <div class="flex space-x-3 justify-center">
-                        <button onclick="hideForumWarningModal()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold">Back</button>
-                        <button onclick="goToForumPage()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold">Proceed</button>
+                        <button onclick="hideForumWarningModal()"
+                            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold">Back</button>
+                        <button onclick="goToForumPage()"
+                            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold">Proceed</button>
                     </div>
                 </div>
             </div>
@@ -152,7 +191,8 @@
 
     <!-- Mobile Sidebar -->
     <!-- Mobile Sidebar -->
-    <div id="mobile-sidebar" class="fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[60] lg:hidden">
+    <div id="mobile-sidebar"
+        class="fixed top-0 left-0 h-full w-80 bg-white shadow-xl transform -translate-x-full transition-transform duration-300 ease-in-out z-[60] lg:hidden">
         <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-white">
             <button id="close-sidebar" class="text-gray-700 p-2 rounded-md hover:bg-gray-100 transition-colors">
                 <i class="fas fa-times text-xl"></i>
@@ -166,17 +206,24 @@
                 <!-- User Auth Section - Mobile -->
                 {% if request.user.is_authenticated and request.user.is_verified %}
                 <div class="border-b border-gray-200 pb-4 mb-2">
-                    <a href="{% url 'user_dashboard' %}" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                        <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}" alt="{{ user.first_name|slice:'1' }}" class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover" />
+                    <a href="{% url 'user_dashboard' %}"
+                        class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <img src="{{ user.profile_picture.url|default:'/static/image/default_user.png' }}"
+                            alt="{{ user.first_name|slice:'1' }}"
+                            class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover" />
                         <div class="flex flex-col">
-                            <span class="font-semibold text-gray-700">{% if user.first_name|length > 10 or user.last_name|length > 10 %} {{ user.first_name }} {% else %} {{ user.first_name }} {{ user.last_name }} {% endif %}</span>
+                            <span
+                                class="font-semibold text-gray-700">{% if user.first_name|length > 10 or user.last_name|length > 10 %}
+                                {{ user.first_name }} {% else %} {{ user.first_name }} {{ user.last_name }}
+                                {% endif %}</span>
                             <span class="text-sm text-gray-500">View Profile</span>
                         </div>
                     </a>
                 </div>
                 {% else %}
                 <div class="border-b border-gray-200 pb-4 mb-2">
-                    <a href="{% url 'login' %}" class="flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold">
+                    <a href="{% url 'login' %}"
+                        class="flex items-center justify-center w-full px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-semibold">
                         <i class="fas fa-sign-in-alt mr-2"></i>
                         Login
                     </a>
@@ -184,17 +231,20 @@
                 {% endif %}
 
                 <!-- Navigation Links -->
-                <a href="{% url 'homepage' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a href="{% url 'homepage' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-home mr-3 w-5 text-center"></i>
                     Home
                 </a>
 
-                <button onclick="showForumWarningModal(); closeMobileSidebar();" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-left">
+                <button onclick="showForumWarningModal(); closeMobileSidebar();"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors text-left">
                     <i class="fas fa-question-circle mr-3 w-5 text-center"></i>
                     Question
                 </button>
 
-                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a hx-get="{% url 'create_blog' %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-edit mr-3 w-5 text-center"></i>
                     Create Blog
                 </a>
@@ -203,7 +253,8 @@
                 <div class="space-y-1">
                     <!-- Country Dropdown -->
                     <div>
-                        <button class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                        <button
+                            class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                             <div class="flex items-center">
                                 <i class="fas fa-globe mr-3 w-5 text-center"></i>
                                 Country
@@ -228,7 +279,8 @@
 
                     <!-- More Categories Dropdown -->
                     <div>
-                        <button class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                        <button
+                            class="mobile-dropdown-toggle text-gray-700 font-medium flex items-center justify-between w-full py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                             <div class="flex items-center">
                                 <i class="fas fa-th-large mr-3 w-5 text-center"></i>
                                 More Categories
@@ -237,7 +289,9 @@
                         </button>
                         <div class="mobile-dropdown-content pl-6 mt-1 space-y-1 hidden bg-gray-50 rounded-lg py-2">
                             {% for category in popular_categories|slice:"4:" %}
-                            <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">{{ category.name }}</a>
+                            <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container"
+                                hx-swap="innerHTML" hx-push-url="true"
+                                class="text-gray-600 hover:text-blue-600 block py-2 px-4 transition-colors">{{ category.name }}</a>
                             {% endfor %}
                         </div>
                     </div>
@@ -245,21 +299,25 @@
 
                 <!-- Popular Categories -->
                 {% for category in popular_categories|slice:"4" %}
-                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML" hx-push-url="true" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a hx-get="{% url 'category_post' category.slug %}" hx-target="#container" hx-swap="innerHTML"
+                    hx-push-url="true"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-folder mr-3 w-5 text-center"></i>
                     {{ category.name }}
                 </a>
                 {% endfor %}
 
                 <!-- Additional Links -->
-                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML" class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
+                <a hx-get="{% url 'contact_page' %}" hx-target="#container" hx-push-url="true" hx-swap="innerHTML"
+                    class="text-gray-700 font-medium hover:text-blue-600 block py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors">
                     <i class="fas fa-envelope mr-3 w-5 text-center"></i>
                     Contact
                 </a>
 
                 <!-- Forum Button Only (Today's News removed) -->
                 <div class="border-t border-gray-200 pt-4 mt-2">
-                    <button onclick="showForumWarningModal(); closeMobileSidebar();" class="w-full px-4 py-3 border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors rounded-lg font-semibold">
+                    <button onclick="showForumWarningModal(); closeMobileSidebar();"
+                        class="w-full px-4 py-3 border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors rounded-lg font-semibold">
                         <i class="fas fa-comments mr-2"></i>
                         Forum
                     </button>
@@ -269,7 +327,8 @@
     </div>
 
     <!-- Sidebar Overlay -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-0 invisible transition-opacity duration-300 z-[59] lg:hidden"></div>
+    <div id="sidebar-overlay"
+        class="fixed inset-0 bg-black opacity-0 invisible transition-opacity duration-300 z-[59] lg:hidden"></div>
 </header>
 
 <script>
@@ -277,25 +336,21 @@
     function toggleMobileSearch() {
         const searchContainer = document.getElementById('mobile-search-container');
         searchContainer.classList.toggle('hidden');
-
         if (!searchContainer.classList.contains('hidden')) {
             const searchInput = searchContainer.querySelector('input[type="search"]');
             setTimeout(() => searchInput.focus(), 100);
         }
     }
-
     // Mobile Sidebar Functions
     function closeMobileSidebar() {
         const mobileSidebar = document.getElementById('mobile-sidebar');
         const sidebarOverlay = document.getElementById('sidebar-overlay');
         const body = document.body;
-
         mobileSidebar.classList.add('-translate-x-full');
         sidebarOverlay.classList.add('invisible', 'opacity-0');
         body.classList.remove('overflow-hidden');
     }
-
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const menuToggle = document.getElementById('menu-toggle');
         const closeSidebar = document.getElementById('close-sidebar');
         const mobileSidebar = document.getElementById('mobile-sidebar');
@@ -308,18 +363,15 @@
             sidebarOverlay.classList.add('opacity-50');
             body.classList.add('overflow-hidden');
         }
-
         menuToggle.addEventListener('click', openSidebar);
         closeSidebar.addEventListener('click', closeMobileSidebar);
         sidebarOverlay.addEventListener('click', closeMobileSidebar);
-
         // Mobile dropdowns
         const dropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
         dropdownToggles.forEach((toggle) => {
-            toggle.addEventListener('click', function () {
+            toggle.addEventListener('click', function() {
                 const content = this.nextElementSibling;
                 const icon = this.querySelector('i');
-
                 // Close other dropdowns
                 dropdownToggles.forEach((otherToggle) => {
                     if (otherToggle !== toggle) {
@@ -329,27 +381,23 @@
                         otherIcon.classList.remove('rotate-180');
                     }
                 });
-
                 // Toggle current dropdown
                 content.classList.toggle('hidden');
                 icon.classList.toggle('rotate-180');
             });
         });
-
         // Close sidebar on link click
         const mobileLinks = document.querySelectorAll('#mobile-sidebar a');
         mobileLinks.forEach((link) => {
             link.addEventListener('click', closeMobileSidebar);
         });
     });
-
     // Forum Modal Functions
     const FORUM_TARGET_URL = 'http://127.0.0.1:8000/forum/all_question/';
 
     function showForumWarningModal() {
         const modal = document.getElementById('forum-warning-modal');
         const modalContent = document.getElementById('forum-modal-content');
-
         modal.classList.remove('hidden');
         setTimeout(() => {
             modalContent.classList.remove('scale-95', 'opacity-0');
@@ -360,10 +408,8 @@
     function hideForumWarningModal() {
         const modal = document.getElementById('forum-warning-modal');
         const modalContent = document.getElementById('forum-modal-content');
-
         modalContent.classList.remove('scale-100', 'opacity-100');
         modalContent.classList.add('scale-95', 'opacity-0');
-
         setTimeout(() => {
             modal.classList.add('hidden');
         }, 300);
@@ -372,12 +418,10 @@
     function goToForumPage() {
         window.location.href = FORUM_TARGET_URL;
     }
-
     // Close modal on outside click
-    document.addEventListener('click', function (event) {
+    document.addEventListener('click', function(event) {
         const modal = document.getElementById('forum-warning-modal');
         const modalContent = document.getElementById('forum-modal-content');
-
         if (event.target === modal) {
             hideForumWarningModal();
         }
