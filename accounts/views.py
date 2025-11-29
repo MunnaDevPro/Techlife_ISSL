@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 from accounts.models import CustomUserModel, EmailVerificationCode
-from accounts.utils import send_verification_code_email
 from blog_post.models import BlogPost 
 from django.shortcuts import render
 from django.db.models import Sum, Count
@@ -15,19 +14,22 @@ from comments.models import Comment
 from earnings.models import EarningSetting  # replace 'your_app_name' with the actual app name where EarningSetting is defined
 from django.utils import timezone
 from datetime import timedelta
+from accounts.utils import send_verification_code_email
 
 
-# -------------------- SIGNUP -------------------
+# views.py - signup_view (CORRECTED)
 def signup_view(request):
     if request.method == "POST":
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
-        
-        
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
+        if not password:
+            messages.error(request, "Password is required.")
+            return redirect("signup")
+            
         if password != confirm_password:
             messages.error(request, "Passwords do not match.")
             return redirect("signup")
@@ -36,24 +38,23 @@ def signup_view(request):
             messages.error(request, "Email already exists.")
             return redirect("signup")
 
-        user = CustomUserModel.objects.create_user(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
-            is_active=False
-        )
-
-        code_obj = EmailVerificationCode.objects.create(user=user, purpose="verify")
-        send_verification_code_email(user, code_obj.code, "verify")
-
-        request.session["pending_user_id"] = user.id
-        messages.info(request, "A verification code has been sent to your email.")
-        return redirect("verify-code")
+        try:
+            user = CustomUserModel.objects.create_user(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password, 
+                is_active=True,
+                is_verified=True,
+            )
+            messages.success(request, "Account created successfully! Please login.")
+            return redirect("login")
+            
+        except Exception as e:
+            messages.error(request, f"Error creating account: {str(e)}")
+            return redirect("signup")
 
     return render(request, "account/register_page.html")
-
-
 # -------------------- VERIFY EMAIL --------------------
 def verify_code_view(request):
     user_id = request.session.get("pending_user_id")
@@ -87,12 +88,9 @@ def login_view(request):
         password = request.POST.get("password")
 
         user = authenticate(request, email=email, password=password)
-        if not user:
+   
+        if user is None:
             messages.error(request, "Invalid email or password.")
-            return redirect("login")
-
-        if not user.is_verified:
-            messages.error(request, "Please verify your email first.")
             return redirect("login")
 
         login(request, user)
@@ -101,15 +99,12 @@ def login_view(request):
 
     return render(request, "account/login_page.html")
 
-
-# -------------------- LOGOUT --------------------
 def logout_view(request):
     logout(request)
     messages.info(request, "Logged out successfully.")
     return redirect("homepage")
 
 
-# -------------------- PASSWORD RESET REQUEST --------------------
 def forget_password_view(request):
     if request.method == "POST":
         email = request.POST.get("email")
@@ -125,7 +120,6 @@ def forget_password_view(request):
     return render(request, "account/forget_password.html")
 
 
-# -------------------- VERIFY RESET CODE --------------------
 def reset_code_view(request):
     user_id = request.session.get("reset_user_id")
     if not user_id:
@@ -148,7 +142,6 @@ def reset_code_view(request):
     return render(request, "account/reset_password.html")
 
 
-# -------------------- SET NEW PASSWORD --------------------
 def new_password_view(request):
     user_id = request.session.get("allow_new_password")
     if not user_id:

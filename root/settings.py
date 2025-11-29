@@ -163,7 +163,7 @@ AUTH_USER_MODEL = "accounts.CustomUserModel"
 
 
 AUTHENTICATION_BACKENDS = [
-    "accounts.authentication.EmailBackend",
+    # "accounts.authentication.EmailBackend",
     "django.contrib.auth.backends.ModelBackend",
 ]
 
